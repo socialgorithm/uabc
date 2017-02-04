@@ -1,2 +1,3 @@
-// Entry point for executable
+#!/usr/bin/env node
+
 require('../index');

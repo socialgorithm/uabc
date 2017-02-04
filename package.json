@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Ultimate Algorithm Battle Client",
   "main": "index.js",
+  "bin": {
+    "uabc": "bin/index.js"
+  },
   "scripts": {
     "test": "nyc ava"
   },
