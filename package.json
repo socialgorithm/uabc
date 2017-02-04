@@ -1,0 +1,29 @@
+{
+  "name": "uabc",
+  "version": "1.0.0",
+  "description": "Ultimate Algorithm Battle Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aurbano/uabc.git"
+  },
+  "keywords": [
+    "ultimate",
+    "algorithm",
+    "battle",
+    "client"
+  ],
+  "author": "Alejandro U. Alvarez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aurbano/uabc/issues"
+  },
+  "homepage": "https://github.com/aurbano/uabc#readme",
+  "dependencies": {
+    "command-line-args": "^3.0.5",
+    "command-line-usage": "^4.0.0"
+  }
+}
