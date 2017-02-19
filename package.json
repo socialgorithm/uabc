@@ -27,6 +27,8 @@
   "homepage": "https://github.com/aurbano/uabc#readme",
   "dependencies": {
     "command-line-args": "^3.0.5",
-    "command-line-usage": "^4.0.0"
+    "command-line-usage": "^4.0.0",
+    "socket.io-client": "^1.7.3",
+    "ultimate-ttt": "^2.1.1"
   }
 }
