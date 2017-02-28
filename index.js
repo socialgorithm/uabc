@@ -15,7 +15,9 @@ console.info("+----------------------------------+");
 console.info("|     Ultimate Algorithm Battle    |");
 console.info("+----------------------------------+");
 
-console.log('Starting with options: ', options);
+console.log();
+console.log('Waiting for server...');
+console.log();
 
 // Spawn the player
 try {
@@ -36,8 +38,8 @@ try {
     console.error('Error in socket', data);
   });
 
-  socket.on('connection', function(a){
-    console.log('connected!', a);
+  socket.on('connect', function(){
+    console.log('Connected!');
   });
 
   socket.on('game', function (data) {
