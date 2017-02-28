@@ -26,13 +26,15 @@ function input() {
         player.init();
         break;
       case 'move':
-        coords = player.getMove();
-        player.addMove(coords.board, coords.move);
-        writeMove(coords);
+        try {
+          coords = player.getMove();
+          player.addMove(coords.board, coords.move);
+          writeMove(coords);
+        } catch(e) {
+          console.log('fail');
+        }
         break;
       case 'opponent':
-        console.error('opponent ' + parts[1]);
-        console.error('next valid board: ', player.game.nextBoard);
         // the move will be in the format x,y;x,y
         // where the first pair are the board's coordinates
         // and the second one are the move's coordinates
@@ -40,9 +42,13 @@ function input() {
         board = next[0].split(',');
         move = next[1].split(',');
         player.addOpponentMove(board, move);
-        coords = player.getMove();
-        player.addMove(coords.board, coords.move);
-        writeMove(coords);
+        try {
+          coords = player.getMove();
+          player.addMove(coords.board, coords.move);
+          writeMove(coords);
+        } catch(e) {
+          console.log('fail');
+        }
         break;
     }
   });

@@ -43,12 +43,10 @@ try {
   });
 
   socket.on('game', function (data) {
-    console.log('server> ', data);
     player.stdin.write(data.action + "\n");
   });
 
   player.stdout.on('data', function(data) {
-    console.log('game stdout> ', data);
     socket.emit('game', data);
   });
 
