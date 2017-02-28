@@ -19,14 +19,16 @@ function input() {
     const parts = input.split(' ');
     const action = parts[0];
 
-    let next, move, board;
+    let next, move, board, coords;
 
     switch (action) {
       case 'init':
         player.init();
         break;
       case 'move':
-        write(getMove(player));
+        coords = player.getMove();
+        player.addMove(coords.board, coords.move);
+        writeMove(coords);
         break;
       case 'opponent':
         console.error('opponent ' + parts[1]);
@@ -38,14 +40,15 @@ function input() {
         board = next[0].split(',');
         move = next[1].split(',');
         player.addOpponentMove(board, move);
-        write(getMove(player));
+        coords = player.getMove();
+        player.addMove(coords.board, coords.move);
+        writeMove(coords);
         break;
     }
   });
 }
 
-function getMove(player) {
-  const coords = player.getMove();
+function writeMove(coords) {
   const move = coords.board[0] + ',' + coords.board[1] + ';' +
     coords.move[0] + ',' + coords.move[1];
   write(move);
