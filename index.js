@@ -19,6 +19,13 @@ console.log();
 console.log('Waiting for server...');
 console.log();
 
+function log(writer, data) {
+  if (options.verbose) {
+    const time = (new Date()).toTimeString().substr(0,8);
+    console.log('[' + time + ' ' + writer + '] ' + data);
+  }
+}
+
 // Spawn the player
 try {
   const player = exec(options.file);
@@ -43,10 +50,12 @@ try {
   });
 
   socket.on('game', function (data) {
+    log('server', data.action);
     player.stdin.write(data.action + "\n");
   });
 
   player.stdout.on('data', function(data) {
+    log('player', data);
     socket.emit('game', data);
   });
 
