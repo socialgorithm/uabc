@@ -1,6 +1,6 @@
 {
   "name": "uabc",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Ultimate Algorithm Battle Client",
   "main": "index.js",
   "bin": {
