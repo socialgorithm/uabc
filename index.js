@@ -73,7 +73,14 @@ function main() {
 
     socket.on('game', function (data) {
       log('server', data.action);
-      player.stdin.write(data.action + "\n");
+      if (data.action && data.action.length > 0) {
+        const parts = data.action.split(' ');
+        if (parts[0] === 'end') {
+          console.log('Games ended! You ' + parts[1]);
+        } else {
+          player.stdin.write(data.action + "\n");
+        }
+      }
     });
 
     player.stdout.on('data', function(data) {
