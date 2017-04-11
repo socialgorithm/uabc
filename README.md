@@ -38,6 +38,8 @@ $ uabc -t 123 -f "java Player"
 
 You don't need the server running to start the client, it will automatically detect the server and connect to it when it comes up.
 
+## [Player Documentation](https://github.com/socialgorithm/uabc/wiki)
+
 ## Running the sample player
 
 uabc provides a sample player that choses valid moves at random. To test it clone this repository and select it as your player:
