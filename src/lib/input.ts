@@ -1,6 +1,6 @@
-const commandLineArgs = require('command-line-args');
-const getUsage = require('command-line-usage');
-const info = require('../package.json');
+import commandLineArgs from 'command-line-args';
+import getUsage from 'command-line-usage';
+import info from '../package.json';
 
 const optionDefinitions = [
   {
@@ -28,6 +28,11 @@ const optionDefinitions = [
     name: 'host',
     typeLabel: '[underline]{host:port}',
     description: 'host:port where the client should connect to, defaults to localhost:8123. You can specify https:// as well if SSL is required'
+  },
+  {
+    name: 'practice',
+    alias: 'p',
+    description: 'Practice mode - it will play locally against a random algorithm. It doesn\'t require a connection to a server'
   },
   {
     name: 'log',

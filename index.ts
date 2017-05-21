@@ -12,6 +12,7 @@ const exec = require('./lib/exec');
 const io = require('socket.io-client');
 const fileLoggerModule = require('./lib/log-file');
 const consoleLogger = require('./lib/log-console');
+const RandomPlayer = require('./sample/random');
 
 main();
 
@@ -29,6 +30,12 @@ function main() {
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/ /, '_');
       fileLogger = fileLoggerModule('uabc-' + date + '.log');
     }
+  }
+
+  let practiceGame = null;
+  // If we're on practice mode, load a local game
+  if (options.practice) {
+    practiceGame = new RandomPlayer();
   }
 
   console.log();
@@ -79,13 +86,21 @@ function main() {
           console.log('Games ended! You ' + parts[1]);
         } else {
           player.stdin.write(data.action + "\n");
+          if (parts[0] === 'init') {
+            practiceGame.init();
+          }
         }
       }
     });
 
     player.stdout.on('data', function(data) {
       log('player', data);
-      socket.emit('game', data);
+      if (!options.practice) {
+        socket.emit('game', data);
+      } else {
+        // practice mode, add move to local game
+
+      }
     });
 
     socket.on('disconnect', function() {

@@ -2,7 +2,7 @@
   "name": "uabc",
   "version": "1.3.0",
   "description": "Ultimate Algorithm Battle Client",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
     "uabc": "bin/index.js"
   },
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/aurbano/uabc#readme",
   "dependencies": {
+    "@types/socket.io-client": "^1.4.29",
     "command-line-args": "^3.0.5",
     "command-line-usage": "^4.0.0",
     "socket.io-client": "^1.7.3",

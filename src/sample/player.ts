@@ -1,6 +1,6 @@
-const readline = require('readline');
+import readline from 'readline';
 // Random player implementation
-const Random = require('./random');
+import Random from './random';
 
 /**
  * Random client implementation of the UTTT Game

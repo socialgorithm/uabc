@@ -1,4 +1,4 @@
-const UTTT = require('ultimate-ttt');
+import UTTT from 'ultimate-ttt';
 
 /**
  * Random client implementation of the UTTT Game
