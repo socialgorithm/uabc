@@ -1,6 +1,6 @@
-import commandLineArgs from 'command-line-args';
-import getUsage from 'command-line-usage';
-const info = require('../package.json');
+import * as commandLineArgs from 'command-line-args';
+import * as getUsage from 'command-line-usage';
+const info = require('../../package.json');
 
 // type safe options
 export interface Options {
@@ -81,6 +81,12 @@ const sections = [
 
 export default function parseInput(): Options {
   const options = commandLineArgs(optionDefinitions);
+
+  Object.keys(options).map((key: string) => {
+    if (options[key] === null) {
+      options[key] = true;
+    }
+  });
 
   function isEmpty(map: any) {
     for(let key in map) {

@@ -1,8 +1,8 @@
 "use strict";
 exports.__esModule = true;
-var command_line_args_1 = require("command-line-args");
-var command_line_usage_1 = require("command-line-usage");
-var info = require('../package.json');
+var commandLineArgs = require("command-line-args");
+var getUsage = require("command-line-usage");
+var info = require('../../package.json');
 var optionDefinitions = [
     {
         name: 'version',
@@ -65,7 +65,12 @@ var sections = [
     }
 ];
 function parseInput() {
-    var options = command_line_args_1["default"](optionDefinitions);
+    var options = commandLineArgs(optionDefinitions);
+    Object.keys(options).map(function (key) {
+        if (options[key] === null) {
+            options[key] = true;
+        }
+    });
     function isEmpty(map) {
         for (var key in map) {
             return !map.hasOwnProperty(key);
@@ -77,7 +82,7 @@ function parseInput() {
         process.exit(0);
     }
     if (options.help || isEmpty(options) || !options.token || !options.file) {
-        console.log(command_line_usage_1["default"](sections));
+        console.log(getUsage(sections));
         process.exit(0);
     }
     return options;
