@@ -1,6 +1,19 @@
+// using require because these packages are missing definitions
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
-const info = require('../package.json');
+const info = require('../../package.json');
+
+// type safe options
+export interface Options {
+  version: boolean;
+  verbose: boolean;
+  file: string;
+  token: string;
+  host: string;
+  practice: boolean;
+  log: string;
+  help: boolean;
+}
 
 const optionDefinitions = [
   {
@@ -28,6 +41,11 @@ const optionDefinitions = [
     name: 'host',
     typeLabel: '[underline]{host:port}',
     description: 'host:port where the client should connect to, defaults to localhost:8123. You can specify https:// as well if SSL is required'
+  },
+  {
+    name: 'practice',
+    alias: 'p',
+    description: 'Practice mode - it will play locally against a random algorithm. It doesn\'t require a connection to a server'
   },
   {
     name: 'log',
@@ -62,10 +80,16 @@ const sections = [
 
 // ------------------------------------------- //
 
-function parseInput() {
+export default function parseInput(): Options {
   const options = commandLineArgs(optionDefinitions);
 
-  function isEmpty(map) {
+  Object.keys(options).map((key: string) => {
+    if (options[key] === null) {
+      options[key] = true;
+    }
+  });
+
+  function isEmpty(map: any) {
     for(let key in map) {
       return !map.hasOwnProperty(key);
     }
@@ -84,7 +108,5 @@ function parseInput() {
 
   return options;
 }
-
-module.exports = parseInput;
 
 // ------------------------------------------- //
