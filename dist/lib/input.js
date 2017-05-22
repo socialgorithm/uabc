@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var commandLineArgs = require("command-line-args");
-var getUsage = require("command-line-usage");
+var commandLineArgs = require('command-line-args');
+var getUsage = require('command-line-usage');
 var info = require('../../package.json');
 var optionDefinitions = [
     {

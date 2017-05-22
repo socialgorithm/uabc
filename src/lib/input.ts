@@ -1,5 +1,6 @@
-import * as commandLineArgs from 'command-line-args';
-import * as getUsage from 'command-line-usage';
+// using require because these packages are missing definitions
+const commandLineArgs = require('command-line-args');
+const getUsage = require('command-line-usage');
 const info = require('../../package.json');
 
 // type safe options

@@ -1,4 +1,4 @@
-import UTTT from 'ultimate-ttt';
+import UTTT, {Coord, Coords} from 'ultimate-ttt';
 import SubBoard from "ultimate-ttt/dist/model/SubBoard";
 import { ME, OPPONENT } from "ultimate-ttt/dist/model/SubBoard";
 
@@ -30,15 +30,15 @@ export default class Random {
     this.game = new UTTT(this.size);
   }
 
-  public addOpponentMove(board: Array<number>, move: Array<number>){
+  public addOpponentMove(board: Coord, move: Coord){
     this.game.addOpponentMove(board, move);
   }
 
-  public addMove(board: Array<number>, move: Array<number>){
+  public addMove(board: Coord, move: Coord){
     this.game.addMyMove(board, move);
   }
 
-  public getMove(){
+  public getMove(): Coords{
     const boardCoords = this.chooseBoard();
     const board = this.game.board[boardCoords[0]][boardCoords[1]];
     const move = this.findRandomPosition(board);
@@ -55,7 +55,7 @@ export default class Random {
    * Choose a valid board to play in
    * @returns {[number,number]} Board identifier [row, col]
    */
-  private chooseBoard(): Array<number> {
+  private chooseBoard(): Coord {
     let board = this.game.nextBoard || [0, 0];
 
     if(!this.game.board[board[0]][board[1]].isFinished()){
@@ -89,10 +89,10 @@ export default class Random {
    * @param board Board identifier [row, col]
    * @returns {[number,number]} Position coordinates [row, col]
    */
-  private findRandomPosition(board: SubBoard): Array<number> {
+  private findRandomPosition(board: SubBoard): Coord {
     let valid = null;
     while(!valid){
-      let move = [
+      let move: Coord = [
         this.getRandomCoordinate(),
         this.getRandomCoordinate(),
       ];

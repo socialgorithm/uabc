@@ -1,6 +1,7 @@
 import * as readline from 'readline';
 // Random player implementation
 import Random from './random';
+import {Coord, Coords} from "ultimate-ttt";
 
 /**
  * Random client implementation of the UTTT Game
@@ -19,7 +20,9 @@ function input() {
     const parts = input.split(' ');
     const action = parts[0];
 
-    let next, move, board, coords;
+    let next,
+        move: Coord,
+        coords: Coords;
 
     switch (action) {
       case 'init':
@@ -39,9 +42,18 @@ function input() {
         // where the first pair are the board's coordinates
         // and the second one are the move's coordinates
         next = parts[1].split(';');
-        board = next[0].split(',').map((coord: string) => parseInt(coord, 10));
-        move = next[1].split(',').map((coord: string) => parseInt(coord, 10));
-        player.addOpponentMove(board, move);
+        const boardCoords = next[0].split(',').map((coord: string) => parseInt(coord, 10));
+        const moveCoords = next[1].split(',').map((coord: string) => parseInt(coord, 10));
+        player.addOpponentMove(
+          [
+            boardCoords[0],
+            boardCoords[1]
+          ],
+          [
+            moveCoords[0],
+            moveCoords[1]
+          ]
+        );
         try {
           coords = player.getMove();
           player.addMove(coords.board, coords.move);

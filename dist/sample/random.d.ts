@@ -1,3 +1,4 @@
+import { Coord, Coords } from 'ultimate-ttt';
 export default class Random {
     private size;
     private player;
@@ -5,12 +6,9 @@ export default class Random {
     private game;
     constructor(player: number, size?: number);
     init(): void;
-    addOpponentMove(board: Array<number>, move: Array<number>): void;
-    addMove(board: Array<number>, move: Array<number>): void;
-    getMove(): {
-        board: number[];
-        move: number[];
-    };
+    addOpponentMove(board: Coord, move: Coord): void;
+    addMove(board: Coord, move: Coord): void;
+    getMove(): Coords;
     private chooseBoard();
     private getRandomCoordinate();
     private findRandomPosition(board);

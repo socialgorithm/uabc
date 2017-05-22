@@ -11,7 +11,7 @@ function input() {
     rl.on('line', function (input) {
         var parts = input.split(' ');
         var action = parts[0];
-        var next, move, board, coords;
+        var next, move, coords;
         switch (action) {
             case 'init':
                 player.init();
@@ -28,9 +28,15 @@ function input() {
                 break;
             case 'opponent':
                 next = parts[1].split(';');
-                board = next[0].split(',').map(function (coord) { return parseInt(coord, 10); });
-                move = next[1].split(',').map(function (coord) { return parseInt(coord, 10); });
-                player.addOpponentMove(board, move);
+                var boardCoords = next[0].split(',').map(function (coord) { return parseInt(coord, 10); });
+                var moveCoords = next[1].split(',').map(function (coord) { return parseInt(coord, 10); });
+                player.addOpponentMove([
+                    boardCoords[0],
+                    boardCoords[1]
+                ], [
+                    moveCoords[0],
+                    moveCoords[1]
+                ]);
                 try {
                     coords = player.getMove();
                     player.addMove(coords.board, coords.move);
