@@ -1,10 +1,11 @@
 "use strict";
 exports.__esModule = true;
 var ultimate_ttt_1 = require("ultimate-ttt");
+var SubBoard_1 = require("ultimate-ttt/dist/model/SubBoard");
 var Random = (function () {
     function Random(player, size) {
         if (size === void 0) { size = 3; }
-        if (!player || player < 1 || player > 2) {
+        if (!player || player < SubBoard_1.ME || player > SubBoard_1.OPPONENT) {
             throw new Error('Invalid player');
         }
         this.size = size;
@@ -54,7 +55,7 @@ var Random = (function () {
                 this.getRandomCoordinate(),
                 this.getRandomCoordinate(),
             ];
-            if (board.isValidMove(move) && board.board[move[0]][move[1]] === 0) {
+            if (board.isValidMove(move) && board.board[move[0]][move[1]].player === 0) {
                 valid = move;
             }
         }

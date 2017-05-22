@@ -1,4 +1,3 @@
-import SubBoard from "ultimate-ttt/dist/model/SubBoard";
 export default class Random {
     private size;
     private player;
@@ -12,7 +11,7 @@ export default class Random {
         board: number[];
         move: number[];
     };
-    chooseBoard(): Array<number>;
-    getRandomCoordinate(): number;
-    findRandomPosition(board: SubBoard): Array<number>;
+    private chooseBoard();
+    private getRandomCoordinate();
+    private findRandomPosition(board);
 }

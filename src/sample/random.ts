@@ -1,12 +1,19 @@
 import UTTT from 'ultimate-ttt';
+import SubBoard from "ultimate-ttt/dist/model/SubBoard";
+import { ME, OPPONENT } from "ultimate-ttt/dist/model/SubBoard";
 
 /**
  * Random client implementation of the UTTT Game
  */
 
-class Random{
-  constructor(player, size = 3){
-    if(!player || !Number.isInteger(player) || player < 1 || player > 2){
+export default class Random {
+  private size: number;
+  private player: number;
+  private oponent: number;
+  private game: UTTT;
+
+  constructor(player: number, size: number = 3){
+    if(!player || player < ME || player > OPPONENT){
       throw new Error('Invalid player');
     }
 
@@ -19,19 +26,19 @@ class Random{
 
   /* ----- Required methods ----- */
 
-  init(){
+  public init(){
     this.game = new UTTT(this.size);
   }
 
-  addOpponentMove(board, move){
-    this.game.move(board, this.oponent, move);
+  public addOpponentMove(board: Array<number>, move: Array<number>){
+    this.game.addOpponentMove(board, move);
   }
 
-  addMove(board, move){
-    this.game.move(board, this.player, move);
+  public addMove(board: Array<number>, move: Array<number>){
+    this.game.addMyMove(board, move);
   }
 
-  getMove(){
+  public getMove(){
     const boardCoords = this.chooseBoard();
     const board = this.game.board[boardCoords[0]][boardCoords[1]];
     const move = this.findRandomPosition(board);
@@ -48,7 +55,7 @@ class Random{
    * Choose a valid board to play in
    * @returns {[number,number]} Board identifier [row, col]
    */
-  chooseBoard(){
+  private chooseBoard(): Array<number> {
     let board = this.game.nextBoard || [0, 0];
 
     if(!this.game.board[board[0]][board[1]].isFinished()){
@@ -73,7 +80,7 @@ class Random{
    * Get a random valid coordinate
    * @returns {number} Coordinate in the range [0, this.size - 1]
    */
-  getRandomCoordinate(){
+  private getRandomCoordinate(): number {
     return Math.round(Math.random() * (this.size - 1));
   }
 
@@ -82,19 +89,17 @@ class Random{
    * @param board Board identifier [row, col]
    * @returns {[number,number]} Position coordinates [row, col]
    */
-  findRandomPosition(board){
-    let valid = false;
+  private findRandomPosition(board: SubBoard): Array<number> {
+    let valid = null;
     while(!valid){
       let move = [
         this.getRandomCoordinate(),
         this.getRandomCoordinate(),
       ];
-      if(board.isValidMove(move) && board.board[move[0]][move[1]] === 0){
+      if(board.isValidMove(move) && board.board[move[0]][move[1]].player === 0){
         valid = move;
       }
     }
     return valid;
   }
 }
-
-module.exports = Random;

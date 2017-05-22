@@ -1,41 +1,44 @@
-var options = require('./lib/input')();
-var exec = require('./lib/exec');
-var io = require('socket.io-client');
-var fileLoggerModule = require('./lib/log-file');
-var consoleLogger = require('./lib/log-console');
-var RandomPlayer = require('./sample/random');
+"use strict";
+exports.__esModule = true;
+var input_1 = require("./lib/input");
+var exec_1 = require("./lib/exec");
+var io = require("socket.io-client");
+var FileLogger_1 = require("./lib/FileLogger");
+var ConsoleLogger_1 = require("./lib/ConsoleLogger");
+var random_1 = require("./sample/random");
 main();
 function main() {
+    var options = input_1["default"]();
     console.info("+----------------------------------+");
     console.info("|     Ultimate Algorithm Battle    |");
     console.info("+----------------------------------+");
     var fileLogger;
     if (options.log) {
         if (options.log.length > 0) {
-            fileLogger = fileLoggerModule(options.log);
+            fileLogger = new FileLogger_1["default"](options.log);
         }
         else {
             var date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/ /, '_');
-            fileLogger = fileLoggerModule('uabc-' + date + '.log');
+            fileLogger = new FileLogger_1["default"]('uabc-' + date + '.log');
         }
     }
     var practiceGame = null;
     if (options.practice) {
-        practiceGame = new RandomPlayer();
+        practiceGame = new random_1["default"](1);
     }
     console.log();
     console.log('Waiting for server...');
     console.log();
     function log(writer, data) {
         if (options.verbose) {
-            consoleLogger(writer, data);
+            ConsoleLogger_1["default"].log(writer, data);
         }
         if (options.log) {
-            fileLogger(writer, data);
+            fileLogger.log(writer, data);
         }
     }
     try {
-        var player_1 = exec(options.file);
+        var player_1 = exec_1["default"](options.file);
         var host = options.host || 'localhost:3141';
         if (host.substr(0, 4) !== 'http') {
             host = 'http://' + host;

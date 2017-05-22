@@ -1,6 +1,18 @@
 import commandLineArgs from 'command-line-args';
 import getUsage from 'command-line-usage';
-import info from '../package.json';
+const info = require('../package.json');
+
+// type safe options
+export interface Options {
+  version: boolean;
+  verbose: boolean;
+  file: string;
+  token: string;
+  host: string;
+  practice: boolean;
+  log: string;
+  help: boolean;
+}
 
 const optionDefinitions = [
   {
@@ -67,10 +79,10 @@ const sections = [
 
 // ------------------------------------------- //
 
-function parseInput() {
+export default function parseInput(): Options {
   const options = commandLineArgs(optionDefinitions);
 
-  function isEmpty(map) {
+  function isEmpty(map: any) {
     for(let key in map) {
       return !map.hasOwnProperty(key);
     }
@@ -89,7 +101,5 @@ function parseInput() {
 
   return options;
 }
-
-module.exports = parseInput;
 
 // ------------------------------------------- //

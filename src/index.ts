@@ -7,47 +7,50 @@
  */
 
 // Parse cli input
-const options = require('./lib/input')();
-const exec = require('./lib/exec');
-const io = require('socket.io-client');
-const fileLoggerModule = require('./lib/log-file');
-const consoleLogger = require('./lib/log-console');
-const RandomPlayer = require('./sample/random');
+import parseOptions from './lib/input';
+import exec from './lib/exec';
+import * as io from 'socket.io-client';
+import FileLogger from './lib/FileLogger';
+import ConsoleLogger from './lib/ConsoleLogger';
+import RandomPlayer from './sample/random';
 
 main();
 
 function main() {
+  // Read command line options
+  const options = parseOptions();
+
   console.info("+----------------------------------+");
   console.info("|     Ultimate Algorithm Battle    |");
   console.info("+----------------------------------+");
 
-  // Init logger
-  let fileLogger;
+  // Init loggers
+  let fileLogger: FileLogger;
   if (options.log) {
     if (options.log.length > 0) {
-      fileLogger = fileLoggerModule(options.log);
+      fileLogger = new FileLogger(options.log);
     } else {
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/ /, '_');
-      fileLogger = fileLoggerModule('uabc-' + date + '.log');
+      fileLogger = new FileLogger('uabc-' + date + '.log');
     }
   }
 
-  let practiceGame = null;
+  let practiceGame: RandomPlayer = null;
   // If we're on practice mode, load a local game
   if (options.practice) {
-    practiceGame = new RandomPlayer();
+    practiceGame = new RandomPlayer(1);
   }
 
   console.log();
   console.log('Waiting for server...');
   console.log();
 
-  function log(writer, data) {
+  function log(writer: string, data: string) {
     if (options.verbose) {
-      consoleLogger(writer, data);
+      ConsoleLogger.log(writer, data);
     }
     if (options.log) {
-      fileLogger(writer, data);
+      fileLogger.log(writer, data);
     }
   }
 
@@ -65,20 +68,20 @@ function main() {
       }
     });
 
-    player.on('close', (code) => {
+    player.on('close', (code: string) => {
       console.log(`client> child process exited with code ${code}`);
       socket.disconnect();
     });
 
-    socket.on('error', function (data) {
+    socket.on('error', (data: any) => {
       console.error('Error in socket', data);
     });
 
-    socket.on('connect', function(){
+    socket.on('connect', () => {
       console.log('Connected!');
     });
 
-    socket.on('game', function (data) {
+    socket.on('game', (data: any) => {
       log('server', data.action);
       if (data.action && data.action.length > 0) {
         const parts = data.action.split(' ');
@@ -93,7 +96,7 @@ function main() {
       }
     });
 
-    player.stdout.on('data', function(data) {
+    player.stdout.on('data', (data: any) => {
       log('player', data);
       if (!options.practice) {
         socket.emit('game', data);

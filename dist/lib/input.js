@@ -1,5 +1,7 @@
-var commandLineArgs = require('command-line-args');
-var getUsage = require('command-line-usage');
+"use strict";
+exports.__esModule = true;
+var command_line_args_1 = require("command-line-args");
+var command_line_usage_1 = require("command-line-usage");
 var info = require('../package.json');
 var optionDefinitions = [
     {
@@ -63,7 +65,7 @@ var sections = [
     }
 ];
 function parseInput() {
-    var options = commandLineArgs(optionDefinitions);
+    var options = command_line_args_1["default"](optionDefinitions);
     function isEmpty(map) {
         for (var key in map) {
             return !map.hasOwnProperty(key);
@@ -75,10 +77,10 @@ function parseInput() {
         process.exit(0);
     }
     if (options.help || isEmpty(options) || !options.token || !options.file) {
-        console.log(getUsage(sections));
+        console.log(command_line_usage_1["default"](sections));
         process.exit(0);
     }
     return options;
 }
-module.exports = parseInput;
+exports["default"] = parseInput;
 //# sourceMappingURL=input.js.map

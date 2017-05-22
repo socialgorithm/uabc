@@ -1,4 +1,4 @@
-import cp from 'child_process';
+import * as cp from 'child_process';
 
 /**
  * Execute a file with a given executable

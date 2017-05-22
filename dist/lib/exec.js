@@ -1,5 +1,7 @@
-var cp = require('child_process');
-function executeProgram(cmd) {
+"use strict";
+exports.__esModule = true;
+var cp = require("child_process");
+exports["default"] = function (cmd) {
     var options = cmd.split(' ');
     var exec = options[0];
     options.shift();
@@ -9,6 +11,5 @@ function executeProgram(cmd) {
         console.log("Error: " + data);
     });
     return childProcess;
-}
-module.exports = executeProgram;
+};
 //# sourceMappingURL=exec.js.map

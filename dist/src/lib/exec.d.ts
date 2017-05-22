@@ -1,2 +1,4 @@
-declare var _default: (cmd: string) => any;
+/// <reference types="node" />
+import * as cp from 'child_process';
+declare var _default: (cmd: string) => cp.ChildProcess;
 export default _default;
