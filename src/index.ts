@@ -89,7 +89,7 @@ function main() {
           console.log('Games ended! You ' + parts[1]);
         } else {
           player.stdin.write(data.action + "\n");
-          if (parts[0] === 'init') {
+          if (parts[0] === 'init' && practiceGame) {
             practiceGame.init();
           }
         }

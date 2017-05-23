@@ -67,7 +67,7 @@ function main() {
                 }
                 else {
                     player_1.stdin.write(data.action + "\n");
-                    if (parts[0] === 'init') {
+                    if (parts[0] === 'init' && practiceGame) {
                         practiceGame.init();
                     }
                 }
