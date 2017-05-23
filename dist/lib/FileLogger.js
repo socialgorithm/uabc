@@ -4,10 +4,12 @@ var fs = require("fs");
 var os = require("os");
 var FileLogger = (function () {
     function FileLogger(file) {
+        var _this = this;
         this.file = file;
         fs.writeFile(this.file, '', { flag: 'w' }, function (err) {
             if (err)
                 throw err;
+            console.log("Logging to file: " + _this.file);
         });
     }
     FileLogger.prototype.log = function (writer, text) {

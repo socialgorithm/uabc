@@ -14,6 +14,7 @@ export default class FileLogger {
 
     fs.writeFile(this.file, '', { flag: 'w' }, (err: any) => {
       if (err) throw err;
+      console.log(`Logging to file: ${this.file}`);
     });
   }
 
