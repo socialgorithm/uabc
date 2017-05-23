@@ -1,6 +1,6 @@
-import UTTT, {Coord, Coords} from 'ultimate-ttt';
-import SubBoard from "ultimate-ttt/dist/model/SubBoard";
-import { ME, OPPONENT } from "ultimate-ttt/dist/model/SubBoard";
+import UTTT from 'ultimate-ttt';
+import {Coord, Coords, ME, OPPONENT} from "ultimate-ttt/dist/model/constants";
+import SubBoard from "ultimate-ttt/dist/SubBoard";
 
 /**
  * Random client implementation of the UTTT Game
@@ -38,7 +38,7 @@ export default class Random {
     this.game.addMyMove(board, move);
   }
 
-  public getMove(): Coords{
+  public getMove(): Coords {
     const boardCoords = this.chooseBoard();
     const board = this.game.board[boardCoords[0]][boardCoords[1]];
     const move = this.findRandomPosition(board);

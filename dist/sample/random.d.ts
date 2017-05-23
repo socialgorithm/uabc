@@ -1,4 +1,4 @@
-import { Coord, Coords } from 'ultimate-ttt';
+import { Coord, Coords } from "ultimate-ttt/dist/model/constants";
 export default class Random {
     private size;
     private player;

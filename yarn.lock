@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@types/node@^7.0.21":
-  version "7.0.21"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.21.tgz#22a890f19b26cff9b6699b493dea1bcee4410da1"
+"@types/node@^7.0.22":
+  version "7.0.22"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.22.tgz#4593f4d828bdd612929478ea40c67b4f403ca255"
 
 "@types/socket.io-client@^1.4.29":
   version "1.4.29"
@@ -251,13 +251,13 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-command-line-args@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/command-line-args/-/command-line-args-4.0.4.tgz#6b9ab497cfe82d2c1ce1e47d6c18a85382f5d9fe"
+command-line-args@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/command-line-args/-/command-line-args-4.0.5.tgz#c7beccd6641f525ed6f292e17084ab3231b301be"
   dependencies:
     array-back "^1.0.4"
     find-replace "^1.0.3"
-    typical "^2.6.0"
+    typical "^2.6.1"
 
 command-line-usage@^4.0.0:
   version "4.0.0"
@@ -1209,6 +1209,10 @@ typical@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/typical/-/typical-2.6.0.tgz#89d51554ab139848a65bcc2c8772f8fb450c40ed"
 
+typical@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/typical/-/typical-2.6.1.tgz#5c080e5d661cbbe38259d2e70a3c7253e873881d"
+
 uglify-js@^2.6:
   version "2.8.27"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.27.tgz#47787f912b0f242e5b984343be8e35e95f694c9c"
@@ -1222,9 +1226,9 @@ uglify-to-browserify@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
 
-ultimate-ttt@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/ultimate-ttt/-/ultimate-ttt-4.2.0.tgz#8a0767ea72ef186b0601d85acab84abfde22ee5e"
+ultimate-ttt@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/ultimate-ttt/-/ultimate-ttt-4.5.0.tgz#17ca615147ad38c984cb7b1e2fc65bce7ab98b9c"
 
 ultron@~1.1.0:
   version "1.1.0"
