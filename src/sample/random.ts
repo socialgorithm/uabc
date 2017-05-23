@@ -10,7 +10,7 @@ export default class Random {
   private size: number;
   private player: number;
   private oponent: number;
-  private game: UTTT;
+  public game: UTTT;
 
   constructor(player: number, size: number = 3){
     if(!player || player < ME || player > OPPONENT){
@@ -31,11 +31,11 @@ export default class Random {
   }
 
   public addOpponentMove(board: Coord, move: Coord){
-    this.game.addOpponentMove(board, move);
+    this.game = this.game.addOpponentMove(board, move);
   }
 
   public addMove(board: Coord, move: Coord){
-    this.game.addMyMove(board, move);
+    this.game = this.game.addMyMove(board, move);
   }
 
   public getMove(): Coords {
@@ -96,7 +96,7 @@ export default class Random {
         this.getRandomCoordinate(),
         this.getRandomCoordinate(),
       ];
-      if(board.isValidMove(move) && board.board[move[0]][move[1]].player === 0){
+      if(board.isValidMove(move)){
         valid = move;
       }
     }

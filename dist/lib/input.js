@@ -81,7 +81,7 @@ function parseInput() {
         console.log(info.version);
         process.exit(0);
     }
-    if (options.help || isEmpty(options) || !options.token || !options.file) {
+    if (options.help || isEmpty(options) || (!options.token && !options.practice) || !options.file) {
         console.log(getUsage(sections));
         process.exit(0);
     }

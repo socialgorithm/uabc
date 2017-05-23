@@ -17,10 +17,10 @@ var Random = (function () {
         this.game = new ultimate_ttt_1["default"](this.size);
     };
     Random.prototype.addOpponentMove = function (board, move) {
-        this.game.addOpponentMove(board, move);
+        this.game = this.game.addOpponentMove(board, move);
     };
     Random.prototype.addMove = function (board, move) {
-        this.game.addMyMove(board, move);
+        this.game = this.game.addMyMove(board, move);
     };
     Random.prototype.getMove = function () {
         var boardCoords = this.chooseBoard();
@@ -55,7 +55,7 @@ var Random = (function () {
                 this.getRandomCoordinate(),
                 this.getRandomCoordinate(),
             ];
-            if (board.isValidMove(move) && board.board[move[0]][move[1]].player === 0) {
+            if (board.isValidMove(move)) {
                 valid = move;
             }
         }

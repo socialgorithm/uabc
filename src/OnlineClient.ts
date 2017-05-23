@@ -39,13 +39,12 @@ export default class OnlineClient extends Client {
             });
 
             this.socket.on('game', (data: any) => {
-                this.log('server', data.action);
                 if (data.action && data.action.length > 0) {
                     const parts = data.action.split(' ');
                     if (parts[0] === 'end') {
                         console.log('Games ended! You ' + parts[1]);
                     } else {
-                        this.playerProcess.stdin.write(data.action + "\n");
+                        this.sendData(data.action);
                     }
                 }
             });

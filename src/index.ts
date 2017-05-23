@@ -11,6 +11,7 @@
 // Parse cli input
 import parseOptions from './lib/input';
 import OnlineClient from "./OnlineClient";
+import PracticeClient from "./PracticeClient";
 
 // Read command line options
 const options = parseOptions();
@@ -21,4 +22,6 @@ console.info("+----------------------------------+");
 
 if (!options.practice) {
   new OnlineClient(options);
+} else {
+  new PracticeClient(options);
 }

@@ -1,10 +1,9 @@
-/// <reference types="node" />
 import { Options } from "../lib/input";
-import { ChildProcess } from "child_process";
 declare abstract class Client {
     private loggers;
-    playerProcess: ChildProcess;
+    private playerProcess;
     constructor(options: Options);
+    sendData(data: string): void;
     log(writer: string, data: string): void;
     abstract onPlayerData(data: string): void;
     abstract onDisconnect(): void;

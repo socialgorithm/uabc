@@ -36,14 +36,13 @@ var OnlineClient = (function (_super) {
                 console.log('Connected!');
             });
             _this.socket.on('game', function (data) {
-                _this.log('server', data.action);
                 if (data.action && data.action.length > 0) {
                     var parts = data.action.split(' ');
                     if (parts[0] === 'end') {
                         console.log('Games ended! You ' + parts[1]);
                     }
                     else {
-                        _this.playerProcess.stdin.write(data.action + "\n");
+                        _this.sendData(data.action);
                     }
                 }
             });

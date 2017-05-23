@@ -9,10 +9,14 @@ abstract class Client {
         console?: ConsoleLogger,
         file?: FileLogger,
     };
-    public playerProcess: ChildProcess;
+    private playerProcess: ChildProcess;
 
     constructor(options: Options) {
         this.loggers = {};
+
+        if (options.verbose) {
+            this.loggers.console = new ConsoleLogger();
+        }
 
         if (options.log) {
             let logName;
@@ -35,6 +39,11 @@ abstract class Client {
             this.log('player', data);
             this.onPlayerData(data);
         });
+    }
+
+    public sendData(data: string): void {
+        this.log('server', data);
+        this.playerProcess.stdin.write(data + "\n");
     }
 
     public log(writer: string, data: string) {

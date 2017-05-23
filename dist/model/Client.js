@@ -1,11 +1,15 @@
 "use strict";
 exports.__esModule = true;
+var ConsoleLogger_1 = require("../lib/ConsoleLogger");
 var FileLogger_1 = require("../lib/FileLogger");
 var exec_1 = require("../lib/exec");
 var Client = (function () {
     function Client(options) {
         var _this = this;
         this.loggers = {};
+        if (options.verbose) {
+            this.loggers.console = new ConsoleLogger_1["default"]();
+        }
         if (options.log) {
             var logName = void 0;
             if (options.log.length > 0) {
@@ -26,6 +30,10 @@ var Client = (function () {
             _this.onPlayerData(data);
         });
     }
+    Client.prototype.sendData = function (data) {
+        this.log('server', data);
+        this.playerProcess.stdin.write(data + "\n");
+    };
     Client.prototype.log = function (writer, data) {
         if (this.loggers.console) {
             this.loggers.console.log(writer, data);

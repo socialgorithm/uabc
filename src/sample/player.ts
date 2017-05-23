@@ -30,9 +30,7 @@ function input() {
         break;
       case 'move':
         try {
-          console.error('server requested move');
           coords = player.getMove();
-          console.error('gotten move');
           player.addMove(coords.board, coords.move);
           writeMove(coords);
         } catch(e) {
