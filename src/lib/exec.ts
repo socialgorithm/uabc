@@ -1,11 +1,12 @@
 import * as cp from 'child_process';
+import {ChildProcess} from "child_process";
 
 /**
  * Execute a file with a given executable
  * @param cmd string to execute
  * @returns {*}
  */
-export default (cmd: string) => {
+export default (cmd: string): ChildProcess => {
   const options = cmd.split(' ');
   const exec = options[0];
   options.shift();
@@ -17,5 +18,5 @@ export default (cmd: string) => {
     console.log(`Error: ${data}`);
   });
 
-  return childProcess
+  return childProcess;
 }

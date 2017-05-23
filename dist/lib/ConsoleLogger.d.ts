@@ -1,3 +1,4 @@
-export default class ConsoleLogger {
-    static log(writer: string, data: string): void;
+import Logger from "../model/Logger";
+export default class ConsoleLogger extends Logger {
+    log(writer: string, data: string): void;
 }

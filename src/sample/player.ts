@@ -30,11 +30,13 @@ function input() {
         break;
       case 'move':
         try {
+          console.error('server requested move');
           coords = player.getMove();
+          console.error('gotten move');
           player.addMove(coords.board, coords.move);
           writeMove(coords);
         } catch(e) {
-          console.log('fail');
+          console.error('Player Error: Failed to get a move', e);
         }
         break;
       case 'opponent':
@@ -59,7 +61,7 @@ function input() {
           player.addMove(coords.board, coords.move);
           writeMove(coords);
         } catch(e) {
-          console.log('fail');
+          console.error('Player Error: Failed to get a move', e);
         }
         break;
     }

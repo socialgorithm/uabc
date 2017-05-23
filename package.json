@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/aurbano/uabc#readme",
   "dependencies": {
-    "@types/node": "^7.0.22",
-    "@types/socket.io-client": "^1.4.29",
     "command-line-args": "^4.0.5",
     "command-line-usage": "^4.0.0",
     "socket.io-client": "^2.0.1",
     "ultimate-ttt": "^4.5.0"
   },
   "devDependencies": {
+    "@types/node": "^7.0.22",
+    "@types/socket.io-client": "^1.4.29",
     "nyc": "^10.3.2"
   }
 }
