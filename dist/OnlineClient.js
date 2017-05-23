@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
+var io = require("socket.io-client");
 var Client_1 = require("./model/Client");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);

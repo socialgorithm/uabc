@@ -1,13 +1,14 @@
+import * as io from 'socket.io-client';
+
 import Client from "./model/Client";
 import {Options} from "./lib/input";
-import Socket = SocketIOClient.Socket;
 
 /**
  * Online Client mode
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlineClient extends Client {
-    private socket: Socket;
+    private socket: SocketIOClient.Socket;
 
     constructor(options: Options) {
         super(options);
