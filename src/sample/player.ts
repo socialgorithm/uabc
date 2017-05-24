@@ -1,7 +1,7 @@
 import * as readline from 'readline';
 // Random player implementation
 import Random from './random';
-import {Coord, Coords} from "ultimate-ttt/dist/model/constants";
+import {Coord, Coords} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 /**
  * Random client implementation of the UTTT Game

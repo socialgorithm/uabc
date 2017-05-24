@@ -13,7 +13,7 @@ exports.__esModule = true;
 var Client_1 = require("./model/Client");
 var State_1 = require("./lib/State");
 var random_1 = require("./sample/random");
-var constants_1 = require("ultimate-ttt/dist/model/constants");
+var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var PracticeClient = (function (_super) {
     __extends(PracticeClient, _super);
     function PracticeClient(options) {

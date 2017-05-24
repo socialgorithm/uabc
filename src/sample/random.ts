@@ -1,6 +1,6 @@
-import UTTT from 'ultimate-ttt';
-import {Coord, Coords, ME, OPPONENT} from "ultimate-ttt/dist/model/constants";
-import SubBoard from "ultimate-ttt/dist/SubBoard";
+import UTTT from '@socialgorithm/ultimate-ttt';
+import {Coord, Coords, ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import SubBoard from "@socialgorithm/ultimate-ttt/dist/SubBoard";
 
 /**
  * Random client implementation of the UTTT Game

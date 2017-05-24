@@ -12,7 +12,7 @@ This means that your player can be written in any language, and it will work as 
 Install the executable:
 
 ```bash
-$ npm install -g uabc
+$ npm install -g @socialgorithm/uabc
 ```
 Verify the installation by running:
 
@@ -49,5 +49,5 @@ uabc provides a sample player that choses valid moves at random. To test it clon
 ```bash
 $ git clone git@github.com:aurbano/uabc.git
 $ cd uabc
-$ uabc --host localhost:3141 -t token -f "node sample/player.js"
+$ uabc --host localhost:3141 -t token -f "node dist/sample/player.js"
 ```

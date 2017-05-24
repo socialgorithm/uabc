@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var ultimate_ttt_1 = require("ultimate-ttt");
-var constants_1 = require("ultimate-ttt/dist/model/constants");
+var ultimate_ttt_1 = require("@socialgorithm/ultimate-ttt");
+var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var Random = (function () {
     function Random(player, size) {
         if (size === void 0) { size = 3; }

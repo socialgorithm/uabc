@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@socialgorithm/ultimate-ttt@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.5.0.tgz#f73dd04408983841368fd5fb5d11f3f86f76fae9"
+
 "@types/node@^7.0.22":
   version "7.0.22"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.22.tgz#4593f4d828bdd612929478ea40c67b4f403ca255"
@@ -1221,10 +1225,6 @@ uglify-js@^2.6:
 uglify-to-browserify@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
-
-ultimate-ttt@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/ultimate-ttt/-/ultimate-ttt-4.5.0.tgz#17ca615147ad38c984cb7b1e2fc65bce7ab98b9c"
 
 ultron@~1.1.0:
   version "1.1.0"

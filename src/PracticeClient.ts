@@ -2,7 +2,7 @@ import Client from "./model/Client";
 import {Options} from "./lib/input";
 import State from "./lib/State";
 import Random from "./sample/random";
-import {Coord, OPPONENT} from "ultimate-ttt/dist/model/constants";
+import {Coord, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 export default class PracticeClient extends Client {
     private state: State;

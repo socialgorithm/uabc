@@ -1,5 +1,5 @@
-import UTTT from 'ultimate-ttt';
-import { Coord, Coords } from "ultimate-ttt/dist/model/constants";
+import UTTT from '@socialgorithm/ultimate-ttt';
+import { Coord, Coords } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 export default class Random {
     private size;
     private player;
