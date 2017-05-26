@@ -15,9 +15,6 @@ var Client = (function () {
             if (options.log.length > 0) {
                 logName = options.log;
             }
-            else {
-                logName = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/ /, '_');
-            }
             this.loggers.file = new FileLogger_1["default"](logName);
         }
         this.playerProcess = exec_1["default"](options.file);

@@ -10,9 +10,20 @@ import Logger from "../model/Logger";
 export default class FileLogger extends Logger {
   private file: string;
 
-  constructor(file: string) {
+  constructor(file?: string) {
     super();
-    this.file = file;
+    if (file) {
+      this.file = file;
+    } else {
+      const currentdate = new Date();
+      this.file = "UTTT_" + currentdate.getDate() + "-"
+          + (currentdate.getMonth()+1)  + "-"
+          + currentdate.getFullYear() + "_"
+          + currentdate.getHours() + ":"
+          + currentdate.getMinutes() + ":"
+          + currentdate.getSeconds() + ".log";
+    }
+
 
     fs.writeFile(this.file, '', { flag: 'w' }, (err: any) => {
       if (err) throw err;
@@ -23,7 +34,7 @@ export default class FileLogger extends Logger {
   public log(writer: string, text: string): void {
     const time = (new Date()).toTimeString().substr(0,8);
     fs.appendFile(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, (err: any) => {
-      console.error('Error: Unable to write to log file', err);
+      if (err) console.error('Error: Unable to write to log file', err);
     });
   }
 }

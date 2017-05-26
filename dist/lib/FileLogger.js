@@ -17,7 +17,18 @@ var FileLogger = (function (_super) {
     __extends(FileLogger, _super);
     function FileLogger(file) {
         var _this = _super.call(this) || this;
-        _this.file = file;
+        if (file) {
+            _this.file = file;
+        }
+        else {
+            var currentdate = new Date();
+            _this.file = "UTTT_" + currentdate.getDate() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getFullYear() + "_"
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds() + ".log";
+        }
         fs.writeFile(_this.file, '', { flag: 'w' }, function (err) {
             if (err)
                 throw err;
@@ -28,7 +39,8 @@ var FileLogger = (function (_super) {
     FileLogger.prototype.log = function (writer, text) {
         var time = (new Date()).toTimeString().substr(0, 8);
         fs.appendFile(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, function (err) {
-            console.error('Error: Unable to write to log file', err);
+            if (err)
+                console.error('Error: Unable to write to log file', err);
         });
     };
     return FileLogger;

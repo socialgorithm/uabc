@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var funcs = require("./funcs");
+var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var State = (function () {
     function State() {
         this.games = 0;
@@ -11,12 +12,24 @@ var State = (function () {
     }
     State.prototype.printState = function () {
         var stats = this.getStats();
+        var winner = null;
+        if (stats.winner === constants_1.ME) {
+            winner = 'A';
+        }
+        else if (stats.winner === constants_1.OPPONENT) {
+            winner = 'B';
+        }
         console.log('');
+        if (winner) {
+            console.log('Winner: Player %s', winner);
+        }
+        else {
+            console.log('Tie!');
+        }
         console.log('Games played: %d', this.games);
-        console.log('Winner: %d', stats.winner);
         console.log('');
-        console.log('Player 1 wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
-        console.log('Player 2 wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+        console.log('Player A wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
+        console.log('Player B wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
         console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
         console.log('');
         console.log('Player 1 timeouts: %d', this.timeouts[0]);

@@ -13,49 +13,66 @@ export interface Options {
   practice: boolean;
   log: string;
   help: boolean;
+  games: number;
 }
 
 const optionDefinitions = [
   {
     name: 'version',
     alias: 'v',
+    type: Boolean,
     description: 'Display the client version'
   },
   {
     name: 'verbose',
+    type: Boolean,
     description: 'Log everything to the console'
   },
   {
     name: 'file',
     alias: 'f',
+    type: String,
     typeLabel: '[underline]{file}',
+    defaultOption: true,
     description: 'Path to the client executable'
   },
   {
     name: 'token',
     alias: 't',
+    type: String,
     typeLabel: '[underline]{token}',
     description: 'Identification token for the game server'
   },
   {
     name: 'host',
+    type: String,
     typeLabel: '[underline]{host:port}',
     description: 'host:port where the client should connect to, defaults to localhost:8123. You can specify https:// as well if SSL is required'
   },
   {
     name: 'practice',
+    type: Boolean,
     alias: 'p',
     description: 'Practice mode - it will play locally against a random algorithm. It doesn\'t require a connection to a server'
   },
   {
+    name: 'games',
+    alias: 'g',
+    type: Number,
+    defaultValue: 100,
+    description: 'Number of games to play in practice mode, defaults to 100'
+  },
+  {
     name: 'log',
     alias: 'l',
+    type: String,
     typeLabel: '[underline]{[file]}',
     description: 'File where game logs should be stored, defaults to `uabc-{date}.log` in the current directory if no file is specified'
   },
   {
     name: 'help',
     alias: 'h',
+    type: Boolean,
     description: 'Print this guide'
   }
 ];

@@ -22,8 +22,6 @@ abstract class Client {
             let logName;
             if (options.log.length > 0) {
                 logName = options.log;
-            } else {
-                logName = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/ /, '_');
             }
             this.loggers.file = new FileLogger(logName);
         }

@@ -1,4 +1,5 @@
 import * as funcs from './funcs';
+import {ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 /**
  * Game stats calculated from a given state
@@ -38,12 +39,23 @@ export default class State {
   public printState(){
     const stats = this.getStats();
 
+    let winner = null;
+    if (stats.winner === ME) {
+      winner = 'A';
+    } else if(stats.winner === OPPONENT) {
+      winner = 'B';
+    }
+
     console.log('');
+    if (winner) {
+      console.log('Winner: Player %s', winner);
+    } else {
+      console.log('Tie!');
+    }
     console.log('Games played: %d', this.games);
-    console.log('Winner: %d', stats.winner);
     console.log('');
-    console.log('Player 1 wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
-    console.log('Player 2 wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+    console.log('Player A wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
+    console.log('Player B wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
     console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
     console.log('');
     console.log('Player 1 timeouts: %d', this.timeouts[0]);

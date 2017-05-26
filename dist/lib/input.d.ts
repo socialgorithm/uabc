@@ -7,5 +7,6 @@ export interface Options {
     practice: boolean;
     log: string;
     help: boolean;
+    games: number;
 }
 export default function parseInput(): Options;

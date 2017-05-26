@@ -10,7 +10,7 @@ var Random = (function () {
         }
         this.size = size;
         this.player = player;
-        this.oponent = 3 - player;
+        this.oponent = 1 - player;
         this.init();
     }
     Random.prototype.init = function () {
