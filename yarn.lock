@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@socialgorithm/ultimate-ttt@^4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.5.0.tgz#f73dd04408983841368fd5fb5d11f3f86f76fae9"
+"@socialgorithm/ultimate-ttt@^4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.6.1.tgz#08c6d94f3efe0973cc0ca17ba21d53345b0ad9c7"
 
 "@types/node@^7.0.22":
   version "7.0.22"

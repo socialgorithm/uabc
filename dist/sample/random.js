@@ -17,10 +17,26 @@ var Random = (function () {
         this.game = new ultimate_ttt_1["default"](this.size);
     };
     Random.prototype.addOpponentMove = function (board, move) {
-        this.game = this.game.addOpponentMove(board, move);
+        try {
+            this.game = this.game.addOpponentMove(board, move);
+        }
+        catch (e) {
+            console.error('Game probably already over', e);
+            //console.error(this.game.prettyPrint());
+            //console.error(this.game.stateBoard.prettyPrint());
+        }
     };
     Random.prototype.addMove = function (board, move) {
-        this.game = this.game.addMyMove(board, move);
+        try {
+            this.game = this.game.addMyMove(board, move);
+        }
+        catch (e) {
+            //console.error('-------------------------------');
+            console.error("\n" + 'Game probably already over', e);
+            //console.error("\n" + this.game.prettyPrint());
+            //console.error("\n" + this.game.stateBoard.prettyPrint());
+            //console.error('-------------------------------');
+        }
     };
     Random.prototype.getMove = function () {
         var boardCoords = this.chooseBoard();
@@ -36,32 +52,26 @@ var Random = (function () {
         if (!this.game.board[board[0]][board[1]].isFinished()) {
             return board;
         }
-        for (var x = 0; x < this.size; x++) {
-            for (var y = 0; y < this.size; y++) {
-                if (!this.game.board[x][y].isFinished()) {
-                    return [x, y];
-                }
-            }
+        var validBoards = this.game.getValidBoards();
+        if (validBoards.length === 0) {
+            throw new Error('Error: There are no boards available to play');
         }
-        throw new Error('Error: Unable to find available board');
+        return validBoards[Math.floor(Math.random() * validBoards.length)];
     };
     Random.prototype.getRandomCoordinate = function () {
         return Math.round(Math.random() * (this.size - 1));
     };
     Random.prototype.findRandomPosition = function (board) {
-        var valid = null;
-        while (!valid) {
-            var move = [
-                this.getRandomCoordinate(),
-                this.getRandomCoordinate(),
-            ];
-            if (board.isValidMove(move)) {
-                valid = move;
-            }
+        if (board.isFull() || board.isFinished()) {
+            console.error('This board is full/finished');
+            return;
         }
-        return valid;
+        var validMoves = board.getValidMoves();
+        if (validMoves.length === 0) {
+            throw new Error('Error: There are no moves available on this board');
+        }
+        return validMoves[Math.floor(Math.random() * validMoves.length)];
     };
     return Random;
 }());
 exports["default"] = Random;
-//# sourceMappingURL=random.js.map

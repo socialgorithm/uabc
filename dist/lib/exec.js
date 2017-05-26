@@ -12,4 +12,3 @@ exports["default"] = function (cmd) {
     });
     return childProcess;
 };
-//# sourceMappingURL=exec.js.map

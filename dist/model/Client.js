@@ -42,4 +42,3 @@ var Client = (function () {
     return Client;
 }());
 exports["default"] = Client;
-//# sourceMappingURL=Client.js.map

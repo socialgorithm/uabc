@@ -79,4 +79,3 @@ var State = (function () {
     return State;
 }());
 exports["default"] = State;
-//# sourceMappingURL=State.js.map

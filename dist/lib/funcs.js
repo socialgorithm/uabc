@@ -12,4 +12,3 @@ exports.getPercentage = function (num, total) {
     }
     return Math.floor(num * 100 / total) + '%';
 };
-//# sourceMappingURL=funcs.js.map

@@ -63,4 +63,3 @@ function write(output) {
     }
 }
 player();
-//# sourceMappingURL=player.js.map

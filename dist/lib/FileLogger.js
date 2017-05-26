@@ -46,4 +46,3 @@ var FileLogger = (function (_super) {
     return FileLogger;
 }(Logger_1["default"]));
 exports["default"] = FileLogger;
-//# sourceMappingURL=FileLogger.js.map

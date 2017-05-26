@@ -4,8 +4,6 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "declaration": true,
-    "sourceMap": true,
     "outDir": "dist",
     "moduleResolution": "node"
   }

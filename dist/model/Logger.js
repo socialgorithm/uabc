@@ -6,4 +6,3 @@ var Logger = (function () {
     return Logger;
 }());
 exports["default"] = Logger;
-//# sourceMappingURL=Logger.js.map

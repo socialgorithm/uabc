@@ -31,11 +31,25 @@ export default class Random {
   }
 
   public addOpponentMove(board: Coord, move: Coord){
-    this.game = this.game.addOpponentMove(board, move);
+    try {
+      this.game = this.game.addOpponentMove(board, move);
+    } catch (e) {
+      console.error('Game probably already over', e);
+      console.error(this.game.prettyPrint());
+      console.error(this.game.stateBoard.prettyPrint());
+    }
   }
 
   public addMove(board: Coord, move: Coord){
-    this.game = this.game.addMyMove(board, move);
+    try {
+      this.game = this.game.addMyMove(board, move);
+    } catch (e) {
+      console.error('-------------------------------');
+      console.error("\n"+'Game probably already over', e);
+      console.error("\n"+this.game.prettyPrint());
+      console.error("\n"+this.game.stateBoard.prettyPrint());
+      console.error('-------------------------------');
+    }
   }
 
   public getMove(): Coords {
@@ -62,18 +76,15 @@ export default class Random {
       return board;
     }
 
-    for (let x = 0; x < this.size; x++) {
-      for (let y = 0; y < this.size; y++) {
-        if(!this.game.board[x][y].isFinished()){
-          return [x, y];
-        }
-      }
+    const validBoards = this.game.getValidBoards();
+    if (validBoards.length === 0) {
+      // this case should never happen :)
+      throw new Error('Error: There are no boards available to play');
     }
 
-    // Won't happen during normal game states
-    // if this is reached it means that the game state has been
-    // altered incorrectly
-    throw new Error('Error: Unable to find available board');
+    return validBoards[
+      Math.floor(Math.random() * validBoards.length)
+    ];
   }
 
   /**
@@ -90,16 +101,18 @@ export default class Random {
    * @returns {[number,number]} Position coordinates [row, col]
    */
   private findRandomPosition(board: SubBoard): Coord {
-    let valid = null;
-    while(!valid){
-      let move: Coord = [
-        this.getRandomCoordinate(),
-        this.getRandomCoordinate(),
-      ];
-      if(board.isValidMove(move)){
-        valid = move;
-      }
+    if (board.isFull() || board.isFinished()) {
+      console.error('This board is full/finished');
+      return;
     }
-    return valid;
+    const validMoves = board.getValidMoves();
+    if (validMoves.length === 0) {
+      // this case should never happen :)
+      throw new Error('Error: There are no moves available on this board');
+    }
+
+    return validMoves[
+      Math.floor(Math.random() * validMoves.length)
+    ];
   }
 }

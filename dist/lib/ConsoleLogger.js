@@ -24,4 +24,3 @@ var ConsoleLogger = (function (_super) {
 }(Logger_1["default"]));
 exports["default"] = ConsoleLogger;
 ;
-//# sourceMappingURL=ConsoleLogger.js.map

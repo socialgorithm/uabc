@@ -32,6 +32,7 @@ var PracticeClient = (function (_super) {
         this.practicePlayer = new random_1["default"](constants_1.OPPONENT, this.size);
         this.gameStart = process.hrtime();
         this.state.games++;
+        console.log('New game, starting player ' + this.firstPlayer);
         this.sendData('init');
         if (this.firstPlayer === constants_1.ME) {
             this.sendData('move');
@@ -43,36 +44,43 @@ var PracticeClient = (function (_super) {
     PracticeClient.prototype.onPlayerData = function (data) {
         var parts = data.split(';');
         var boardStr = parts[0].split(',');
-        var moveStr = parts[1].split(',');
-        var board = [
-            parseInt(boardStr[0], 10),
-            parseInt(boardStr[1], 10)
-        ];
-        var move = [
-            parseInt(moveStr[0], 10),
-            parseInt(moveStr[1], 10)
-        ];
-        this.practicePlayer.addOpponentMove(board, move);
-        if (this.checkEnding()) {
-            return;
+        if (parts.length > 1) {
+            var moveStr = parts[1].split(',');
+            var board = [
+                parseInt(boardStr[0], 10),
+                parseInt(boardStr[1], 10)
+            ];
+            var move = [
+                parseInt(moveStr[0], 10),
+                parseInt(moveStr[1], 10)
+            ];
+            this.practicePlayer.addOpponentMove(board, move);
+            if (this.checkEnding()) {
+                return;
+            }
+            this.opponentMove();
         }
-        this.opponentMove();
+        else {
+            console.error('Unknown command', data);
+        }
     };
     PracticeClient.prototype.opponentMove = function () {
         var opponentMove = this.practicePlayer.getMove();
         this.practicePlayer.addMove(opponentMove.board, opponentMove.move);
+        this.sendData('opponent ' + opponentMove.board.join(',') + ';' + opponentMove.move.join(','));
         if (this.checkEnding()) {
             process.exit(0);
         }
-        this.sendData('opponent ' + opponentMove.board.join(',') + ';' + opponentMove.move.join(','));
     };
     PracticeClient.prototype.checkEnding = function () {
         if (this.practicePlayer.game.isFinished()) {
             var result = this.practicePlayer.game.getResult();
             if (result === -1) {
+                console.log('tie');
                 this.state.ties++;
             }
             else {
+                console.log('winner', result);
                 this.state.wins[result]++;
             }
             var hrend = process.hrtime(this.gameStart);
@@ -82,6 +90,7 @@ var PracticeClient = (function (_super) {
             }
             else {
                 console.log(this.state.printState());
+                return true;
             }
         }
         return false;
@@ -92,4 +101,3 @@ var PracticeClient = (function (_super) {
     return PracticeClient;
 }(Client_1["default"]));
 exports["default"] = PracticeClient;
-//# sourceMappingURL=PracticeClient.js.map

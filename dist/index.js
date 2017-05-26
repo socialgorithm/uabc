@@ -13,4 +13,3 @@ if (!options.practice) {
 else {
     new PracticeClient_1["default"](options);
 }
-//# sourceMappingURL=index.js.map
