@@ -10,7 +10,7 @@ var Random = (function () {
         }
         this.size = size;
         this.player = player;
-        this.oponent = 1 - player;
+        this.opponent = 1 - player;
         this.init();
     }
     Random.prototype.init = function () {
@@ -21,9 +21,12 @@ var Random = (function () {
             this.game = this.game.addOpponentMove(board, move);
         }
         catch (e) {
-            console.error('Game probably already over', e);
-            //console.error(this.game.prettyPrint());
-            //console.error(this.game.stateBoard.prettyPrint());
+            console.error('-------------------------------');
+            console.error("\n" + 'AddOpponentMove: Game probably already over when adding', board, move, e);
+            console.error("\n" + this.game.prettyPrint());
+            console.error("\n" + this.game.stateBoard.prettyPrint(true));
+            console.error('-------------------------------');
+            throw new Error(e);
         }
     };
     Random.prototype.addMove = function (board, move) {
@@ -31,11 +34,12 @@ var Random = (function () {
             this.game = this.game.addMyMove(board, move);
         }
         catch (e) {
-            //console.error('-------------------------------');
-            console.error("\n" + 'Game probably already over', e);
-            //console.error("\n" + this.game.prettyPrint());
-            //console.error("\n" + this.game.stateBoard.prettyPrint());
-            //console.error('-------------------------------');
+            console.error('-------------------------------');
+            console.error("\n" + 'AddMyMove: Game probably already over when adding', board, move, e);
+            console.error("\n" + this.game.prettyPrint());
+            console.error("\n" + this.game.stateBoard.prettyPrint(true));
+            console.error('-------------------------------');
+            throw new Error(e);
         }
     };
     Random.prototype.getMove = function () {
@@ -54,6 +58,8 @@ var Random = (function () {
         }
         var validBoards = this.game.getValidBoards();
         if (validBoards.length === 0) {
+            console.error("\n" + this.game.prettyPrint());
+            console.error("\n" + this.game.stateBoard.prettyPrint(true));
             throw new Error('Error: There are no boards available to play');
         }
         return validBoards[Math.floor(Math.random() * validBoards.length)];
@@ -63,7 +69,8 @@ var Random = (function () {
     };
     Random.prototype.findRandomPosition = function (board) {
         if (board.isFull() || board.isFinished()) {
-            console.error('This board is full/finished');
+            console.error('This board is full/finished', board);
+            console.error(board.prettyPrint());
             return;
         }
         var validMoves = board.getValidMoves();

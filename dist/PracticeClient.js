@@ -29,16 +29,15 @@ var PracticeClient = (function (_super) {
     }
     PracticeClient.prototype.startGame = function () {
         this.firstPlayer = 1 - this.firstPlayer;
-        this.practicePlayer = new random_1["default"](constants_1.OPPONENT, this.size);
+        this.playerB = new random_1["default"](constants_1.OPPONENT, this.size);
+        this.sendData('init');
         this.gameStart = process.hrtime();
         this.state.games++;
-        console.log('New game, starting player ' + this.firstPlayer);
-        this.sendData('init');
         if (this.firstPlayer === constants_1.ME) {
             this.sendData('move');
         }
         else {
-            this.opponentMove();
+            this.playerBMove();
         }
     };
     PracticeClient.prototype.onPlayerData = function (data) {
@@ -54,43 +53,40 @@ var PracticeClient = (function (_super) {
                 parseInt(moveStr[0], 10),
                 parseInt(moveStr[1], 10)
             ];
-            this.practicePlayer.addOpponentMove(board, move);
+            this.playerB.addOpponentMove(board, move);
             if (this.checkEnding()) {
                 return;
             }
-            this.opponentMove();
+            this.playerBMove();
         }
         else {
             console.error('Unknown command', data);
         }
     };
-    PracticeClient.prototype.opponentMove = function () {
-        var opponentMove = this.practicePlayer.getMove();
-        this.practicePlayer.addMove(opponentMove.board, opponentMove.move);
-        this.sendData('opponent ' + opponentMove.board.join(',') + ';' + opponentMove.move.join(','));
-        if (this.checkEnding()) {
-            process.exit(0);
-        }
+    PracticeClient.prototype.playerBMove = function () {
+        var moveCoords = this.playerB.getMove();
+        this.playerB.addMove(moveCoords.board, moveCoords.move);
+        this.sendData('opponent ' + moveCoords.board.join(',') + ';' + moveCoords.move.join(','));
+        this.checkEnding();
     };
     PracticeClient.prototype.checkEnding = function () {
-        if (this.practicePlayer.game.isFinished()) {
-            var result = this.practicePlayer.game.getResult();
+        if (this.playerB.game.isFinished()) {
+            var result = this.playerB.game.getResult();
             if (result === -1) {
-                console.log('tie');
                 this.state.ties++;
             }
             else {
-                console.log('winner', result);
                 this.state.wins[result]++;
             }
             var hrend = process.hrtime(this.gameStart);
             this.state.times.push(funcs.convertExecTime(hrend[1]));
             if (this.state.games < this.options.games) {
                 this.startGame();
+                return true;
             }
             else {
                 console.log(this.state.printState());
-                return true;
+                process.exit(0);
             }
         }
         return false;

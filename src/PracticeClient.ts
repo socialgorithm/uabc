@@ -7,7 +7,7 @@ import Random from "./sample/random";
 
 export default class PracticeClient extends Client {
     private state: State;
-    private practicePlayer: Random;
+    private playerB: Random;
     private firstPlayer: number;
     private options: Options;
     private size: number;
@@ -32,20 +32,26 @@ export default class PracticeClient extends Client {
 
     public startGame() {
         this.firstPlayer = 1 - this.firstPlayer;
-        this.practicePlayer = new Random(OPPONENT, this.size);
+        // initialize the players
+        this.playerB = new Random(OPPONENT, this.size);
+        this.sendData('init');
+        //
         this.gameStart = process.hrtime();
         this.state.games++;
 
-        console.log('New game, starting player ' + this.firstPlayer);
-
-        this.sendData('init');
         if (this.firstPlayer === ME){
+            // request move from player A
             this.sendData('move');
         } else {
-            this.opponentMove();
+            // request move from player B
+            this.playerBMove();
         }
     }
 
+    /**
+     * Received a move from player A
+     * @param data
+     */
     public onPlayerData(data: string): void {
         const parts = data.split(';');
         const boardStr = parts[0].split(',');
@@ -60,37 +66,36 @@ export default class PracticeClient extends Client {
                 parseInt(moveStr[1], 10)
             ];
             // for the practice player, we are the opponent
-            this.practicePlayer.addOpponentMove(board, move);
+            this.playerB.addOpponentMove(board, move);
             if (this.checkEnding()){
                 return;
             }
-            this.opponentMove();
+            this.playerBMove();
         } else {
             console.error('Unknown command', data);
         }
     }
 
-    private opponentMove() {
-        const opponentMove = this.practicePlayer.getMove();
-        // we add the opponent move as his own
-        this.practicePlayer.addMove(opponentMove.board, opponentMove.move);
+    /**
+     * Get a move from player B
+     */
+    private playerBMove() {
+        const moveCoords = this.playerB.getMove();
+        // store its move
+        this.playerB.addMove(moveCoords.board, moveCoords.move);
         // then send it to our client
         this.sendData(
-            'opponent ' + opponentMove.board.join(',') + ';' + opponentMove.move.join(',')
+            'opponent ' + moveCoords.board.join(',') + ';' + moveCoords.move.join(',')
         );
-        if (this.checkEnding()){
-            process.exit(0);
-        }
+        this.checkEnding();
     }
 
     public checkEnding(): boolean {
-        if (this.practicePlayer.game.isFinished()) {
-            const result = this.practicePlayer.game.getResult();
+        if (this.playerB.game.isFinished()) {
+            const result = this.playerB.game.getResult();
             if (result === -1) {
-                console.log('tie');
                 this.state.ties++;
             } else{
-                console.log('winner', result);
                 this.state.wins[result]++;
             }
             // store timing
@@ -98,9 +103,10 @@ export default class PracticeClient extends Client {
             this.state.times.push(funcs.convertExecTime(hrend[1]));
             if (this.state.games < this.options.games) {
                 this.startGame();
+                return true;
             } else {
                 console.log(this.state.printState());
-                return true;
+                process.exit(0);
             }
         }
         return false;

@@ -9,7 +9,7 @@ import SubBoard from "@socialgorithm/ultimate-ttt/dist/SubBoard";
 export default class Random {
   private size: number;
   private player: number;
-  private oponent: number;
+  private opponent: number;
   public game: UTTT;
 
   constructor(player: number, size: number = 3){
@@ -19,7 +19,7 @@ export default class Random {
 
     this.size = size;
     this.player = player;
-    this.oponent = 1 - player;
+    this.opponent = 1 - player;
 
     this.init();
   }
@@ -30,25 +30,29 @@ export default class Random {
     this.game = new UTTT(this.size);
   }
 
-  public addOpponentMove(board: Coord, move: Coord){
+  public addOpponentMove(board: Coord, move: Coord): void {
     try {
       this.game = this.game.addOpponentMove(board, move);
     } catch (e) {
-      console.error('Game probably already over', e);
-      console.error(this.game.prettyPrint());
-      console.error(this.game.stateBoard.prettyPrint());
+      console.error('-------------------------------');
+      console.error("\n"+'AddOpponentMove: Game probably already over when adding', board, move, e);
+      console.error("\n"+this.game.prettyPrint());
+      console.error("\n"+this.game.stateBoard.prettyPrint(true));
+      console.error('-------------------------------');
+      throw new Error(e);
     }
   }
 
-  public addMove(board: Coord, move: Coord){
+  public addMove(board: Coord, move: Coord): void {
     try {
       this.game = this.game.addMyMove(board, move);
     } catch (e) {
       console.error('-------------------------------');
-      console.error("\n"+'Game probably already over', e);
+      console.error("\n"+'AddMyMove: Game probably already over when adding', board, move, e);
       console.error("\n"+this.game.prettyPrint());
-      console.error("\n"+this.game.stateBoard.prettyPrint());
+      console.error("\n"+this.game.stateBoard.prettyPrint(true));
       console.error('-------------------------------');
+      throw new Error(e);
     }
   }
 
@@ -79,6 +83,8 @@ export default class Random {
     const validBoards = this.game.getValidBoards();
     if (validBoards.length === 0) {
       // this case should never happen :)
+      console.error("\n" + this.game.prettyPrint());
+      console.error("\n" + this.game.stateBoard.prettyPrint(true));
       throw new Error('Error: There are no boards available to play');
     }
 
@@ -102,7 +108,8 @@ export default class Random {
    */
   private findRandomPosition(board: SubBoard): Coord {
     if (board.isFull() || board.isFinished()) {
-      console.error('This board is full/finished');
+      console.error('This board is full/finished', board);
+      console.error(board.prettyPrint());
       return;
     }
     const validMoves = board.getValidMoves();

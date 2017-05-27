@@ -43,7 +43,7 @@ function input() {
                     writeMove(coords);
                 }
                 catch (e) {
-                    console.error('Player Error: Failed to get a move', e);
+                    console.error('Game was full after opponent move', e);
                 }
                 break;
         }

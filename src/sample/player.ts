@@ -59,7 +59,8 @@ function input() {
           player.addMove(coords.board, coords.move);
           writeMove(coords);
         } catch(e) {
-          console.error('Player Error: Failed to get a move', e);
+          // game is probably complete by now
+          console.error('Game was full after opponent move', e);
         }
         break;
     }

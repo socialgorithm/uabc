@@ -46,7 +46,7 @@ export default class State {
       winner = 'B';
     }
 
-    console.log('');
+    console.log('-----------------------');
     if (winner) {
       console.log('Winner: Player %s', winner);
     } else {
@@ -54,8 +54,8 @@ export default class State {
     }
     console.log('Games played: %d', this.games);
     console.log('');
-    console.log('Player A wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
-    console.log('Player B wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+    console.log('Player A (player) wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
+    console.log('Player B (server) wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
     console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
     console.log('');
     console.log('Player 1 timeouts: %d', this.timeouts[0]);

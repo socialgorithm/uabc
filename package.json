@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/aurbano/uabc#readme",
   "dependencies": {
-    "@socialgorithm/ultimate-ttt": "^4.6.1",
+    "@socialgorithm/ultimate-ttt": "^4.8.0",
     "command-line-args": "^4.0.5",
     "command-line-usage": "^4.0.0",
     "socket.io-client": "^2.0.1"
