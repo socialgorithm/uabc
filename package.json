@@ -1,6 +1,6 @@
 {
   "name": "@socialgorithm/uabc",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "description": "Ultimate Algorithm Battle Client",
   "main": "dist/index.js",
   "bin": {
