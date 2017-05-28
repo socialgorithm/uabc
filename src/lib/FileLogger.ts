@@ -25,7 +25,7 @@ export default class FileLogger extends Logger {
     }
 
 
-    fs.writeFile(this.file, '', { flag: 'w' }, (err: any) => {
+    fs.writeFileSync(this.file, '', (err: any) => {
       if (err) throw err;
       console.log(`Logging to file: ${this.file}`);
     });
@@ -33,7 +33,7 @@ export default class FileLogger extends Logger {
 
   public log(writer: string, text: string): void {
     const time = (new Date()).toTimeString().substr(0,8);
-    fs.appendFile(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, (err: any) => {
+    fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, (err: any) => {
       if (err) console.error('Error: Unable to write to log file', err);
     });
   }

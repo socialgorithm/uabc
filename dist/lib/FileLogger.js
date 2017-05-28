@@ -29,7 +29,7 @@ var FileLogger = (function (_super) {
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds() + ".log";
         }
-        fs.writeFile(_this.file, '', { flag: 'w' }, function (err) {
+        fs.writeFileSync(_this.file, '', function (err) {
             if (err)
                 throw err;
             console.log("Logging to file: " + _this.file);
@@ -38,7 +38,7 @@ var FileLogger = (function (_super) {
     }
     FileLogger.prototype.log = function (writer, text) {
         var time = (new Date()).toTimeString().substr(0, 8);
-        fs.appendFile(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, function (err) {
+        fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, function (err) {
             if (err)
                 console.error('Error: Unable to write to log file', err);
         });

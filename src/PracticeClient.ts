@@ -101,13 +101,17 @@ export default class PracticeClient extends Client {
             const hrend = process.hrtime(this.gameStart);
             this.state.times.push(funcs.convertExecTime(hrend[1]));
             if (this.options.verbose) {
+                console.log('-----------------------');
+                console.log(`Game Ended (${funcs.convertExecTime(hrend[1])}ms)`);
+                console.log(`Winner: ${result}`);
                 console.log(this.playerB.game.prettyPrint());
+                console.log('');
             }
             if (this.state.games < this.options.games) {
                 this.startGame();
                 return true;
             } else {
-                console.log(this.state.printState());
+                this.state.printState();
                 process.exit(0);
             }
         }

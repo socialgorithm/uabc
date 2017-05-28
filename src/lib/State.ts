@@ -46,7 +46,7 @@ export default class State {
       winner = 'B';
     }
 
-    console.log('-----------------------');
+    console.log('');
     if (winner) {
       console.log('Winner: Player %s', winner);
     } else {
@@ -65,6 +65,7 @@ export default class State {
     console.log('Avg game: %dms', stats.avg);
     console.log('Max game: %dms', stats.max);
     console.log('Min game: %dms', stats.min);
+    return true;
   }
 
   /**

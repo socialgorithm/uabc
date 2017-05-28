@@ -19,7 +19,7 @@ var State = (function () {
         else if (stats.winner === constants_1.OPPONENT) {
             winner = 'B';
         }
-        console.log('-----------------------');
+        console.log('');
         if (winner) {
             console.log('Winner: Player %s', winner);
         }
@@ -39,6 +39,7 @@ var State = (function () {
         console.log('Avg game: %dms', stats.avg);
         console.log('Max game: %dms', stats.max);
         console.log('Min game: %dms', stats.min);
+        return true;
     };
     State.prototype.getStats = function () {
         var stats = {};
