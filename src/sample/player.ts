@@ -54,13 +54,10 @@ function input() {
             moveCoords[1]
           ]
         );
-        try {
+        if (!player.game.isFinished()) {
           coords = player.getMove();
           player.addMove(coords.board, coords.move);
           writeMove(coords);
-        } catch(e) {
-          // game is probably complete by now
-          console.error('Game was full after opponent move', e);
         }
         break;
     }

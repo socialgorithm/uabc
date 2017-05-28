@@ -67,10 +67,9 @@ export default class PracticeClient extends Client {
             ];
             // for the practice player, we are the opponent
             this.playerB.addOpponentMove(board, move);
-            if (this.checkEnding()){
-                return;
+            if (!this.checkEnding()){
+                this.playerBMove();
             }
-            this.playerBMove();
         } else {
             console.error('Unknown command', data);
         }

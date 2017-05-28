@@ -37,13 +37,10 @@ function input() {
                     moveCoords[0],
                     moveCoords[1]
                 ]);
-                try {
+                if (!player.game.isFinished()) {
                     coords = player.getMove();
                     player.addMove(coords.board, coords.move);
                     writeMove(coords);
-                }
-                catch (e) {
-                    console.error('Game was full after opponent move', e);
                 }
                 break;
         }

@@ -54,10 +54,9 @@ var PracticeClient = (function (_super) {
                 parseInt(moveStr[1], 10)
             ];
             this.playerB.addOpponentMove(board, move);
-            if (this.checkEnding()) {
-                return;
+            if (!this.checkEnding()) {
+                this.playerBMove();
             }
-            this.playerBMove();
         }
         else {
             console.error('Unknown command', data);
