@@ -79,6 +79,9 @@ var PracticeClient = (function (_super) {
             }
             var hrend = process.hrtime(this.gameStart);
             this.state.times.push(funcs.convertExecTime(hrend[1]));
+            if (this.options.verbose) {
+                console.log(this.playerB.game.prettyPrint());
+            }
             if (this.state.games < this.options.games) {
                 this.startGame();
                 return true;
