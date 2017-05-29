@@ -1,3 +1,5 @@
+import * as os from 'os';
+
 import ConsoleLogger from "../lib/ConsoleLogger";
 import FileLogger from "../lib/FileLogger";
 import {Options} from "../lib/input";
@@ -41,7 +43,7 @@ abstract class Client {
 
     public sendData(data: string): void {
         this.log('server', data);
-        this.playerProcess.stdin.write(data + "\n");
+        this.playerProcess.stdin.write(data + os.EOL);
     }
 
     public log(writer: string, data: string) {

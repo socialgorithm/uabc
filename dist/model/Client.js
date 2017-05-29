@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var os = require("os");
 var ConsoleLogger_1 = require("../lib/ConsoleLogger");
 var FileLogger_1 = require("../lib/FileLogger");
 var exec_1 = require("../lib/exec");
@@ -29,7 +30,7 @@ var Client = (function () {
     }
     Client.prototype.sendData = function (data) {
         this.log('server', data);
-        this.playerProcess.stdin.write(data + "\n");
+        this.playerProcess.stdin.write(data + os.EOL);
     };
     Client.prototype.log = function (writer, data) {
         if (this.loggers.console) {
