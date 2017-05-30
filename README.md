@@ -38,7 +38,7 @@ $ uabc -t 123 -f "java Player"
 
 You don't need the server running to start the client, it will automatically detect the server and connect to it when it comes up.
 
-## [Player Documentation](https://github.com/socialgorithm/uabc/wiki)
+## [Player Documentation](https://socialgorithm.org/ultimate-ttt-docs/sections/player/testing_locally.html)
 
 ## Running the sample player
 
@@ -47,7 +47,7 @@ uabc provides a sample player that choses valid moves at random. To test it clon
 *(Make sure you have already installed `uabc`)*
 
 ```bash
-$ git clone git@github.com:aurbano/uabc.git
+$ git clone https://github.com/socialgorithm/uabc.git
 $ cd uabc
 $ uabc --host localhost:3141 -t token -f "node dist/sample/player.js"
 ```
