@@ -5,16 +5,20 @@ const info = require('../../package.json');
 
 // type safe options
 export interface Options {
-  version: boolean;
-  verbose: boolean;
-  file: string;
-  token: string;
-  host: string;
-  practice: boolean;
-  log: string;
-  help: boolean;
-  games: number;
+  version?: boolean;
+  verbose?: boolean;
+  file?: string;
+  token?: string;
+  host?: string;
+  practice?: boolean;
+  log?: string;
+  help?: boolean;
+  games?: number;
 }
+
+export const DEFAULT_OPTIONS: Options = {
+  games: 100,
+};
 
 const optionDefinitions = [
   {
@@ -59,7 +63,7 @@ const optionDefinitions = [
     name: 'games',
     alias: 'g',
     type: Number,
-    defaultValue: 100,
+    defaultValue: DEFAULT_OPTIONS.games,
     description: 'Number of games to play in practice mode, defaults to 100'
   },
   {

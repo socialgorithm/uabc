@@ -3,6 +3,9 @@ exports.__esModule = true;
 var commandLineArgs = require('command-line-args');
 var getUsage = require('command-line-usage');
 var info = require('../../package.json');
+exports.DEFAULT_OPTIONS = {
+    games: 100
+};
 var optionDefinitions = [
     {
         name: 'version',
@@ -46,7 +49,7 @@ var optionDefinitions = [
         name: 'games',
         alias: 'g',
         type: Number,
-        defaultValue: 100,
+        defaultValue: exports.DEFAULT_OPTIONS.games,
         description: 'Number of games to play in practice mode, defaults to 100'
     },
     {
