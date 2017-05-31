@@ -25,8 +25,8 @@ var FileLogger = (function (_super) {
             _this.file = "UTTT_" + currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
                 + currentdate.getFullYear() + "_"
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
+                + currentdate.getHours() + "-"
+                + currentdate.getMinutes() + "-"
                 + currentdate.getSeconds() + ".log";
         }
         fs.writeFileSync(_this.file, '', function (err) {

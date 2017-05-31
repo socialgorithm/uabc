@@ -19,8 +19,8 @@ export default class FileLogger extends Logger {
       this.file = "UTTT_" + currentdate.getDate() + "-"
           + (currentdate.getMonth()+1)  + "-"
           + currentdate.getFullYear() + "_"
-          + currentdate.getHours() + ":"
-          + currentdate.getMinutes() + ":"
+          + currentdate.getHours() + "-"
+          + currentdate.getMinutes() + "-"
           + currentdate.getSeconds() + ".log";
     }
 
