@@ -24,8 +24,16 @@ var Client = (function () {
             _this.onDisconnect();
         });
         this.playerProcess.stdout.on('data', function (data) {
-            _this.log('player', data);
-            _this.onPlayerData(data);
+            var regex = new RegExp('^\d,\d;\d,\d$');
+            if (regex.test(data)) {
+                _this.log('player', data);
+                _this.onPlayerData(data);
+            }
+            else {
+                console.log('---------- PLAYER OUTPUT ---------');
+                console.log(data);
+                console.log('----------------------------------');
+            }
         });
         this.playerProcess.stderr.on('data', function (message) {
             console.log('---------- PLAYER OUTPUT ---------');

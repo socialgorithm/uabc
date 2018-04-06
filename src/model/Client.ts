@@ -36,8 +36,15 @@ abstract class Client {
         });
 
         this.playerProcess.stdout.on('data', (data: string) => {
-            this.log('player', data);
-            this.onPlayerData(data);
+            const regex = new RegExp('^\d,\d;\d,\d$');
+            if (regex.test(data)) {
+                this.log('player', data);
+                this.onPlayerData(data);
+            } else {
+                console.log('---------- PLAYER OUTPUT ---------');
+                console.log(data);
+                console.log('----------------------------------');
+            }
         });
 
         this.playerProcess.stderr.on('data', (message: string) => {
