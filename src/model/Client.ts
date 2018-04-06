@@ -39,6 +39,14 @@ abstract class Client {
             this.log('player', data);
             this.onPlayerData(data);
         });
+
+        this.playerProcess.stderr.on('data', (message: string) => {
+            if (this.loggers.console) {
+                console.log('---------- PLAYER OUTPUT ---------');
+                console.log(message);
+                console.log('----------------------------------');
+            }
+        });
     }
 
     public sendData(data: string): void {

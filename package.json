@@ -7,6 +7,8 @@
     "uabc": "bin/index.js"
   },
   "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail"
   },
   "repository": {
