@@ -41,9 +41,9 @@ export default class State {
 
     let winner = null;
     if (stats.winner === ME) {
-      winner = 'A';
-    } else if(stats.winner === OPPONENT) {
       winner = 'B';
+    } else if(stats.winner === OPPONENT) {
+      winner = 'A';
     }
 
     console.log('');
@@ -54,12 +54,12 @@ export default class State {
     }
     console.log('Games played: %d', this.games);
     console.log('');
-    console.log('Player A (player) wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
-    console.log('Player B (server) wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+    console.log('Player A (player) wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+    console.log('Player B (server) wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
     console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
     console.log('');
-    console.log('Player 1 timeouts: %d', this.timeouts[0]);
-    console.log('Player 2 timeouts: %d', this.timeouts[1]);
+    console.log('Player 1 timeouts: %d', this.timeouts[1]);
+    console.log('Player 2 timeouts: %d', this.timeouts[0]);
     console.log('');
     console.log('Total time: %dms', stats.total);
     console.log('Avg game: %dms', stats.avg);

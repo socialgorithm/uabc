@@ -14,10 +14,10 @@ var State = (function () {
         var stats = this.getStats();
         var winner = null;
         if (stats.winner === constants_1.ME) {
-            winner = 'A';
+            winner = 'B';
         }
         else if (stats.winner === constants_1.OPPONENT) {
-            winner = 'B';
+            winner = 'A';
         }
         console.log('');
         if (winner) {
@@ -28,12 +28,12 @@ var State = (function () {
         }
         console.log('Games played: %d', this.games);
         console.log('');
-        console.log('Player A (player) wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
-        console.log('Player B (server) wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+        console.log('Player A (player) wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
+        console.log('Player B (server) wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
         console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
         console.log('');
-        console.log('Player 1 timeouts: %d', this.timeouts[0]);
-        console.log('Player 2 timeouts: %d', this.timeouts[1]);
+        console.log('Player 1 timeouts: %d', this.timeouts[1]);
+        console.log('Player 2 timeouts: %d', this.timeouts[0]);
         console.log('');
         console.log('Total time: %dms', stats.total);
         console.log('Avg game: %dms', stats.avg);
