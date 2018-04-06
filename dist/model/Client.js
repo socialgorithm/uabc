@@ -24,14 +24,21 @@ var Client = (function () {
             _this.onDisconnect();
         });
         this.playerProcess.stdout.on('data', function (data) {
+            var lines = data.split('\n');
             var regex = new RegExp('^\d,\d;\d,\d$');
-            if (regex.test(data)) {
-                _this.log('player', data);
-                _this.onPlayerData(data);
+            var output = [];
+            for (var line in lines) {
+                if (regex.test(line)) {
+                    _this.log('player', line);
+                    _this.onPlayerData(line);
+                }
+                else {
+                    output.push(line);
+                }
             }
-            else {
+            if (output.length > 0) {
                 console.log('---------- PLAYER OUTPUT ---------');
-                console.log(data);
+                console.log(output.join('\n'));
                 console.log('----------------------------------');
             }
         });
