@@ -28,11 +28,9 @@ var Client = (function () {
             _this.onPlayerData(data);
         });
         this.playerProcess.stderr.on('data', function (message) {
-            if (_this.loggers.console) {
-                console.log('---------- PLAYER OUTPUT ---------');
-                console.log(message);
-                console.log('----------------------------------');
-            }
+            console.log('---------- PLAYER OUTPUT ---------');
+            console.log(message);
+            console.log('----------------------------------');
         });
     }
     Client.prototype.sendData = function (data) {

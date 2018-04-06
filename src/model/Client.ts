@@ -41,11 +41,9 @@ abstract class Client {
         });
 
         this.playerProcess.stderr.on('data', (message: string) => {
-            if (this.loggers.console) {
-                console.log('---------- PLAYER OUTPUT ---------');
-                console.log(message);
-                console.log('----------------------------------');
-            }
+            console.log('---------- PLAYER OUTPUT ---------');
+            console.log(message);
+            console.log('----------------------------------');
         });
     }
 
