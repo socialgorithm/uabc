@@ -36,17 +36,21 @@ abstract class Client {
         });
 
         this.playerProcess.stdout.on('data', (data: string) => {
-            const lines = data.split('\n');
-            const regex = new RegExp('^\d,\d;\d,\d$');
-            const output = [];
-            for (let line in lines) {
-                if (regex.test(line)) {
+            const lines = data.split(os.EOL);
+            const regex = /^\d,\d;\d,\d$/;
+            const output: Array<string> = [];
+            lines.forEach((eachLine) => {
+                const line = eachLine.trim();
+                if (line.length < 1) {
+                    return;
+                }
+                if (regex.test(line.replace(/\s/g,''))) {
                     this.log('player', line);
                     this.onPlayerData(line);
                 } else {
                     output.push(line);
                 }
-            }
+            });
             if (output.length > 0) {
                 console.log('---------- PLAYER OUTPUT ---------');
                 console.log(output.join('\n'));

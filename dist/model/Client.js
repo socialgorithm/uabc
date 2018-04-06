@@ -24,18 +24,22 @@ var Client = (function () {
             _this.onDisconnect();
         });
         this.playerProcess.stdout.on('data', function (data) {
-            var lines = data.split('\n');
-            var regex = new RegExp('^\d,\d;\d,\d$');
+            var lines = data.split(os.EOL);
+            var regex = /^\d,\d;\d,\d$/;
             var output = [];
-            for (var line in lines) {
-                if (regex.test(line)) {
+            lines.forEach(function (eachLine) {
+                var line = eachLine.trim();
+                if (line.length < 1) {
+                    return;
+                }
+                if (regex.test(line.replace(/\s/g, ''))) {
                     _this.log('player', line);
                     _this.onPlayerData(line);
                 }
                 else {
                     output.push(line);
                 }
-            }
+            });
             if (output.length > 0) {
                 console.log('---------- PLAYER OUTPUT ---------');
                 console.log(output.join('\n'));
