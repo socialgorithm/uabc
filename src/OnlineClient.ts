@@ -1,4 +1,5 @@
 import * as io from 'socket.io-client';
+import * as ioProxy from 'socket.io-proxy';
 
 import Client from "./model/Client";
 import {Options} from "./lib/input";
@@ -23,12 +24,18 @@ export default class OnlineClient extends Client {
             if (host.substr(0,4) !== 'http') {
                 host = 'http://' + host;
             }
+            const socketOptions = {
+                query: "token="+options.token,
+            };
 
-            this.socket = io.connect(host, {
-                query: {
-                    token: options.token
+            if (options.proxy || process.env.http_proxy) {
+                if (options.proxy) {
+                    ioProxy.init(options.proxy);
                 }
-            });
+                this.socket = ioProxy.connect(host, socketOptions);
+            } else {
+                this.socket = io.connect(host, socketOptions);
+            }
 
             this.socket.on('error', (data: any) => {
                 console.error('Error in socket', data);
@@ -53,7 +60,8 @@ export default class OnlineClient extends Client {
                 console.log('Connection lost!');
             });
         } catch (e) {
-            console.error('Error running player', e);
+            console.error('Error in UABC', e);
+            process.exit(-1);
         }
     }
 

@@ -29,19 +29,13 @@ var FileLogger = (function (_super) {
                 + currentdate.getMinutes() + "-"
                 + currentdate.getSeconds() + ".log";
         }
-        fs.writeFileSync(_this.file, '', function (err) {
-            if (err)
-                throw err;
-            console.log("Logging to file: " + _this.file);
-        });
+        fs.writeFileSync(_this.file, '');
+        console.log("Logging to file: " + _this.file);
         return _this;
     }
     FileLogger.prototype.log = function (writer, text) {
         var time = (new Date()).toTimeString().substr(0, 8);
-        fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, function (err) {
-            if (err)
-                console.error('Error: Unable to write to log file', err);
-        });
+        fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL);
     };
     return FileLogger;
 }(Logger_1["default"]));

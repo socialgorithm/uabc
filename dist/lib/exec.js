@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var cp = require("child_process");
-exports["default"] = function (cmd) {
+exports["default"] = (function (cmd) {
     var options = cmd.split(' ');
     var exec = options[0];
     options.shift();
@@ -11,4 +11,4 @@ exports["default"] = function (cmd) {
         console.log("Error: " + data);
     });
     return childProcess;
-};
+});
