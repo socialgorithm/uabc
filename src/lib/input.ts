@@ -10,6 +10,7 @@ export interface Options {
   file?: string;
   token?: string;
   host?: string;
+  proxy?: string;
   practice?: boolean;
   log?: string;
   help?: boolean;
@@ -36,7 +37,7 @@ const optionDefinitions = [
     name: 'file',
     alias: 'f',
     type: String,
-    typeLabel: '[underline]{file}',
+    typeLabel: '{underline file}',
     defaultOption: true,
     description: 'Path to the client executable'
   },
@@ -44,13 +45,13 @@ const optionDefinitions = [
     name: 'token',
     alias: 't',
     type: String,
-    typeLabel: '[underline]{token}',
+    typeLabel: '{underline token}',
     description: 'Identification token for the game server'
   },
   {
     name: 'host',
     type: String,
-    typeLabel: '[underline]{host:port}',
+    typeLabel: '{underline host:port}',
     description: 'host:port where the client should connect to, defaults to localhost:8123. You can specify https:// as well if SSL is required'
   },
   {
@@ -58,6 +59,11 @@ const optionDefinitions = [
     type: Boolean,
     alias: 'p',
     description: 'Practice mode - it will play locally against a random algorithm. It doesn\'t require a connection to a server'
+  },
+  {
+    name: 'proxy',
+    type: String,
+    description: 'HTTP proxy to use for the web socket connection'
   },
   {
     name: 'games',
@@ -70,8 +76,8 @@ const optionDefinitions = [
     name: 'log',
     alias: 'l',
     type: String,
-    typeLabel: '[underline]{[file]}',
-    description: 'File where game logs should be stored, defaults to `uabc-{date}.log` in the current directory if no file is specified'
+    typeLabel: '{underline [file]}',
+    description: 'File where game logs should be stored, defaults to `uabc-[date].log` in the current directory if no file is specified'
   },
   {
     name: 'help',
@@ -93,8 +99,8 @@ const sections = [
   {
     header: 'Synopsis',
     content: [
-      '$ uabc [bold]{--host} [underline]{host:1234} [bold]{-t} [underline]{token} [bold]{-f} [underline]{path/to/client/executable}',
-      '$ uabc [bold]{--help}'
+      '$ uabc {bold --host} {underline host:1234} {bold -t} {underline token} {bold -f} {underline path/to/client/executable}',
+      '$ uabc {bold --help}'
     ]
   }
 ];

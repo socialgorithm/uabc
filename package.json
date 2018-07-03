@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "start": "node dist/index.js",
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail"
   },
   "repository": {
@@ -29,20 +30,21 @@
   "homepage": "https://github.com/aurbano/uabc#readme",
   "dependencies": {
     "@socialgorithm/ultimate-ttt": "^4.19.0",
-    "command-line-args": "^4.0.5",
-    "command-line-usage": "^4.0.0",
-    "socket.io-client": "^2.0.1"
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
+    "socket.io-client": "^2.1.1",
+    "socket.io-proxy": "^1.0.3"
   },
   "devDependencies": {
-    "@types/chai": "^3.5.2",
+    "@types/chai": "^4.1.4",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.22",
+    "@types/node": "^10.5.1",
     "@types/socket.io-client": "^1.4.29",
-    "chai": "^4.0.0",
+    "chai": "^4.1.2",
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
-    "ts-node": "^3.0.4",
-    "typescript": "^2.3.3"
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
   },
   "nyc": {
     "extension": [

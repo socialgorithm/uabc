@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var io = require("socket.io-client");
+var ioProxy = require("socket.io-proxy");
 var Client_1 = require("./model/Client");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
@@ -24,11 +25,18 @@ var OnlineClient = (function (_super) {
             if (host.substr(0, 4) !== 'http') {
                 host = 'http://' + host;
             }
-            _this.socket = io.connect(host, {
-                query: {
-                    token: options.token
+            var socketOptions = {
+                query: "token=" + options.token
+            };
+            if (options.proxy || process.env.http_proxy) {
+                if (options.proxy) {
+                    ioProxy.init(options.proxy);
                 }
-            });
+                _this.socket = ioProxy.connect(host, socketOptions);
+            }
+            else {
+                _this.socket = io.connect(host, socketOptions);
+            }
             _this.socket.on('error', function (data) {
                 console.error('Error in socket', data);
             });
@@ -51,7 +59,8 @@ var OnlineClient = (function (_super) {
             });
         }
         catch (e) {
-            console.error('Error running player', e);
+            console.error('Error in UABC', e);
+            process.exit(-1);
         }
         return _this;
     }

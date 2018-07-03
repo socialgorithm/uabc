@@ -25,16 +25,12 @@ export default class FileLogger extends Logger {
     }
 
 
-    fs.writeFileSync(this.file, '', (err: any) => {
-      if (err) throw err;
-      console.log(`Logging to file: ${this.file}`);
-    });
+    fs.writeFileSync(this.file, '');
+    console.log(`Logging to file: ${this.file}`);
   }
 
   public log(writer: string, text: string): void {
     const time = (new Date()).toTimeString().substr(0,8);
-    fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL, (err: any) => {
-      if (err) console.error('Error: Unable to write to log file', err);
-    });
+    fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL);
   }
 }
