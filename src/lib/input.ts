@@ -8,6 +8,7 @@ export interface Options {
   version?: boolean;
   verbose?: boolean;
   file?: string;
+  lobby?: string;
   token?: string;
   host?: string;
   proxy?: string;
@@ -42,11 +43,18 @@ const optionDefinitions = [
     description: 'Path to the client executable'
   },
   {
+    name: 'lobby',
+    alias: 'l',
+    type: String,
+    typeLabel: '{underline lobby}',
+    description: 'Identification token for the lobby you want to play in'
+  },
+  {
     name: 'token',
     alias: 't',
     type: String,
     typeLabel: '{underline token}',
-    description: 'Identification token for the game server'
+    description: 'Your team name or identifier'
   },
   {
     name: 'host',
@@ -58,7 +66,7 @@ const optionDefinitions = [
     name: 'practice',
     type: Boolean,
     alias: 'p',
-    description: 'Practice mode - it will play locally against a random algorithm. It doesn\'t require a connection to a server'
+    description: 'Practice mode - it will play locally against a random algorithm. It doesn\'t require a connection to a server (so no need to specify the lobby/token)'
   },
   {
     name: 'proxy',
@@ -74,7 +82,6 @@ const optionDefinitions = [
   },
   {
     name: 'log',
-    alias: 'l',
     type: String,
     typeLabel: '{underline [file]}',
     description: 'File where game logs should be stored, defaults to `uabc-[date].log` in the current directory if no file is specified'
@@ -99,7 +106,8 @@ const sections = [
   {
     header: 'Synopsis',
     content: [
-      '$ uabc {bold --host} {underline host:1234} {bold -t} {underline token} {bold -f} {underline path/to/client/executable}',
+      '$ uabc {bold --host} {underline host:1234} {bold -l} {underline lobby} {bold -t} {underline token} {bold -f} {underline path/to/client/executable}',
+      '$ uabc {bold --log} {bold -p} {bold -f} {underline path/to/client/executable}',
       '$ uabc {bold --help}'
     ]
   }

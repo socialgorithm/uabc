@@ -41,7 +41,16 @@ var OnlineClient = (function (_super) {
                 console.error('Error in socket', data);
             });
             _this.socket.on('connect', function () {
-                console.log('Connected!');
+                console.log('Connected! Joining Lobby...');
+                _this.socket.emit('lobby join', {
+                    token: options.lobby
+                });
+            });
+            _this.socket.on('lobby joined', function () {
+                console.log('Lobby Joined!');
+            });
+            _this.socket.on('lobby exception', function (data) {
+                console.error(data.error);
             });
             _this.socket.on('game', function (data) {
                 if (data.action && data.action.length > 0) {

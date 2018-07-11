@@ -42,7 +42,18 @@ export default class OnlineClient extends Client {
             });
 
             this.socket.on('connect', () => {
-                console.log('Connected!');
+                console.log('Connected! Joining Lobby...');
+                this.socket.emit('lobby join', {
+                    token: options.lobby,
+                });
+            });
+
+            this.socket.on('lobby joined', () => {
+                console.log('Lobby Joined!');
+            });
+
+            this.socket.on('lobby exception', (data: any) => {
+                console.error(data.error);
             });
 
             this.socket.on('game', (data: any) => {
