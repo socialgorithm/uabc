@@ -49,7 +49,7 @@ var OnlineClient = (function (_super) {
             _this.socket.on('lobby joined', function () {
                 console.log('Lobby Joined!');
             });
-            _this.socket.on('lobby exception', function (data) {
+            _this.socket.on('exception', function (data) {
                 console.error(data.error);
             });
             _this.socket.on('game', function (data) {

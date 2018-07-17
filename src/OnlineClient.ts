@@ -52,7 +52,7 @@ export default class OnlineClient extends Client {
                 console.log('Lobby Joined!');
             });
 
-            this.socket.on('lobby exception', (data: any) => {
+            this.socket.on('exception', (data: any) => {
                 console.error(data.error);
             });
 
