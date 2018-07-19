@@ -11,13 +11,13 @@ export default class RandomPlayer extends Player {
 
     private randomPlayer: Random;
 
-    constructor(options: Options, sendData: (data: string) => void) {
-        super(options, sendData);
+    constructor(sendData: (data: string) => void) {
+        super(sendData);
 
         this.randomPlayer = new Random(OPPONENT, 3);
     }
 
-    public onReceiveData(data: string) {
+    protected onReceiveData(data: string) {
         const parts = data.split(' ');
         const action = parts[0];
 
@@ -33,7 +33,7 @@ export default class RandomPlayer extends Player {
                 try {
                     coords = this.randomPlayer.getMove();
                     this.randomPlayer.addMove(coords.board, coords.move);
-                    this.sendData(this.stringifyMove(coords));
+                    this.onPlayerData(this.stringifyMove(coords));
                 } catch(e) {
                     console.error('Player Error: Failed to get a move', e);
                 }
@@ -58,7 +58,7 @@ export default class RandomPlayer extends Player {
                 if (!this.randomPlayer.game.isFinished()) {
                     coords = this.randomPlayer.getMove();
                     this.randomPlayer.addMove(coords.board, coords.move);
-                    this.sendData(this.stringifyMove(coords));
+                    this.onPlayerData(this.stringifyMove(coords));
                 }
                 break;
         }
@@ -89,33 +89,4 @@ export default class RandomPlayer extends Player {
         console.error('Unknown command', data);
         return null;
     }
-
-    // public checkEnding(): boolean {
-    //     if (this.playerB.game.isFinished()) {
-    //         const result = this.playerB.game.getResult();
-    //         if (result === -1) {
-    //             this.state.ties++;
-    //         } else{
-    //             this.state.wins[result]++;
-    //         }
-    //         // store timing
-    //         const hrend = process.hrtime(this.gameStart);
-    //         this.state.times.push(funcs.convertExecTime(hrend[1]));
-    //         if (this.options.verbose) {
-    //             console.log('-----------------------');
-    //             console.log(`Game Ended (${funcs.convertExecTime(hrend[1])}ms)`);
-    //             console.log(`Winner: ${result}`);
-    //             console.log(this.playerB.game.prettyPrint());
-    //             console.log('');
-    //         }
-    //         if (this.state.games < this.options.games) {
-    //             this.startGame();
-    //             return true;
-    //         } else {
-    //             this.state.printState();
-    //             process.exit(0);
-    //         }
-    //     }
-    //     return false;
-    // }
 }

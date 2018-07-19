@@ -38,7 +38,7 @@ var OnlineClient = (function (_super) {
             else {
                 _this.socket = io.connect(host, socketOptions);
             }
-            _this.playerB = new Online_1["default"](options, _this.socket, _this.onPlayerBData.bind(_this));
+            _this.playerB = new Online_1["default"](_this.socket, _this.onPlayerBData.bind(_this));
             _this.socket.on('error', function (data) {
                 console.error('Error in socket', data);
             });

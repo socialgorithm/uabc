@@ -1,10 +1,10 @@
-import {Coord, ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import {ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
+
 import {Options} from "../lib/input";
 import Client from "./model/Client";
 import ExecutablePlayer from "../player/Executable";
 import RandomPlayer from "../player/Random";
-import State from "../model/State";
-import UTTT from "../../node_modules/@socialgorithm/ultimate-ttt/dist/UTTT";
 import { parseMove, convertExecTime } from "../lib/funcs";
 
 export default class PracticeClient extends Client {
@@ -18,10 +18,10 @@ export default class PracticeClient extends Client {
         // Init Player B
         let playerBName;
         if (this.options.file.length > 1) {
-            this.playerB = new ExecutablePlayer(options.file[1], options, this.onPlayerBData.bind(this));
+            this.playerB = new ExecutablePlayer(options.file[1], this.onPlayerBData.bind(this));
             playerBName = options.file[1];
         } else {
-            this.playerB = new RandomPlayer(options, this.onPlayerBData.bind(this));
+            this.playerB = new RandomPlayer(this.onPlayerBData.bind(this));
             playerBName = '[Built-in Random Player]';
         }
 
@@ -39,18 +39,18 @@ export default class PracticeClient extends Client {
         this.currentGame = new UTTT();
         this.firstPlayer = 1 - this.firstPlayer;
         // initialize the players
-        this.playerA.onReceiveData('init');
-        this.playerB.onReceiveData('init');
+        this.playerA.sendData('init');
+        this.playerB.sendData('init');
 
         this.gameStart = process.hrtime();
         this.state.games++;
 
         if (this.firstPlayer === ME){
             // request move from player A
-            this.playerA.onReceiveData('move');
+            this.playerA.sendData('move');
         } else {
             // request move from player B
-            this.playerB.onReceiveData('move');
+            this.playerB.sendData('move');
         }
     }
 
@@ -65,9 +65,17 @@ export default class PracticeClient extends Client {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(convertExecTime(hrend[1]));
         if (this.options.verbose) {
+            let winner = null;
+            if (result === ME) {
+                winner = 'Player B';
+            } else if(result === OPPONENT) {
+                winner = 'Player A';
+            } else {
+                winner = 'Tie';
+            }
             console.log('-----------------------');
-            console.log(`Game Ended (${convertExecTime(hrend[1])}ms)`);
-            console.log(`Winner: ${result}`);
+            console.log(`Game ${this.state.games} Ended (${convertExecTime(hrend[1])}ms)`);
+            console.log(`Winner: ${winner} (${result})`);
             console.log(this.currentGame.prettyPrint());
             console.log('');
         }
@@ -86,11 +94,12 @@ export default class PracticeClient extends Client {
             console.log('error: received invalid move from player A');
         }
         this.currentGame = this.currentGame.addMyMove(coords.board, coords.move);
+        this.log('A', data);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
         }
-        this.playerB.onReceiveData(`opponent ${data}`);
+        this.playerB.sendData(`opponent ${data}`);
     }
 
     protected onPlayerBData(data: string): void {
@@ -99,51 +108,11 @@ export default class PracticeClient extends Client {
             console.log('error: received invalid move from player B');
         }
         this.currentGame = this.currentGame.addOpponentMove(coords.board, coords.move);
+        this.log('B', data);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
         }
-        this.playerA.onReceiveData(`opponent ${data}`);
+        this.playerA.sendData(`opponent ${data}`);
     }
-
-    // /**
-    //  * Received a move from player A
-    //  * @param data
-    //  */
-    // public onPlayerData(data: string): void {
-    //     const parts = data.split(';');
-    //     const boardStr = parts[0].split(',');
-    //     if (parts.length > 1) {
-    //         const moveStr = parts[1].split(',');
-    //         const board: Coord = [
-    //             parseInt(boardStr[0], 10),
-    //             parseInt(boardStr[1], 10)
-    //         ];
-    //         const move: Coord = [
-    //             parseInt(moveStr[0], 10),
-    //             parseInt(moveStr[1], 10)
-    //         ];
-    //         // for the practice player, we are the opponent
-    //         //this.playerB.addOpponentMove(board, move);
-    //         if (!this.checkEnding()){
-    //             this.playerBMove();
-    //         }
-    //     } else {
-    //         console.error('Unknown command', data);
-    //     }
-    // }
-
-    // /**
-    //  * Get a move from player B
-    //  */
-    // private playerBMove() {
-    //     //const moveCoords = this.playerB.getMove();
-    //     // store its move
-    //     //this.playerB.addMove(moveCoords.board, moveCoords.move);
-    //     // then send it to our client
-    //     // this.sendData(
-    //     //     'opponent ' + moveCoords.board.join(',') + ';' + moveCoords.move.join(',')
-    //     // );
-    //     this.checkEnding();
-    // }
 }

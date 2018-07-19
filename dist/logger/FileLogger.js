@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var fs = require("fs");
 var os = require("os");
-var Logger_1 = require("../model/Logger");
+var Logger_1 = require("./model/Logger");
 var FileLogger = (function (_super) {
     __extends(FileLogger, _super);
     function FileLogger(file) {

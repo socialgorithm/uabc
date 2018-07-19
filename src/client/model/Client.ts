@@ -1,7 +1,5 @@
-import * as os from 'os';
-
-import ConsoleLogger from "../../lib/ConsoleLogger";
-import FileLogger from "../../lib/FileLogger";
+import ConsoleLogger from "../../logger/ConsoleLogger";
+import FileLogger from "../../logger/FileLogger";
 import {Options} from "../../lib/input";
 import Player from '../../player/model/Player';
 import State from '../../model/State';
@@ -38,28 +36,21 @@ export default abstract class Client {
         }
 
         // Player A is always the executable file at 0
-        this.playerA = new ExecutablePlayer(options.file[0], options, this.onPlayerAData.bind(this));
+        this.playerA = new ExecutablePlayer(options.file[0], this.onPlayerAData.bind(this));
 
         // Hold the state for the local games
         this.state = new State();
     }
 
-    // public sendData(data: string): void {
-    //     this.log('server', data);
-    //     // this.playerProcess.stdin.write(data + os.EOL);
-    // }
-
-    // public log(writer: string, data: string) {
-    //     if (this.loggers.console) {
-    //         this.loggers.console.log(writer, data);
-    //     }
-    //     if (this.loggers.file) {
-    //         this.loggers.file.log(writer, data);
-    //     }
-    // }
+    protected log(writer: string, message: string) {
+        if (this.loggers.console) {
+            this.loggers.console.log(writer, message);
+        }
+        if (this.loggers.file) {
+            this.loggers.file.log(writer, message);
+        }
+    }
 
     protected abstract onPlayerAData(data: string): void;
     protected abstract onPlayerBData(data: string): void;
-
-    // public abstract onDisconnect(): void;
 }

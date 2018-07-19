@@ -1,4 +1,4 @@
-import Logger from "../model/Logger";
+import Logger from "./model/Logger";
 /**
  * Console logger module
  * @param writer identity of current logger

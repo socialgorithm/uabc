@@ -11,10 +11,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
+var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var Client_1 = require("./model/Client");
 var Executable_1 = require("../player/Executable");
 var Random_1 = require("../player/Random");
-var UTTT_1 = require("../../node_modules/@socialgorithm/ultimate-ttt/dist/UTTT");
 var funcs_1 = require("../lib/funcs");
 var PracticeClient = (function (_super) {
     __extends(PracticeClient, _super);
@@ -23,11 +23,11 @@ var PracticeClient = (function (_super) {
         _this.size = 3;
         var playerBName;
         if (_this.options.file.length > 1) {
-            _this.playerB = new Executable_1["default"](options.file[1], options, _this.onPlayerBData.bind(_this));
+            _this.playerB = new Executable_1["default"](options.file[1], _this.onPlayerBData.bind(_this));
             playerBName = options.file[1];
         }
         else {
-            _this.playerB = new Random_1["default"](options, _this.onPlayerBData.bind(_this));
+            _this.playerB = new Random_1["default"](_this.onPlayerBData.bind(_this));
             playerBName = '[Built-in Random Player]';
         }
         _this.firstPlayer = Math.round(Math.random());
@@ -40,15 +40,15 @@ var PracticeClient = (function (_super) {
     PracticeClient.prototype.startGame = function () {
         this.currentGame = new UTTT_1["default"]();
         this.firstPlayer = 1 - this.firstPlayer;
-        this.playerA.onReceiveData('init');
-        this.playerB.onReceiveData('init');
+        this.playerA.sendData('init');
+        this.playerB.sendData('init');
         this.gameStart = process.hrtime();
         this.state.games++;
         if (this.firstPlayer === constants_1.ME) {
-            this.playerA.onReceiveData('move');
+            this.playerA.sendData('move');
         }
         else {
-            this.playerB.onReceiveData('move');
+            this.playerB.sendData('move');
         }
     };
     PracticeClient.prototype.nextGame = function () {
@@ -62,9 +62,19 @@ var PracticeClient = (function (_super) {
         var hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs_1.convertExecTime(hrend[1]));
         if (this.options.verbose) {
+            var winner = null;
+            if (result === constants_1.ME) {
+                winner = 'Player B';
+            }
+            else if (result === constants_1.OPPONENT) {
+                winner = 'Player A';
+            }
+            else {
+                winner = 'Tie';
+            }
             console.log('-----------------------');
-            console.log("Game Ended (" + funcs_1.convertExecTime(hrend[1]) + "ms)");
-            console.log("Winner: " + result);
+            console.log("Game " + this.state.games + " Ended (" + funcs_1.convertExecTime(hrend[1]) + "ms)");
+            console.log("Winner: " + winner + " (" + result + ")");
             console.log(this.currentGame.prettyPrint());
             console.log('');
         }
@@ -81,11 +91,12 @@ var PracticeClient = (function (_super) {
             console.log('error: received invalid move from player A');
         }
         this.currentGame = this.currentGame.addMyMove(coords.board, coords.move);
+        this.log('A', data);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
         }
-        this.playerB.onReceiveData("opponent " + data);
+        this.playerB.sendData("opponent " + data);
     };
     PracticeClient.prototype.onPlayerBData = function (data) {
         var coords = funcs_1.parseMove(data);
@@ -93,11 +104,12 @@ var PracticeClient = (function (_super) {
             console.log('error: received invalid move from player B');
         }
         this.currentGame = this.currentGame.addOpponentMove(coords.board, coords.move);
+        this.log('B', data);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
         }
-        this.playerA.onReceiveData("opponent " + data);
+        this.playerA.sendData("opponent " + data);
     };
     return PracticeClient;
 }(Client_1["default"]));

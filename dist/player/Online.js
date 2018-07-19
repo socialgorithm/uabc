@@ -13,8 +13,8 @@ exports.__esModule = true;
 var Player_1 = require("./model/Player");
 var OnlinePlayer = (function (_super) {
     __extends(OnlinePlayer, _super);
-    function OnlinePlayer(options, socket, sendData) {
-        var _this = _super.call(this, options, sendData) || this;
+    function OnlinePlayer(socket, sendData) {
+        var _this = _super.call(this, sendData) || this;
         _this.socket = socket;
         _this.onServerData = function (data) {
             if (data.action && data.action.length > 0) {
@@ -23,7 +23,7 @@ var OnlinePlayer = (function (_super) {
                     console.log('Games ended! You ' + parts[1]);
                 }
                 else {
-                    _this.sendData(data.action);
+                    _this.onPlayerData(data.action);
                 }
             }
         };

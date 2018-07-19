@@ -38,7 +38,7 @@ export default class OnlineClient extends Client {
                 this.socket = io.connect(host, socketOptions);
             }
 
-            this.playerB = new OnlinePlayer(options, this.socket, this.onPlayerBData.bind(this));
+            this.playerB = new OnlinePlayer(this.socket, this.onPlayerBData.bind(this));
 
             this.socket.on('error', (data: any) => {
                 console.error('Error in socket', data);

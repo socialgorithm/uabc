@@ -15,8 +15,8 @@ var Player_1 = require("./model/Player");
 var exec_1 = require("../lib/exec");
 var ExecutablePlayer = (function (_super) {
     __extends(ExecutablePlayer, _super);
-    function ExecutablePlayer(file, options, sendData) {
-        var _this = _super.call(this, options, sendData) || this;
+    function ExecutablePlayer(file, sendData) {
+        var _this = _super.call(this, sendData) || this;
         if (!file || file.length < 1) {
             console.error('uabc error: executable not specified');
             process.exit(-1);
@@ -35,8 +35,7 @@ var ExecutablePlayer = (function (_super) {
                     return;
                 }
                 if (regex.test(line.replace(/\s/g, ''))) {
-                    _this.log('player', line);
-                    _this.sendData(line);
+                    _this.onPlayerData(line);
                 }
                 else {
                     output.push(line);

@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var ConsoleLogger_1 = require("../../lib/ConsoleLogger");
-var FileLogger_1 = require("../../lib/FileLogger");
+var ConsoleLogger_1 = require("../../logger/ConsoleLogger");
+var FileLogger_1 = require("../../logger/FileLogger");
 var State_1 = require("../../model/State");
 var Executable_1 = require("../../player/Executable");
 var Client = (function () {
@@ -18,9 +18,17 @@ var Client = (function () {
             }
             this.loggers.file = new FileLogger_1["default"](logName);
         }
-        this.playerA = new Executable_1["default"](options.file[0], options, this.onPlayerAData.bind(this));
+        this.playerA = new Executable_1["default"](options.file[0], this.onPlayerAData.bind(this));
         this.state = new State_1["default"]();
     }
+    Client.prototype.log = function (writer, message) {
+        if (this.loggers.console) {
+            this.loggers.console.log(writer, message);
+        }
+        if (this.loggers.file) {
+            this.loggers.file.log(writer, message);
+        }
+    };
     return Client;
 }());
 exports["default"] = Client;

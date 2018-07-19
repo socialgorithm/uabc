@@ -12,8 +12,8 @@ import exec from "../lib/exec";
 export default class ExecutablePlayer extends Player {
     private playerProcess: ChildProcess;
 
-    constructor(file: string, options: Options, sendData: (data: string) => void) {
-        super(options, sendData);
+    constructor(file: string, sendData: (data: string) => void) {
+        super(sendData);
 
         if (!file || file.length < 1) {
             console.error('uabc error: executable not specified');
@@ -36,8 +36,7 @@ export default class ExecutablePlayer extends Player {
                     return;
                 }
                 if (regex.test(line.replace(/\s/g,''))) {
-                    this.log('player', line);
-                    this.sendData(line);
+                    this.onPlayerData(line);
                 } else {
                     output.push(line);
                 }
@@ -56,7 +55,7 @@ export default class ExecutablePlayer extends Player {
         });
     }
 
-    public onReceiveData(data: string) {
+    protected onReceiveData(data: string) {
         this.playerProcess.stdin.write(data + os.EOL);
     }
 }

@@ -1,4 +1,4 @@
-import { Coords, Coord } from "../../node_modules/@socialgorithm/ultimate-ttt/dist/model/constants";
+import { Coords, Coord } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 /**
  * Round a number to the nearest integer and return an int

@@ -15,8 +15,8 @@ var Player_1 = require("./model/Player");
 var random_1 = require("../sample/random");
 var RandomPlayer = (function (_super) {
     __extends(RandomPlayer, _super);
-    function RandomPlayer(options, sendData) {
-        var _this = _super.call(this, options, sendData) || this;
+    function RandomPlayer(sendData) {
+        var _this = _super.call(this, sendData) || this;
         _this.randomPlayer = new random_1["default"](constants_1.OPPONENT, 3);
         return _this;
     }
@@ -32,7 +32,7 @@ var RandomPlayer = (function (_super) {
                 try {
                     coords = this.randomPlayer.getMove();
                     this.randomPlayer.addMove(coords.board, coords.move);
-                    this.sendData(this.stringifyMove(coords));
+                    this.onPlayerData(this.stringifyMove(coords));
                 }
                 catch (e) {
                     console.error('Player Error: Failed to get a move', e);
@@ -52,7 +52,7 @@ var RandomPlayer = (function (_super) {
                 if (!this.randomPlayer.game.isFinished()) {
                     coords = this.randomPlayer.getMove();
                     this.randomPlayer.addMove(coords.board, coords.move);
-                    this.sendData(this.stringifyMove(coords));
+                    this.onPlayerData(this.stringifyMove(coords));
                 }
                 break;
         }
