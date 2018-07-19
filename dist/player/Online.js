@@ -13,8 +13,8 @@ exports.__esModule = true;
 var Player_1 = require("./model/Player");
 var OnlinePlayer = (function (_super) {
     __extends(OnlinePlayer, _super);
-    function OnlinePlayer(options, socket, sendMove) {
-        var _this = _super.call(this, options, sendMove) || this;
+    function OnlinePlayer(options, socket, sendData) {
+        var _this = _super.call(this, options, sendData) || this;
         _this.socket = socket;
         _this.onServerData = function (data) {
             if (data.action && data.action.length > 0) {
@@ -23,14 +23,14 @@ var OnlinePlayer = (function (_super) {
                     console.log('Games ended! You ' + parts[1]);
                 }
                 else {
-                    _this.sendPlayerMove(data.action);
+                    _this.sendData(data.action);
                 }
             }
         };
         _this.socket.on('game', _this.onServerData);
         return _this;
     }
-    OnlinePlayer.prototype.addOpponentMove = function (move) {
+    OnlinePlayer.prototype.onReceiveData = function (move) {
         this.socket.emit('game', move);
     };
     return OnlinePlayer;

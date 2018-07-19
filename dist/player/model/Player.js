@@ -3,8 +3,8 @@ exports.__esModule = true;
 var ConsoleLogger_1 = require("../../lib/ConsoleLogger");
 var FileLogger_1 = require("../../lib/FileLogger");
 var Player = (function () {
-    function Player(options, sendMove) {
-        this.sendMove = sendMove;
+    function Player(options, _sendData) {
+        this._sendData = _sendData;
         this.loggers = {};
         if (options.verbose) {
             this.loggers.console = new ConsoleLogger_1["default"]();
@@ -17,9 +17,9 @@ var Player = (function () {
             this.loggers.file = new FileLogger_1["default"](logName);
         }
     }
-    Player.prototype.sendPlayerMove = function (data) {
+    Player.prototype.sendData = function (data) {
         this.log('server', data);
-        this.sendMove(data);
+        this._sendData(data);
     };
     Player.prototype.log = function (writer, data) {
         if (this.loggers.console) {

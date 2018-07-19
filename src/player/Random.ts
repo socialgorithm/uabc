@@ -11,13 +11,13 @@ export default class RandomPlayer extends Player {
 
     private randomPlayer: Random;
 
-    constructor(options: Options, sendMove: (move: string) => void) {
-        super(options, sendMove);
+    constructor(options: Options, sendData: (data: string) => void) {
+        super(options, sendData);
 
         this.randomPlayer = new Random(OPPONENT, 3);
     }
 
-    public addOpponentMove(move: string) {
+    public onReceiveData(move: string) {
         const coords = this.parseMove(move);
         if (!coords) {
             return;
@@ -28,7 +28,7 @@ export default class RandomPlayer extends Player {
         if (!this.randomPlayer.game.isFinished()) {
             const moveCoords = this.randomPlayer.getMove();
             this.randomPlayer.addMove(moveCoords.board, moveCoords.move);
-            this.sendPlayerMove(this.stringifyMove(moveCoords));
+            this.sendData(this.stringifyMove(moveCoords));
         }
     }
 

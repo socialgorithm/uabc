@@ -5,7 +5,7 @@ import { Options } from "../../lib/input";
 /**
  * A Player represents one player of the two required to play a game.
  * 
- * It exposes the necessary methods to play with it (getPlayerMove, addOpponentMove)
+ * It exposes the necessary methods to interact with it (sendData, receiveData)
  */
 export default abstract class Player {
     private loggers: {
@@ -13,7 +13,7 @@ export default abstract class Player {
         file?: FileLogger,
     };
 
-    constructor(options: Options, private sendMove: (move: string) => void) {
+    constructor(options: Options, private _sendData: (data: string) => void) {
         this.loggers = {};
 
         if (options.verbose) {
@@ -29,9 +29,9 @@ export default abstract class Player {
         }
     }
 
-    protected sendPlayerMove(data: string): void {
+    protected sendData(data: string): void {
         this.log('server', data);
-        this.sendMove(data);
+        this._sendData(data);
     }
 
     public log(writer: string, data: string) {
@@ -43,5 +43,5 @@ export default abstract class Player {
         }
     }
 
-    public abstract addOpponentMove(move: string): void;
+    public abstract onReceiveData(data: string): void;
 }

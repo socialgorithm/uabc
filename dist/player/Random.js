@@ -15,12 +15,12 @@ var Player_1 = require("./model/Player");
 var random_1 = require("../sample/random");
 var RandomPlayer = (function (_super) {
     __extends(RandomPlayer, _super);
-    function RandomPlayer(options, sendMove) {
-        var _this = _super.call(this, options, sendMove) || this;
+    function RandomPlayer(options, sendData) {
+        var _this = _super.call(this, options, sendData) || this;
         _this.randomPlayer = new random_1["default"](constants_1.OPPONENT, 3);
         return _this;
     }
-    RandomPlayer.prototype.addOpponentMove = function (move) {
+    RandomPlayer.prototype.onReceiveData = function (move) {
         var coords = this.parseMove(move);
         if (!coords) {
             return;
@@ -29,7 +29,7 @@ var RandomPlayer = (function (_super) {
         if (!this.randomPlayer.game.isFinished()) {
             var moveCoords = this.randomPlayer.getMove();
             this.randomPlayer.addMove(moveCoords.board, moveCoords.move);
-            this.sendPlayerMove(this.stringifyMove(moveCoords));
+            this.sendData(this.stringifyMove(moveCoords));
         }
     };
     RandomPlayer.prototype.stringifyMove = function (moveCoords) {

@@ -6,8 +6,8 @@ import {Options} from "../lib/input";
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlinePlayer extends Player {
-    constructor(options: Options, private socket: SocketIOClient.Socket, sendMove: (move: string) => void) {
-        super(options, sendMove);
+    constructor(options: Options, private socket: SocketIOClient.Socket, sendData: (data: string) => void) {
+        super(options, sendData);
 
         this.socket.on('game', this.onServerData);
     }
@@ -18,12 +18,12 @@ export default class OnlinePlayer extends Player {
             if (parts[0] === 'end') {
                 console.log('Games ended! You ' + parts[1]);
             } else {
-                this.sendPlayerMove(data.action);
+                this.sendData(data.action);
             }
         }
     };
 
-    public addOpponentMove(move: string) {
+    public onReceiveData(move: string) {
         this.socket.emit('game', move);
     }
 }
