@@ -1,3 +1,5 @@
+import { Coords, Coord } from "../../node_modules/@socialgorithm/ultimate-ttt/dist/model/constants";
+
 /**
  * Round a number to the nearest integer and return an int
  * @param time Float number
@@ -28,3 +30,29 @@ export const getPercentage = (num: number, total: number): string => {
   }
   return Math.floor(num * 100 / total) + '%';
 };
+
+/**
+ * Parse a string containing a valid board;move and return them
+ * @param data
+ */
+export const parseMove = (data: string): Coords => {
+  const parts = data.split(';');
+  const boardStr = parts[0].split(',');
+  if (parts.length > 1) {
+      const moveStr = parts[1].split(',');
+      const board: Coord = [
+          parseInt(boardStr[0], 10),
+          parseInt(boardStr[1], 10)
+      ];
+      const move: Coord = [
+          parseInt(moveStr[0], 10),
+          parseInt(moveStr[1], 10)
+      ];
+      return {
+          board,
+          move,
+      };
+  }
+  console.error('Unknown command', data);
+  return null;
+}

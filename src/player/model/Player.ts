@@ -29,7 +29,7 @@ export default abstract class Player {
         }
     }
 
-    protected sendData(data: string): void {
+    public sendData(data: string): void {
         this.log('server', data);
         this._sendData(data);
     }

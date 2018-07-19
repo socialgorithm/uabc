@@ -38,7 +38,7 @@ var OnlineClient = (function (_super) {
             else {
                 _this.socket = io.connect(host, socketOptions);
             }
-            _this.playerB = new Online_1["default"](options, _this.socket, _this.onPlayerData);
+            _this.playerB = new Online_1["default"](options, _this.socket, _this.onPlayerBData.bind(_this));
             _this.socket.on('error', function (data) {
                 console.error('Error in socket', data);
             });
@@ -65,7 +65,12 @@ var OnlineClient = (function (_super) {
         }
         return _this;
     }
-    OnlineClient.prototype.onPlayerData = function (data) {
+    OnlineClient.prototype.onPlayerAData = function (data) {
+        console.log('received player A data');
+        this.socket.emit('game', data);
+    };
+    OnlineClient.prototype.onPlayerBData = function (data) {
+        console.log('received player B data');
         this.socket.emit('game', data);
     };
     OnlineClient.prototype.onDisconnect = function () {

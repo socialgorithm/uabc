@@ -38,7 +38,7 @@ export default class OnlineClient extends Client {
                 this.socket = io.connect(host, socketOptions);
             }
 
-            this.playerB = new OnlinePlayer(options, this.socket, this.onPlayerData);
+            this.playerB = new OnlinePlayer(options, this.socket, this.onPlayerBData.bind(this));
 
             this.socket.on('error', (data: any) => {
                 console.error('Error in socket', data);
@@ -69,7 +69,13 @@ export default class OnlineClient extends Client {
         }
     }
 
-    public onPlayerData(data: string) {
+    public onPlayerAData(data: string) {
+        console.log('received player A data');
+        this.socket.emit('game', data);
+    }
+
+    public onPlayerBData(data: string) {
+        console.log('received player B data');
         this.socket.emit('game', data);
     }
 

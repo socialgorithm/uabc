@@ -128,7 +128,7 @@ var sections = [
     }
 ];
 function parseInput() {
-    var options = commandLineArgs(optionDefinitions);
+    var options = commandLineArgs(optionDefinitions)._all;
     Object.keys(options).map(function (key) {
         if (options[key] === null) {
             options[key] = true;
@@ -144,9 +144,13 @@ function parseInput() {
         console.log(info.version);
         process.exit(0);
     }
-    if (options.help || isEmpty(options) || (!options.token && !options.practice) || !options.file || options.file.length < 1) {
+    if (options.help || isEmpty(options) || (!options.token && !options.practice)) {
         console.log(getUsage(sections));
         process.exit(0);
+    }
+    if (!options.file || options.file.length < 1) {
+        console.error('uabc error: You must specify at least one executable.', options);
+        process.exit(-1);
     }
     if (!options.practice && options.file.length > 1) {
         console.error('uabc error: You can only specify one executable when in online mode.');

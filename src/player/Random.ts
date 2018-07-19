@@ -17,18 +17,50 @@ export default class RandomPlayer extends Player {
         this.randomPlayer = new Random(OPPONENT, 3);
     }
 
-    public onReceiveData(move: string) {
-        const coords = this.parseMove(move);
-        if (!coords) {
-            return;
-        }
-        this.randomPlayer.addOpponentMove(coords.board, coords.move);
+    public onReceiveData(data: string) {
+        const parts = data.split(' ');
+        const action = parts[0];
 
-        // Check if the game ended
-        if (!this.randomPlayer.game.isFinished()) {
-            const moveCoords = this.randomPlayer.getMove();
-            this.randomPlayer.addMove(moveCoords.board, moveCoords.move);
-            this.sendData(this.stringifyMove(moveCoords));
+        let next,
+            move: Coord,
+            coords: Coords;
+
+        switch (action) {
+            case 'init':
+                this.randomPlayer.init();
+                break;
+            case 'move':
+                try {
+                    coords = this.randomPlayer.getMove();
+                    this.randomPlayer.addMove(coords.board, coords.move);
+                    this.sendData(this.stringifyMove(coords));
+                } catch(e) {
+                    console.error('Player Error: Failed to get a move', e);
+                }
+                break;
+            case 'opponent':
+                // the move will be in the format x,y;x,y
+                // where the first pair are the board's coordinates
+                // and the second one are the move's coordinates
+                next = parts[1].split(';');
+                const boardCoords = next[0].split(',').map((coord: string) => parseInt(coord, 10));
+                const moveCoords = next[1].split(',').map((coord: string) => parseInt(coord, 10));
+                this.randomPlayer.addOpponentMove(
+                    [
+                        boardCoords[0],
+                        boardCoords[1]
+                    ],
+                    [
+                        moveCoords[0],
+                        moveCoords[1]
+                    ]
+                );
+                if (!this.randomPlayer.game.isFinished()) {
+                    coords = this.randomPlayer.getMove();
+                    this.randomPlayer.addMove(coords.board, coords.move);
+                    this.sendData(this.stringifyMove(coords));
+                }
+                break;
         }
     }
 

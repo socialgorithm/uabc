@@ -18,7 +18,7 @@ var Client = (function () {
             }
             this.loggers.file = new FileLogger_1["default"](logName);
         }
-        this.playerA = new Executable_1["default"](options.file[0], options, this.onPlayerData);
+        this.playerA = new Executable_1["default"](options.file[0], options, this.onPlayerAData.bind(this));
         this.state = new State_1["default"]();
     }
     return Client;

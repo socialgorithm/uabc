@@ -148,7 +148,7 @@ const sections = [
 // ------------------------------------------- //
 
 export default function parseInput(): Options {
-  const options = commandLineArgs(optionDefinitions);
+  const options = commandLineArgs(optionDefinitions)._all;
 
   Object.keys(options).map((key: string) => {
     if (options[key] === null) {
@@ -168,9 +168,14 @@ export default function parseInput(): Options {
     process.exit(0);
   }
 
-  if (options.help || isEmpty(options) || (!options.token && !options.practice) || !options.file || options.file.length < 1) {
+  if (options.help || isEmpty(options) || (!options.token && !options.practice)) {
     console.log(getUsage(sections));
     process.exit(0);
+  }
+
+  if (!options.file || options.file.length < 1) {
+    console.error('uabc error: You must specify at least one executable.', options);
+    process.exit(-1);
   }
 
   if (!options.practice && options.file.length > 1) {

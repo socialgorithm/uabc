@@ -38,7 +38,7 @@ export default abstract class Client {
         }
 
         // Player A is always the executable file at 0
-        this.playerA = new ExecutablePlayer(options.file[0], options, this.onPlayerData);
+        this.playerA = new ExecutablePlayer(options.file[0], options, this.onPlayerAData.bind(this));
 
         // Hold the state for the local games
         this.state = new State();
@@ -58,7 +58,8 @@ export default abstract class Client {
     //     }
     // }
 
-    public abstract onPlayerData(data: string): void;
+    protected abstract onPlayerAData(data: string): void;
+    protected abstract onPlayerBData(data: string): void;
 
     // public abstract onDisconnect(): void;
 }
