@@ -12,8 +12,8 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var Client_1 = require("./model/Client");
-var Executable_1 = require("../players/Executable");
-var Random_1 = require("../players/Random");
+var Executable_1 = require("../player/Executable");
+var Random_1 = require("../player/Random");
 var PracticeClient = (function (_super) {
     __extends(PracticeClient, _super);
     function PracticeClient(options) {

@@ -3,8 +3,7 @@ import * as ioProxy from 'socket.io-proxy';
 
 import {Options} from "../lib/input";
 import Client from './model/Client';
-import Player from '../players/model/Player';
-import OnlinePlayer from '../players/Online';
+import OnlinePlayer from '../player/Online';
 
 /**
  * Online Player mode

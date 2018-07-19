@@ -10,10 +10,6 @@
 
 // Parse cli input
 import parseOptions from './lib/input';
-import OnlinePlayer from "./players/Online";
-import RandomPlayer from "./players/Random";
-import ExecutablePlayer from './players/Executable';
-import Player from './players/model/Player';
 import Client from './client/model/Client';
 import PracticeClient from './client/PracticeClient';
 import OnlineClient from './client/OnlineClient';

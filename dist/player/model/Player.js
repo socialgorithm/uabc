@@ -2,11 +2,9 @@
 exports.__esModule = true;
 var ConsoleLogger_1 = require("../../lib/ConsoleLogger");
 var FileLogger_1 = require("../../lib/FileLogger");
-var State_1 = require("../../model/State");
-var Executable_1 = require("../../player/Executable");
-var Client = (function () {
-    function Client(options) {
-        this.options = options;
+var Player = (function () {
+    function Player(options, sendMove) {
+        this.sendMove = sendMove;
         this.loggers = {};
         if (options.verbose) {
             this.loggers.console = new ConsoleLogger_1["default"]();
@@ -18,9 +16,19 @@ var Client = (function () {
             }
             this.loggers.file = new FileLogger_1["default"](logName);
         }
-        this.playerA = new Executable_1["default"](options.file[0], options, this.onPlayerData);
-        this.state = new State_1["default"]();
     }
-    return Client;
+    Player.prototype.sendPlayerMove = function (data) {
+        this.log('server', data);
+        this.sendMove(data);
+    };
+    Player.prototype.log = function (writer, data) {
+        if (this.loggers.console) {
+            this.loggers.console.log(writer, data);
+        }
+        if (this.loggers.file) {
+            this.loggers.file.log(writer, data);
+        }
+    };
+    return Player;
 }());
-exports["default"] = Client;
+exports["default"] = Player;

@@ -1,12 +1,8 @@
 import {Coord, ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
-import * as funcs from '../lib/funcs';
 import {Options} from "../lib/input";
-import State from "../model/State";
-import Random from "../sample/random";
 import Client from "./model/Client";
-import Player from "../players/model/Player";
-import ExecutablePlayer from "../players/Executable";
-import RandomPlayer from "../players/Random";
+import ExecutablePlayer from "../player/Executable";
+import RandomPlayer from "../player/Random";
 
 export default class PracticeClient extends Client {
     constructor(options: Options) {

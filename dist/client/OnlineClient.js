@@ -13,7 +13,7 @@ exports.__esModule = true;
 var io = require("socket.io-client");
 var ioProxy = require("socket.io-proxy");
 var Client_1 = require("./model/Client");
-var Online_1 = require("../players/Online");
+var Online_1 = require("../player/Online");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {

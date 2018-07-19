@@ -3,9 +3,9 @@ import * as os from 'os';
 import ConsoleLogger from "../../lib/ConsoleLogger";
 import FileLogger from "../../lib/FileLogger";
 import {Options} from "../../lib/input";
-import Player from '../../players/model/Player';
+import Player from '../../player/model/Player';
 import State from '../../model/State';
-import ExecutablePlayer from '../../players/Executable';
+import ExecutablePlayer from '../../player/Executable';
 
 export default abstract class Client {
     protected playerA: Player;
