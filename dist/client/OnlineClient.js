@@ -18,6 +18,8 @@ var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {
         var _this = _super.call(this, options) || this;
+        console.log("Starting Online Mode");
+        console.log("Player A: " + _this.options.file[0]);
         console.log();
         console.log('Waiting for server...');
         console.log();
@@ -49,7 +51,7 @@ var OnlineClient = (function (_super) {
                 });
             });
             _this.socket.on('lobby joined', function () {
-                console.log('Lobby Joined!');
+                console.log('Lobby Joined! Waiting for tournament to begin...');
             });
             _this.socket.on('exception', function (data) {
                 console.error(data.error);
@@ -70,11 +72,7 @@ var OnlineClient = (function (_super) {
         this.socket.emit('game', data);
     };
     OnlineClient.prototype.onPlayerBData = function (data) {
-        console.log('received player B data');
-        this.socket.emit('game', data);
-    };
-    OnlineClient.prototype.onDisconnect = function () {
-        this.socket.disconnect();
+        this.playerA.sendData("opponent " + data);
     };
     return OnlineClient;
 }(Client_1["default"]));

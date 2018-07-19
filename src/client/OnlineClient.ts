@@ -15,6 +15,9 @@ export default class OnlineClient extends Client {
     constructor(options: Options) {
         super(options);
 
+        console.log(`Starting Online Mode`);
+        console.log(`Player A: ${this.options.file[0]}`);
+
         console.log();
         console.log('Waiting for server...');
         console.log();
@@ -52,7 +55,7 @@ export default class OnlineClient extends Client {
             });
 
             this.socket.on('lobby joined', () => {
-                console.log('Lobby Joined!');
+                console.log('Lobby Joined! Waiting for tournament to begin...');
             });
 
             this.socket.on('exception', (data: any) => {
@@ -75,11 +78,6 @@ export default class OnlineClient extends Client {
     }
 
     public onPlayerBData(data: string) {
-        console.log('received player B data');
-        this.socket.emit('game', data);
-    }
-
-    public onDisconnect() {
-        this.socket.disconnect();
+        this.playerA.sendData(`opponent ${data}`);
     }
 }
