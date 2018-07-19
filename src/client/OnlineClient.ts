@@ -48,7 +48,7 @@ export default class OnlineClient extends Client {
             });
 
             this.socket.on('connect', () => {
-                console.log('Connected! Joining Lobby...');
+                console.log(`Connected! Joining Lobby "${options.lobby}"...`);
                 this.socket.emit('lobby join', {
                     token: options.lobby,
                 });
@@ -59,6 +59,11 @@ export default class OnlineClient extends Client {
             });
 
             this.socket.on('exception', (data: any) => {
+                console.error(data.error);
+                process.exit(-1);
+            });
+            
+            this.socket.on('lobby exception', (data: any) => {
                 console.error(data.error);
                 process.exit(-1);
             });
@@ -73,11 +78,12 @@ export default class OnlineClient extends Client {
     }
 
     public onPlayerAData(data: string) {
-        console.log('received player A data');
+        console.log('  ** received player A data');
         this.socket.emit('game', data);
     }
 
     public onPlayerBData(data: string) {
-        this.playerA.sendData(`opponent ${data}`);
+        console.log('  ** received player B data', data);
+        this.playerA.sendData(data);
     }
 }

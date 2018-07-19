@@ -22,7 +22,7 @@ export default class OnlinePlayer extends Player {
         }
     };
 
-    protected onReceiveData(move: string) {
-        this.socket.emit('game', move);
+    protected onReceiveData(data: string) {
+        this.socket.emit('game', data);
     }
 }

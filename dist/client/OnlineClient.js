@@ -45,7 +45,7 @@ var OnlineClient = (function (_super) {
                 console.error('Error in socket', data);
             });
             _this.socket.on('connect', function () {
-                console.log('Connected! Joining Lobby...');
+                console.log("Connected! Joining Lobby \"" + options.lobby + "\"...");
                 _this.socket.emit('lobby join', {
                     token: options.lobby
                 });
@@ -54,6 +54,10 @@ var OnlineClient = (function (_super) {
                 console.log('Lobby Joined! Waiting for tournament to begin...');
             });
             _this.socket.on('exception', function (data) {
+                console.error(data.error);
+                process.exit(-1);
+            });
+            _this.socket.on('lobby exception', function (data) {
                 console.error(data.error);
                 process.exit(-1);
             });
@@ -68,11 +72,12 @@ var OnlineClient = (function (_super) {
         return _this;
     }
     OnlineClient.prototype.onPlayerAData = function (data) {
-        console.log('received player A data');
+        console.log('  ** received player A data');
         this.socket.emit('game', data);
     };
     OnlineClient.prototype.onPlayerBData = function (data) {
-        this.playerA.sendData("opponent " + data);
+        console.log('  ** received player B data', data);
+        this.playerA.sendData(data);
     };
     return OnlineClient;
 }(Client_1["default"]));

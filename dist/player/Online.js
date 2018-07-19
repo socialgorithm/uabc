@@ -30,8 +30,8 @@ var OnlinePlayer = (function (_super) {
         _this.socket.on('game', _this.onServerData);
         return _this;
     }
-    OnlinePlayer.prototype.onReceiveData = function (move) {
-        this.socket.emit('game', move);
+    OnlinePlayer.prototype.onReceiveData = function (data) {
+        this.socket.emit('game', data);
     };
     return OnlinePlayer;
 }(Player_1["default"]));
