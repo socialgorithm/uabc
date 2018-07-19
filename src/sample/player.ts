@@ -4,7 +4,8 @@ import Random from './random';
 import {Coord, Coords} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 /**
- * Random client implementation of the UTTT Game
+ * Simple implementation of a stdin/stdout piper for player implementations
+ * In this case it's wired with the sample random algorithm.
  */
 
 function input() {

@@ -11,10 +11,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
-var funcs = require("./lib/funcs");
+var funcs = require("../lib/funcs");
 var Client_1 = require("./model/Client");
-var State_1 = require("./lib/State");
-var random_1 = require("./sample/random");
+var State_1 = require("../lib/State");
+var random_1 = require("../sample/random");
 var PracticeClient = (function (_super) {
     __extends(PracticeClient, _super);
     function PracticeClient(options) {

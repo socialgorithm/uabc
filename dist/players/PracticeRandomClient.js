@@ -11,25 +11,23 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
-var funcs = require("./lib/funcs");
+var funcs = require("../lib/funcs");
 var Client_1 = require("./model/Client");
-var State_1 = require("./lib/State");
-var random_1 = require("./sample/random");
-var PracticeClient = (function (_super) {
-    __extends(PracticeClient, _super);
-    function PracticeClient(options) {
+var State_1 = require("../lib/State");
+var random_1 = require("../sample/random");
+var PracticeRandomClient = (function (_super) {
+    __extends(PracticeRandomClient, _super);
+    function PracticeRandomClient(options) {
         var _this = _super.call(this, options) || this;
         _this.options = options;
         _this.size = 3;
         _this.firstPlayer = Math.round(Math.random());
         _this.state = new State_1["default"]();
         console.log("Starting practice mode (" + _this.options.games + " games)");
-        console.log("Player A: " + _this.options.file[0]);
-        console.log("Player B: " + _this.options.file[1]);
         _this.startGame();
         return _this;
     }
-    PracticeClient.prototype.startGame = function () {
+    PracticeRandomClient.prototype.startGame = function () {
         this.firstPlayer = 1 - this.firstPlayer;
         this.playerB = new random_1["default"](constants_1.OPPONENT, this.size);
         this.sendData('init');
@@ -42,7 +40,7 @@ var PracticeClient = (function (_super) {
             this.playerBMove();
         }
     };
-    PracticeClient.prototype.onPlayerData = function (data) {
+    PracticeRandomClient.prototype.onPlayerData = function (data) {
         var parts = data.split(';');
         var boardStr = parts[0].split(',');
         if (parts.length > 1) {
@@ -64,13 +62,13 @@ var PracticeClient = (function (_super) {
             console.error('Unknown command', data);
         }
     };
-    PracticeClient.prototype.playerBMove = function () {
+    PracticeRandomClient.prototype.playerBMove = function () {
         var moveCoords = this.playerB.getMove();
         this.playerB.addMove(moveCoords.board, moveCoords.move);
         this.sendData('opponent ' + moveCoords.board.join(',') + ';' + moveCoords.move.join(','));
         this.checkEnding();
     };
-    PracticeClient.prototype.checkEnding = function () {
+    PracticeRandomClient.prototype.checkEnding = function () {
         if (this.playerB.game.isFinished()) {
             var result = this.playerB.game.getResult();
             if (result === -1) {
@@ -99,9 +97,9 @@ var PracticeClient = (function (_super) {
         }
         return false;
     };
-    PracticeClient.prototype.onDisconnect = function () {
+    PracticeRandomClient.prototype.onDisconnect = function () {
         console.error('Error: Player process exited');
     };
-    return PracticeClient;
+    return PracticeRandomClient;
 }(Client_1["default"]));
-exports["default"] = PracticeClient;
+exports["default"] = PracticeRandomClient;

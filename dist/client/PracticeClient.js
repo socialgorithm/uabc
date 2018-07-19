@@ -11,18 +11,21 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
-var funcs = require("./lib/funcs");
 var Client_1 = require("./model/Client");
-var State_1 = require("./lib/State");
-var random_1 = require("./sample/random");
+var Executable_1 = require("../players/Executable");
+var Random_1 = require("../players/Random");
 var PracticeClient = (function (_super) {
     __extends(PracticeClient, _super);
     function PracticeClient(options) {
         var _this = _super.call(this, options) || this;
-        _this.options = options;
         _this.size = 3;
+        if (_this.options.file.length > 1) {
+            _this.playerB = new Executable_1["default"](options.file[1], options, _this.onPlayerData);
+        }
+        else {
+            _this.playerB = new Random_1["default"](options, _this.onPlayerData);
+        }
         _this.firstPlayer = Math.round(Math.random());
-        _this.state = new State_1["default"]();
         console.log("Starting practice mode (" + _this.options.games + " games)");
         console.log("Player A: " + _this.options.file[0]);
         console.log("Player B: " + _this.options.file[1]);
@@ -31,12 +34,9 @@ var PracticeClient = (function (_super) {
     }
     PracticeClient.prototype.startGame = function () {
         this.firstPlayer = 1 - this.firstPlayer;
-        this.playerB = new random_1["default"](constants_1.OPPONENT, this.size);
-        this.sendData('init');
         this.gameStart = process.hrtime();
         this.state.games++;
         if (this.firstPlayer === constants_1.ME) {
-            this.sendData('move');
         }
         else {
             this.playerBMove();
@@ -55,7 +55,6 @@ var PracticeClient = (function (_super) {
                 parseInt(moveStr[0], 10),
                 parseInt(moveStr[1], 10)
             ];
-            this.playerB.addOpponentMove(board, move);
             if (!this.checkEnding()) {
                 this.playerBMove();
             }
@@ -65,38 +64,9 @@ var PracticeClient = (function (_super) {
         }
     };
     PracticeClient.prototype.playerBMove = function () {
-        var moveCoords = this.playerB.getMove();
-        this.playerB.addMove(moveCoords.board, moveCoords.move);
-        this.sendData('opponent ' + moveCoords.board.join(',') + ';' + moveCoords.move.join(','));
         this.checkEnding();
     };
     PracticeClient.prototype.checkEnding = function () {
-        if (this.playerB.game.isFinished()) {
-            var result = this.playerB.game.getResult();
-            if (result === -1) {
-                this.state.ties++;
-            }
-            else {
-                this.state.wins[result]++;
-            }
-            var hrend = process.hrtime(this.gameStart);
-            this.state.times.push(funcs.convertExecTime(hrend[1]));
-            if (this.options.verbose) {
-                console.log('-----------------------');
-                console.log("Game Ended (" + funcs.convertExecTime(hrend[1]) + "ms)");
-                console.log("Winner: " + result);
-                console.log(this.playerB.game.prettyPrint());
-                console.log('');
-            }
-            if (this.state.games < this.options.games) {
-                this.startGame();
-                return true;
-            }
-            else {
-                this.state.printState();
-                process.exit(0);
-            }
-        }
         return false;
     };
     PracticeClient.prototype.onDisconnect = function () {

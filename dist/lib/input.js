@@ -24,6 +24,7 @@ var optionDefinitions = [
         type: String,
         typeLabel: '{underline file}',
         defaultOption: true,
+        multiple: true,
         description: 'Path to the client executable'
     },
     {
@@ -112,9 +113,17 @@ function parseInput() {
         console.log(info.version);
         process.exit(0);
     }
-    if (options.help || isEmpty(options) || (!options.token && !options.practice) || !options.file) {
+    if (options.help || isEmpty(options) || (!options.token && !options.practice) || !options.file || options.file.length < 1) {
         console.log(getUsage(sections));
         process.exit(0);
+    }
+    if (!options.practice && options.file.length > 1) {
+        console.error('uabc error: You can only specify one executable when in online mode.');
+        process.exit(-1);
+    }
+    if (options.practice && options.file.length > 2) {
+        console.error('uabc error: You can only specify up to two executables when in practice mode.');
+        process.exit(-1);
     }
     return options;
 }

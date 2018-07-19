@@ -1,11 +1,13 @@
 import * as io from 'socket.io-client';
 import * as ioProxy from 'socket.io-proxy';
 
-import Client from "./model/Client";
-import {Options} from "./lib/input";
+import {Options} from "../lib/input";
+import Client from './model/Client';
+import Player from '../players/model/Player';
+import OnlinePlayer from '../players/Online';
 
 /**
- * Online Client mode
+ * Online Player mode
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlineClient extends Client {
@@ -18,7 +20,7 @@ export default class OnlineClient extends Client {
         console.log('Waiting for server...');
         console.log();
 
-        // Spawn the player
+        // Spawn the opponent (server)
         try {
             let host = options.host || 'localhost:3141';
             if (host.substr(0,4) !== 'http') {
@@ -37,6 +39,8 @@ export default class OnlineClient extends Client {
                 this.socket = io.connect(host, socketOptions);
             }
 
+            this.playerB = new OnlinePlayer(options, this.socket, this.onPlayerData);
+
             this.socket.on('error', (data: any) => {
                 console.error('Error in socket', data);
             });
@@ -54,24 +58,14 @@ export default class OnlineClient extends Client {
 
             this.socket.on('exception', (data: any) => {
                 console.error(data.error);
-            });
-
-            this.socket.on('game', (data: any) => {
-                if (data.action && data.action.length > 0) {
-                    const parts = data.action.split(' ');
-                    if (parts[0] === 'end') {
-                        console.log('Games ended! You ' + parts[1]);
-                    } else {
-                        this.sendData(data.action);
-                    }
-                }
+                process.exit(-1);
             });
 
             this.socket.on('disconnect', function() {
                 console.log('Connection lost!');
             });
         } catch (e) {
-            console.error('Error in UABC', e);
+            console.error('uabc error:', e);
             process.exit(-1);
         }
     }

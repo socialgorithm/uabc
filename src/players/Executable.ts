@@ -1,38 +1,29 @@
 import * as os from 'os';
+import { ChildProcess } from "child_process";
+import { Coords } from '@socialgorithm/ultimate-ttt/dist/model/constants';
 
-import ConsoleLogger from "../lib/ConsoleLogger";
-import FileLogger from "../lib/FileLogger";
+import Player from "./model/Player";
 import {Options} from "../lib/input";
-import {ChildProcess} from "child_process";
-import exec from '../lib/exec';
+import exec from "../lib/exec";
 
-abstract class Client {
-    private loggers: {
-        console?: ConsoleLogger,
-        file?: FileLogger,
-    };
+/**
+ * Player that runs from a local executable
+ */
+export default class ExecutablePlayer extends Player {
     private playerProcess: ChildProcess;
 
-    constructor(options: Options) {
-        this.loggers = {};
+    constructor(file: string, options: Options, sendMove: (move: string) => void) {
+        super(options, sendMove);
 
-        if (options.verbose) {
-            this.loggers.console = new ConsoleLogger();
+        if (!file || file.length < 1) {
+            console.error('uabc error: executable not specified');
+            process.exit(-1);
         }
 
-        if (options.log) {
-            let logName;
-            if (options.log.length > 0) {
-                logName = options.log;
-            }
-            this.loggers.file = new FileLogger(logName);
-        }
-
-        this.playerProcess = exec(options.file);
+        this.playerProcess = exec(file);
 
         this.playerProcess.on('close', (code: string) => {
             console.log(`client> child process exited with code ${code}`);
-            this.onDisconnect();
         });
 
         this.playerProcess.stdout.on('data', (data: string) => {
@@ -46,7 +37,7 @@ abstract class Client {
                 }
                 if (regex.test(line.replace(/\s/g,''))) {
                     this.log('player', line);
-                    this.onPlayerData(line);
+                    this.sendPlayerMove(line);
                 } else {
                     output.push(line);
                 }
@@ -65,23 +56,7 @@ abstract class Client {
         });
     }
 
-    public sendData(data: string): void {
-        this.log('server', data);
-        this.playerProcess.stdin.write(data + os.EOL);
+    public addOpponentMove(move: string) {
+        this.playerProcess.stdin.write(move + os.EOL);
     }
-
-    public log(writer: string, data: string) {
-        if (this.loggers.console) {
-            this.loggers.console.log(writer, data);
-        }
-        if (this.loggers.file) {
-            this.loggers.file.log(writer, data);
-        }
-    }
-
-    public abstract onPlayerData(data: string): void;
-
-    public abstract onDisconnect(): void;
 }
-
-export default Client;

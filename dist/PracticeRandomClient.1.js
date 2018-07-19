@@ -24,8 +24,6 @@ var PracticeClient = (function (_super) {
         _this.firstPlayer = Math.round(Math.random());
         _this.state = new State_1["default"]();
         console.log("Starting practice mode (" + _this.options.games + " games)");
-        console.log("Player A: " + _this.options.file[0]);
-        console.log("Player B: " + _this.options.file[1]);
         _this.startGame();
         return _this;
     }

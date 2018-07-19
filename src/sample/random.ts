@@ -1,4 +1,4 @@
-import UTTT from '@socialgorithm/ultimate-ttt';
+import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
 import {Coord, Coords, ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import SubBoard from "@socialgorithm/ultimate-ttt/dist/SubBoard";
 
