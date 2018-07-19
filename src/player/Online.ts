@@ -1,5 +1,4 @@
 import Player from "./model/Player";
-import {Options} from "../lib/input";
 
 /**
  * Online Player mode

@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var funcs = require("../lib/funcs");
+var funcs = require("../../lib/funcs");
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var State = (function () {
     function State() {

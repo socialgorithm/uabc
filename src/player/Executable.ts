@@ -1,9 +1,7 @@
 import * as os from 'os';
 import { ChildProcess } from "child_process";
-import { Coords } from '@socialgorithm/ultimate-ttt/dist/model/constants';
 
 import Player from "./model/Player";
-import {Options} from "../lib/input";
 import exec from "../lib/exec";
 
 /**

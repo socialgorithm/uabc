@@ -2,7 +2,7 @@
 exports.__esModule = true;
 var ConsoleLogger_1 = require("../../logger/ConsoleLogger");
 var FileLogger_1 = require("../../logger/FileLogger");
-var State_1 = require("../../model/State");
+var State_1 = require("./State");
 var Executable_1 = require("../../player/Executable");
 var Client = (function () {
     function Client(options) {

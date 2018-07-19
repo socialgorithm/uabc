@@ -1,4 +1,4 @@
-import * as funcs from '../lib/funcs';
+import * as funcs from '../../lib/funcs';
 import {ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 /**

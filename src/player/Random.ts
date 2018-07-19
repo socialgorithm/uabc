@@ -1,7 +1,5 @@
-import {Coord, ME, OPPONENT, Coords} from "@socialgorithm/ultimate-ttt/dist/model/constants";
-import * as funcs from '../lib/funcs';
+import {Coord, OPPONENT, Coords} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import Player from "./model/Player";
-import {Options} from "../lib/input";
 import Random from "../sample/random";
 
 /**
@@ -66,27 +64,5 @@ export default class RandomPlayer extends Player {
 
     private stringifyMove(moveCoords: Coords): string {
         return moveCoords.board.join(',') + ';' + moveCoords.move.join(',');
-    }
-
-    private parseMove(data: string): Coords {
-        const parts = data.split(';');
-        const boardStr = parts[0].split(',');
-        if (parts.length > 1) {
-            const moveStr = parts[1].split(',');
-            const board: Coord = [
-                parseInt(boardStr[0], 10),
-                parseInt(boardStr[1], 10)
-            ];
-            const move: Coord = [
-                parseInt(moveStr[0], 10),
-                parseInt(moveStr[1], 10)
-            ];
-            return {
-                board,
-                move,
-            };
-        }
-        console.error('Unknown command', data);
-        return null;
     }
 }

@@ -2,7 +2,7 @@ import ConsoleLogger from "../../logger/ConsoleLogger";
 import FileLogger from "../../logger/FileLogger";
 import {Options} from "../../lib/input";
 import Player from '../../player/model/Player';
-import State from '../../model/State';
+import State from './State';
 import ExecutablePlayer from '../../player/Executable';
 
 export default abstract class Client {
