@@ -11,18 +11,20 @@ export default class OnlinePlayer extends Player {
         this.socket.on('game', this.onServerData);
     }
 
-    private onServerData = (data: any) => {
-        if (data.action && data.action.length > 0) {
-            const parts = data.action.split(' ');
+    private onServerData = (data: string) => {
+        console.log('SERVER - Received', data);
+        if (data && data.length > 0) {
+            const parts = data.split(' ');
             if (parts[0] === 'end') {
                 console.log('Games ended! You ' + parts[1]);
             } else {
-                this.onPlayerData(data.action);
+                this.onPlayerData(data);
             }
         }
     };
 
     protected onReceiveData(data: string) {
+        console.log('UABC - Sending', data);
         this.socket.emit('game', data);
     }
 }

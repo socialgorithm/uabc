@@ -17,13 +17,14 @@ var OnlinePlayer = (function (_super) {
         var _this = _super.call(this, sendData) || this;
         _this.socket = socket;
         _this.onServerData = function (data) {
-            if (data.action && data.action.length > 0) {
-                var parts = data.action.split(' ');
+            console.log('SERVER - Received', data);
+            if (data && data.length > 0) {
+                var parts = data.split(' ');
                 if (parts[0] === 'end') {
                     console.log('Games ended! You ' + parts[1]);
                 }
                 else {
-                    _this.onPlayerData(data.action);
+                    _this.onPlayerData(data);
                 }
             }
         };
@@ -31,6 +32,7 @@ var OnlinePlayer = (function (_super) {
         return _this;
     }
     OnlinePlayer.prototype.onReceiveData = function (data) {
+        console.log('UABC - Sending', data);
         this.socket.emit('game', data);
     };
     return OnlinePlayer;
