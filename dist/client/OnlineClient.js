@@ -72,11 +72,11 @@ var OnlineClient = (function (_super) {
         return _this;
     }
     OnlineClient.prototype.onPlayerAData = function (data) {
-        console.log('  ** received player A data');
+        this.log('A', data);
         this.socket.emit('game', data);
     };
     OnlineClient.prototype.onPlayerBData = function (data) {
-        console.log('  ** received player B data', data);
+        this.log('B', data);
         this.playerA.sendData(data);
     };
     return OnlineClient;

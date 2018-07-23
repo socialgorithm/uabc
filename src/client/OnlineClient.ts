@@ -78,12 +78,12 @@ export default class OnlineClient extends Client {
     }
 
     public onPlayerAData(data: string) {
-        console.log('  ** received player A data');
+        this.log('A', data);
         this.socket.emit('game', data);
     }
 
     public onPlayerBData(data: string) {
-        console.log('  ** received player B data', data);
+        this.log('B', data);
         this.playerA.sendData(data);
     }
 }

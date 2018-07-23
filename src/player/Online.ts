@@ -12,7 +12,6 @@ export default class OnlinePlayer extends Player {
     }
 
     private onServerData = (data: string) => {
-        console.log('SERVER - Received', data);
         if (data && data.length > 0) {
             const parts = data.split(' ');
             if (parts[0] === 'end') {
@@ -24,7 +23,6 @@ export default class OnlinePlayer extends Player {
     };
 
     protected onReceiveData(data: string) {
-        console.log('UABC - Sending', data);
         this.socket.emit('game', data);
     }
 }

@@ -17,7 +17,6 @@ var OnlinePlayer = (function (_super) {
         var _this = _super.call(this, sendData) || this;
         _this.socket = socket;
         _this.onServerData = function (data) {
-            console.log('SERVER - Received', data);
             if (data && data.length > 0) {
                 var parts = data.split(' ');
                 if (parts[0] === 'end') {
@@ -32,7 +31,6 @@ var OnlinePlayer = (function (_super) {
         return _this;
     }
     OnlinePlayer.prototype.onReceiveData = function (data) {
-        console.log('UABC - Sending', data);
         this.socket.emit('game', data);
     };
     return OnlinePlayer;
