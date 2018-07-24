@@ -1,11 +1,12 @@
 import * as io from 'socket.io-client';
 import * as ioProxy from 'socket.io-proxy';
 
-import Client from "./model/Client";
-import {Options} from "./lib/input";
+import {Options} from "../lib/input";
+import Client from './model/Client';
+import OnlinePlayer from '../player/Online';
 
 /**
- * Online Client mode
+ * Online Player mode
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlineClient extends Client {
@@ -14,11 +15,14 @@ export default class OnlineClient extends Client {
     constructor(options: Options) {
         super(options);
 
+        console.log(`Starting Online Mode`);
+        console.log(`Player A: ${this.options.file[0]}`);
+
         console.log();
         console.log('Waiting for server...');
         console.log();
 
-        // Spawn the player
+        // Spawn the opponent (server)
         try {
             let host = options.host || 'localhost:3141';
             if (host.substr(0,4) !== 'http') {
@@ -37,39 +41,49 @@ export default class OnlineClient extends Client {
                 this.socket = io.connect(host, socketOptions);
             }
 
+            this.playerB = new OnlinePlayer(this.socket, this.onPlayerBData.bind(this));
+
             this.socket.on('error', (data: any) => {
                 console.error('Error in socket', data);
             });
 
             this.socket.on('connect', () => {
-                console.log('Connected!');
+                console.log(`Connected! Joining Lobby "${options.lobby}"...`);
+                this.socket.emit('lobby join', {
+                    token: options.lobby,
+                });
             });
 
-            this.socket.on('game', (data: any) => {
-                if (data.action && data.action.length > 0) {
-                    const parts = data.action.split(' ');
-                    if (parts[0] === 'end') {
-                        console.log('Games ended! You ' + parts[1]);
-                    } else {
-                        this.sendData(data.action);
-                    }
-                }
+            this.socket.on('lobby joined', () => {
+                console.log('Lobby Joined! Waiting for tournament to begin...');
+            });
+
+            this.socket.on('exception', (data: any) => {
+                console.error(data.error);
+                process.exit(-1);
+            });
+            
+            this.socket.on('lobby exception', (data: any) => {
+                console.error(data.error);
+                process.exit(-1);
             });
 
             this.socket.on('disconnect', function() {
                 console.log('Connection lost!');
             });
         } catch (e) {
-            console.error('Error in UABC', e);
+            console.error('uabc error:', e);
             process.exit(-1);
         }
     }
 
-    public onPlayerData(data: string) {
+    public onPlayerAData(data: string) {
+        this.log('A', data);
         this.socket.emit('game', data);
     }
 
-    public onDisconnect() {
-        this.socket.disconnect();
+    public onPlayerBData(data: string) {
+        this.log('B', data);
+        this.playerA.sendData(data);
     }
 }

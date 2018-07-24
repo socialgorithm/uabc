@@ -10,8 +10,9 @@
 
 // Parse cli input
 import parseOptions from './lib/input';
-import OnlineClient from "./OnlineClient";
-import PracticeClient from "./PracticeClient";
+import Client from './client/model/Client';
+import PracticeClient from './client/PracticeClient';
+import OnlineClient from './client/OnlineClient';
 
 // Read command line options
 const options = parseOptions();
@@ -20,8 +21,10 @@ console.info("+----------------------------------+");
 console.info("|     Ultimate Algorithm Battle    |");
 console.info("+----------------------------------+");
 
-if (!options.practice) {
-  new OnlineClient(options);
+// Now we're ready!
+let client: Client;
+if (options.practice) {
+  client = new PracticeClient(options);
 } else {
-  new PracticeClient(options);
+  client = new OnlineClient(options);
 }

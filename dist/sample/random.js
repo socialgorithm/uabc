@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var ultimate_ttt_1 = require("@socialgorithm/ultimate-ttt");
+var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var Random = (function () {
     function Random(player, size) {
@@ -14,7 +14,7 @@ var Random = (function () {
         this.init();
     }
     Random.prototype.init = function () {
-        this.game = new ultimate_ttt_1["default"](this.size);
+        this.game = new UTTT_1["default"](this.size);
     };
     Random.prototype.addOpponentMove = function (board, move) {
         try {

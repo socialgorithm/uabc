@@ -20,25 +20,49 @@ Verify the installation by running:
 $ uabc --version
 ```
 
-## Playing
+## Options
 
-You'll need to get a valid **token** from the game server first. Let's assume that our token is `123` for now.
+Run `uabc -h` to see the full list of options:
 
-Simply run:
+```
+Main Options
 
-```bash
-$ uabc -t 123 -f "node player.js"
+  -f, --file file [file]   Path to the client executable/s (you can specify two when in practice mode,
+                           separated by spaces to have two versions of your algorithm play each other).
+                           If placed at the end, you don't have to put -f
+
+Local Practice
+
+  -p, --practice       Practice mode - it will play locally against a random algorithm. It doesn't
+                       require a connection to a server (so no need to specify the lobby/token)
+  -g, --games number   Number of games to play in practice mode, defaults to 100
+
+Online Games
+
+  -l, --lobby lobby   Identification token for the lobby you want to play in
+  -t, --token token   Your team name or identifier
+  --host host:port    host:port where the client should connect to, defaults to localhost:8123. You
+                      can specify https:// as well if SSL is required
+  --proxy string      HTTP proxy to use for the web socket connection. If the env var HTTP_PROXY is
+                      set, it will automatically use that.
+
+Helpers
+
+  -v, --version    Display the client version
+  --verbose        Log everything to the console
+  --log [file]     File where game logs should be stored, defaults to `uabc-[date].log` in the
+                   current directory if no file name is specified
+  -h, --help       Print this guide
+
+Synopsis
+
+  $ uabc --host host:1234 -l lobby -t token -f path/to/client/executable
+  $ uabc --log -p -f path/to/client/executable
+  $ uabc --verbose ---practice "executable_1.py" "node executable_2.js"
+  $ uabc --help
 ```
 
-Where `player.js` is your player. Another example, if it was a Java program:
-
-```bash
-$ uabc -t 123 -f "java Player"
-```
-
-You don't need the server running to start the client, it will automatically detect the server and connect to it when it comes up.
-
-## [Player Documentation](https://socialgorithm.org/ultimate-ttt-docs/sections/player/testing_locally.html)
+## [Player Documentation](https://socialgorithm.org/ultimate-ttt-docs/sections/player/analyse_games.html)
 
 ## Running the sample player
 
@@ -49,5 +73,5 @@ uabc provides a sample player that choses valid moves at random. To test it clon
 ```bash
 $ git clone https://github.com/socialgorithm/uabc.git
 $ cd uabc
-$ uabc --host localhost:3141 -t token -f "node dist/sample/player.js"
+$ uabc -p -f "node dist/sample/player.js"
 ```

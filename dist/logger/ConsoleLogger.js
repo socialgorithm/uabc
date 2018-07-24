@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Logger_1 = require("../model/Logger");
+var Logger_1 = require("./model/Logger");
 var ConsoleLogger = (function (_super) {
     __extends(ConsoleLogger, _super);
     function ConsoleLogger() {

@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as os from 'os';
-import Logger from "../model/Logger";
+import Logger from "./model/Logger";
 
 /**
  * File logger module - it replaces the file if it already exists

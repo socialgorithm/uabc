@@ -13,10 +13,13 @@ exports.__esModule = true;
 var io = require("socket.io-client");
 var ioProxy = require("socket.io-proxy");
 var Client_1 = require("./model/Client");
+var Online_1 = require("../player/Online");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {
         var _this = _super.call(this, options) || this;
+        console.log("Starting Online Mode");
+        console.log("Player A: " + _this.options.file[0]);
         console.log();
         console.log('Waiting for server...');
         console.log();
@@ -37,38 +40,44 @@ var OnlineClient = (function (_super) {
             else {
                 _this.socket = io.connect(host, socketOptions);
             }
+            _this.playerB = new Online_1["default"](_this.socket, _this.onPlayerBData.bind(_this));
             _this.socket.on('error', function (data) {
                 console.error('Error in socket', data);
             });
             _this.socket.on('connect', function () {
-                console.log('Connected!');
+                console.log("Connected! Joining Lobby \"" + options.lobby + "\"...");
+                _this.socket.emit('lobby join', {
+                    token: options.lobby
+                });
             });
-            _this.socket.on('game', function (data) {
-                if (data.action && data.action.length > 0) {
-                    var parts = data.action.split(' ');
-                    if (parts[0] === 'end') {
-                        console.log('Games ended! You ' + parts[1]);
-                    }
-                    else {
-                        _this.sendData(data.action);
-                    }
-                }
+            _this.socket.on('lobby joined', function () {
+                console.log('Lobby Joined! Waiting for tournament to begin...');
+            });
+            _this.socket.on('exception', function (data) {
+                console.error(data.error);
+                process.exit(-1);
+            });
+            _this.socket.on('lobby exception', function (data) {
+                console.error(data.error);
+                process.exit(-1);
             });
             _this.socket.on('disconnect', function () {
                 console.log('Connection lost!');
             });
         }
         catch (e) {
-            console.error('Error in UABC', e);
+            console.error('uabc error:', e);
             process.exit(-1);
         }
         return _this;
     }
-    OnlineClient.prototype.onPlayerData = function (data) {
+    OnlineClient.prototype.onPlayerAData = function (data) {
+        this.log('A', data);
         this.socket.emit('game', data);
     };
-    OnlineClient.prototype.onDisconnect = function () {
-        this.socket.disconnect();
+    OnlineClient.prototype.onPlayerBData = function (data) {
+        this.log('B', data);
+        this.playerA.sendData(data);
     };
     return OnlineClient;
 }(Client_1["default"]));

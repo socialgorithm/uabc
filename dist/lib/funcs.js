@@ -12,3 +12,24 @@ exports.getPercentage = function (num, total) {
     }
     return Math.floor(num * 100 / total) + '%';
 };
+exports.parseMove = function (data) {
+    var parts = data.split(';');
+    var boardStr = parts[0].split(',');
+    if (parts.length > 1) {
+        var moveStr = parts[1].split(',');
+        var board = [
+            parseInt(boardStr[0], 10),
+            parseInt(boardStr[1], 10)
+        ];
+        var move = [
+            parseInt(moveStr[0], 10),
+            parseInt(moveStr[1], 10)
+        ];
+        return {
+            board: board,
+            move: move
+        };
+    }
+    console.error('Unknown command', data);
+    return null;
+};
