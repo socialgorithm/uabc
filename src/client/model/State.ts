@@ -1,5 +1,5 @@
 import * as funcs from '../../lib/funcs';
-import {ME, OPPONENT} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import {ME, OPPONENT, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 /**
  * Game stats calculated from a given state
@@ -41,9 +41,9 @@ export default class State {
 
     let winner = null;
     if (stats.winner === ME) {
-      winner = 'B';
-    } else if(stats.winner === OPPONENT) {
       winner = 'A';
+    } else if(stats.winner === OPPONENT) {
+      winner = 'B';
     }
 
     console.log('');
@@ -54,12 +54,12 @@ export default class State {
     }
     console.log('Games played: %d', this.games);
     console.log('');
-    console.log('Player A wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
-    console.log('Player B wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
+    console.log('Player A wins: %d (%s)', this.wins[ME], stats.winPercentages[ME]);
+    console.log('Player B wins: %d (%s)', this.wins[OPPONENT], stats.winPercentages[OPPONENT]);
     console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
     console.log('');
-    console.log('Player 1 timeouts: %d', this.timeouts[1]);
-    console.log('Player 2 timeouts: %d', this.timeouts[0]);
+    console.log('Player A timeouts: %d', this.timeouts[ME]);
+    console.log('Player B timeouts: %d', this.timeouts[OPPONENT]);
     console.log('');
     console.log('Total time: %dms', stats.total);
     console.log('Avg game: %dms', stats.avg);
@@ -75,17 +75,17 @@ export default class State {
   public getStats(): Stats {
     const stats: Stats = {};
     // Get winner
-    if (this.wins[0] === this.wins[1]) {
-      stats.winner = -1;
-    } else if(this.wins[0] > this.wins[1]) {
-      stats.winner = 0;
+    if (this.wins[ME] === this.wins[OPPONENT]) {
+      stats.winner = RESULT_TIE;
+    } else if(this.wins[ME] > this.wins[OPPONENT]) {
+      stats.winner = ME;
     } else {
-      stats.winner = 1;
+      stats.winner = OPPONENT;
     }
 
     stats.winPercentages = [
-      funcs.getPercentage(this.wins[0], this.games),
-      funcs.getPercentage(this.wins[1], this.games)
+      funcs.getPercentage(this.wins[ME], this.games),
+      funcs.getPercentage(this.wins[OPPONENT], this.games)
     ];
 
     stats.tiePercentage = funcs.getPercentage(this.ties, this.games);

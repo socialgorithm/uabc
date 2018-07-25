@@ -64,10 +64,10 @@ var PracticeClient = (function (_super) {
         if (this.options.verbose) {
             var winner = null;
             if (result === constants_1.ME) {
-                winner = 'Player B';
+                winner = 'Player A';
             }
             else if (result === constants_1.OPPONENT) {
-                winner = 'Player A';
+                winner = 'Player B';
             }
             else {
                 winner = 'Tie';

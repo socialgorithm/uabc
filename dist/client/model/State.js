@@ -14,10 +14,10 @@ var State = (function () {
         var stats = this.getStats();
         var winner = null;
         if (stats.winner === constants_1.ME) {
-            winner = 'B';
+            winner = 'A';
         }
         else if (stats.winner === constants_1.OPPONENT) {
-            winner = 'A';
+            winner = 'B';
         }
         console.log('');
         if (winner) {
@@ -28,12 +28,12 @@ var State = (function () {
         }
         console.log('Games played: %d', this.games);
         console.log('');
-        console.log('Player A wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
-        console.log('Player B wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
+        console.log('Player A wins: %d (%s)', this.wins[constants_1.ME], stats.winPercentages[constants_1.ME]);
+        console.log('Player B wins: %d (%s)', this.wins[constants_1.OPPONENT], stats.winPercentages[constants_1.OPPONENT]);
         console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
         console.log('');
-        console.log('Player 1 timeouts: %d', this.timeouts[1]);
-        console.log('Player 2 timeouts: %d', this.timeouts[0]);
+        console.log('Player A timeouts: %d', this.timeouts[constants_1.ME]);
+        console.log('Player B timeouts: %d', this.timeouts[constants_1.OPPONENT]);
         console.log('');
         console.log('Total time: %dms', stats.total);
         console.log('Avg game: %dms', stats.avg);
@@ -43,18 +43,18 @@ var State = (function () {
     };
     State.prototype.getStats = function () {
         var stats = {};
-        if (this.wins[0] === this.wins[1]) {
-            stats.winner = -1;
+        if (this.wins[constants_1.ME] === this.wins[constants_1.OPPONENT]) {
+            stats.winner = constants_1.RESULT_TIE;
         }
-        else if (this.wins[0] > this.wins[1]) {
-            stats.winner = 0;
+        else if (this.wins[constants_1.ME] > this.wins[constants_1.OPPONENT]) {
+            stats.winner = constants_1.ME;
         }
         else {
-            stats.winner = 1;
+            stats.winner = constants_1.OPPONENT;
         }
         stats.winPercentages = [
-            funcs.getPercentage(this.wins[0], this.games),
-            funcs.getPercentage(this.wins[1], this.games)
+            funcs.getPercentage(this.wins[constants_1.ME], this.games),
+            funcs.getPercentage(this.wins[constants_1.OPPONENT], this.games)
         ];
         stats.tiePercentage = funcs.getPercentage(this.ties, this.games);
         var sum = 0;

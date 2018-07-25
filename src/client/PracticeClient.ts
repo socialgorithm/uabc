@@ -67,9 +67,9 @@ export default class PracticeClient extends Client {
         if (this.options.verbose) {
             let winner = null;
             if (result === ME) {
-                winner = 'Player B';
-            } else if(result === OPPONENT) {
                 winner = 'Player A';
+            } else if(result === OPPONENT) {
+                winner = 'Player B';
             } else {
                 winner = 'Tie';
             }
