@@ -40,14 +40,17 @@ var PracticeClient = (function (_super) {
     PracticeClient.prototype.startGame = function () {
         this.currentGame = new UTTT_1["default"]();
         this.firstPlayer = 1 - this.firstPlayer;
+        this.log('A', 'init');
         this.playerA.sendData('init');
         this.playerB.sendData('init');
         this.gameStart = process.hrtime();
         this.state.games++;
         if (this.firstPlayer === constants_1.ME) {
+            this.log('A', 'move');
             this.playerA.sendData('move');
         }
         else {
+            this.log('B', 'move');
             this.playerB.sendData('move');
         }
     };
@@ -90,8 +93,8 @@ var PracticeClient = (function (_super) {
         if (!coords) {
             console.log('error: received invalid move from player A');
         }
-        this.currentGame = this.currentGame.addMyMove(coords.board, coords.move);
         this.log('A', data);
+        this.currentGame = this.currentGame.addMyMove(coords.board, coords.move);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
@@ -103,13 +106,14 @@ var PracticeClient = (function (_super) {
         if (!coords) {
             console.log('error: received invalid move from player B');
         }
+        var sendMessage = "opponent " + data;
+        this.log('B', sendMessage);
         this.currentGame = this.currentGame.addOpponentMove(coords.board, coords.move);
-        this.log('B', data);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
         }
-        this.playerA.sendData("opponent " + data);
+        this.playerA.sendData(sendMessage);
     };
     return PracticeClient;
 }(Client_1["default"]));

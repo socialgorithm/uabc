@@ -39,6 +39,7 @@ export default class PracticeClient extends Client {
         this.currentGame = new UTTT();
         this.firstPlayer = 1 - this.firstPlayer;
         // initialize the players
+        this.log('A', 'init');
         this.playerA.sendData('init');
         this.playerB.sendData('init');
 
@@ -47,9 +48,11 @@ export default class PracticeClient extends Client {
 
         if (this.firstPlayer === ME){
             // request move from player A
+            this.log('A', 'move');
             this.playerA.sendData('move');
         } else {
             // request move from player B
+            this.log('B', 'move');
             this.playerB.sendData('move');
         }
     }
@@ -93,8 +96,8 @@ export default class PracticeClient extends Client {
         if (!coords) {
             console.log('error: received invalid move from player A');
         }
-        this.currentGame = this.currentGame.addMyMove(coords.board, coords.move);
         this.log('A', data);
+        this.currentGame = this.currentGame.addMyMove(coords.board, coords.move);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
@@ -107,12 +110,13 @@ export default class PracticeClient extends Client {
         if (!coords) {
             console.log('error: received invalid move from player B');
         }
+        const sendMessage = `opponent ${data}`;
+        this.log('B', sendMessage);
         this.currentGame = this.currentGame.addOpponentMove(coords.board, coords.move);
-        this.log('B', data);
         if (this.currentGame.isFinished()) {
             this.nextGame();
             return;
         }
-        this.playerA.sendData(`opponent ${data}`);
+        this.playerA.sendData(sendMessage);
     }
 }
