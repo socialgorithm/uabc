@@ -28,26 +28,30 @@ export default class ExecutablePlayer extends Player {
             const lines = data.split(os.EOL);
             const regex = /^\d,\d;\d,\d$/;
             const output: Array<string> = [];
+            const gameData: Array<string> = [];
             lines.forEach((eachLine) => {
                 const line = eachLine.trim();
                 if (line.length < 1) {
                     return;
                 }
                 if (regex.test(line.replace(/\s/g,''))) {
-                    this.onPlayerData(line);
+                    gameData.push(line);
                 } else {
                     output.push(line);
                 }
             });
+            // Send game commands
+            gameData.forEach(line => {
+                this.onPlayerData(line);
+            });
+            // Forward output to console
             if (output.length > 0) {
-                console.log('---------- PLAYER OUTPUT ---------');
                 console.log(output.join('\n'));
-                console.log('----------------------------------');
             }
         });
 
         this.playerProcess.stderr.on('data', (message: string) => {
-            console.log('---------- PLAYER OUTPUT ---------');
+            console.log('----------- PLAYER ERROR ---------');
             console.log(message);
             console.log('----------------------------------');
         });

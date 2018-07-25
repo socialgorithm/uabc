@@ -29,26 +29,28 @@ var ExecutablePlayer = (function (_super) {
             var lines = data.split(os.EOL);
             var regex = /^\d,\d;\d,\d$/;
             var output = [];
+            var gameData = [];
             lines.forEach(function (eachLine) {
                 var line = eachLine.trim();
                 if (line.length < 1) {
                     return;
                 }
                 if (regex.test(line.replace(/\s/g, ''))) {
-                    _this.onPlayerData(line);
+                    gameData.push(line);
                 }
                 else {
                     output.push(line);
                 }
             });
+            gameData.forEach(function (line) {
+                _this.onPlayerData(line);
+            });
             if (output.length > 0) {
-                console.log('---------- PLAYER OUTPUT ---------');
                 console.log(output.join('\n'));
-                console.log('----------------------------------');
             }
         });
         _this.playerProcess.stderr.on('data', function (message) {
-            console.log('---------- PLAYER OUTPUT ---------');
+            console.log('----------- PLAYER ERROR ---------');
             console.log(message);
             console.log('----------------------------------');
         });
