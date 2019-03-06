@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-LOBBY=$1
-NUMBER_PLAYERS=$2
+NUMBER_PLAYERS=$1
+LOBBY=$2
 HOST=http://localhost:3141
 
 for i in `seq 1 $NUMBER_PLAYERS`;
