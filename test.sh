@@ -9,7 +9,7 @@ echo "Starting tests" > $LOG_FILE
 
 for i in `seq 1 $NUMBER_PLAYERS`;
 do
-    yarn start --verbose --host $HOST --lobby $LOBBY --token "Player $i" -f "node ../tic-tac-toe-starter/run_player.js" >> $LOG_FILE 2>&1  &
+    yarn start --verbose --host $HOST --lobby $LOBBY --token "Player $i" -f "node ../tic-tac-toe-starter/run_player.js random" >> $LOG_FILE 2>&1  &
 done
 
 echo "All clientes started"
