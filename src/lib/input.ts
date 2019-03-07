@@ -111,7 +111,7 @@ const sections = [
     header: `uabc v${info.version}`,
     content: [
       'Ultimate Algorithm Battle Client - #socialgorithm',
-      'Documentation & more information at {underline https://uttt.socialgorithm.org}'
+      'Documentation & more information at {underline https://play.socialgorithm.org}'
     ]
   },
   {
