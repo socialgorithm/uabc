@@ -30,6 +30,13 @@ exports.parseMove = function (data) {
             move: move
         };
     }
+    else {
+        var move = [
+            parseInt(boardStr[0], 10),
+            parseInt(boardStr[1], 10)
+        ];
+        return { board: null, move: move };
+    }
     console.error('Unknown command', data);
     return null;
 };

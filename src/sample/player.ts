@@ -8,6 +8,8 @@ import {Coord, Coords} from "@socialgorithm/ultimate-ttt/dist/model/constants";
  * In this case it's wired with the sample random algorithm.
  */
 
+let playing = false;
+
 function input() {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -27,6 +29,7 @@ function input() {
 
     switch (action) {
       case 'init':
+        playing = true;
         player.init();
         break;
       case 'move':
@@ -61,6 +64,9 @@ function input() {
           writeMove(coords);
         }
         break;
+      case 'end':
+        playing = false;
+        break;
     }
   });
 }
@@ -76,6 +82,9 @@ function player(): void {
 }
 
 function write(output?: string): void {
+  if (!playing) {
+    return;
+  }
   if (output) {
     console.log(output);
   }

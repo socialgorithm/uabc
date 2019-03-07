@@ -5,8 +5,8 @@ import Player from "./model/Player";
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlinePlayer extends Player {
-    constructor(private socket: SocketIOClient.Socket, sendData: (data: string) => void) {
-        super(sendData);
+    constructor(private socket: SocketIOClient.Socket, onPlayerData: (data: string) => void) {
+        super(onPlayerData);
 
         this.socket.on('game', this.onServerData);
     }
@@ -15,10 +15,12 @@ export default class OnlinePlayer extends Player {
         if (data && data.length > 0) {
             const parts = data.split(' ');
             if (parts[0] === 'end') {
-                console.log('Games ended! You ' + parts[1]);
+                console.log('Game ended! You ' + parts[1]);
             } else {
                 this.onPlayerData(data);
             }
+        } else {
+            console.log('uabc: invalid data format received, it should be a string', data);
         }
     };
 

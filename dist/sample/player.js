@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var readline = require("readline");
 var random_1 = require("./random");
+var playing = false;
 function input() {
     var rl = readline.createInterface({
         input: process.stdin,
@@ -14,6 +15,7 @@ function input() {
         var next, move, coords;
         switch (action) {
             case 'init':
+                playing = true;
                 player.init();
                 break;
             case 'move':
@@ -43,6 +45,9 @@ function input() {
                     writeMove(coords);
                 }
                 break;
+            case 'end':
+                playing = false;
+                break;
         }
     });
 }
@@ -55,6 +60,9 @@ function player() {
     input();
 }
 function write(output) {
+    if (!playing) {
+        return;
+    }
     if (output) {
         console.log(output);
     }

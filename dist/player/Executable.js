@@ -27,7 +27,7 @@ var ExecutablePlayer = (function (_super) {
         });
         _this.playerProcess.stdout.on('data', function (data) {
             var lines = data.split(os.EOL);
-            var regex = /^\d,\d;\d,\d$/;
+            var regex = /^\d,\d$/;
             var output = [];
             var gameData = [];
             lines.forEach(function (eachLine) {

@@ -14,7 +14,9 @@ var Logger_1 = require("./model/Logger");
 var ConsoleLogger = (function (_super) {
     __extends(ConsoleLogger, _super);
     function ConsoleLogger() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        console.log('Verbose mode');
+        return _this;
     }
     ConsoleLogger.prototype.log = function (writer, data) {
         var time = (new Date()).toTimeString().substr(0, 8);

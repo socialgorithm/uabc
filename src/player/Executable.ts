@@ -26,7 +26,7 @@ export default class ExecutablePlayer extends Player {
 
         this.playerProcess.stdout.on('data', (data: string) => {
             const lines = data.split(os.EOL);
-            const regex = /^\d,\d;\d,\d$/;
+            const regex = /^\d,\d$/;
             const output: Array<string> = [];
             const gameData: Array<string> = [];
             lines.forEach((eachLine) => {

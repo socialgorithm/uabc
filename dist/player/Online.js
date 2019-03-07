@@ -13,18 +13,21 @@ exports.__esModule = true;
 var Player_1 = require("./model/Player");
 var OnlinePlayer = (function (_super) {
     __extends(OnlinePlayer, _super);
-    function OnlinePlayer(socket, sendData) {
-        var _this = _super.call(this, sendData) || this;
+    function OnlinePlayer(socket, onPlayerData) {
+        var _this = _super.call(this, onPlayerData) || this;
         _this.socket = socket;
         _this.onServerData = function (data) {
             if (data && data.length > 0) {
                 var parts = data.split(' ');
                 if (parts[0] === 'end') {
-                    console.log('Games ended! You ' + parts[1]);
+                    console.log('Game ended! You ' + parts[1]);
                 }
                 else {
                     _this.onPlayerData(data);
                 }
+            }
+            else {
+                console.log('uabc: invalid data format received, it should be a string', data);
             }
         };
         _this.socket.on('game', _this.onServerData);

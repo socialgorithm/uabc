@@ -3,10 +3,13 @@
 NUMBER_PLAYERS=$1
 LOBBY=$2
 HOST=http://localhost:3141
+LOG_FILE="multitest.log"
+
+echo "Starting tests" > $LOG_FILE
 
 for i in `seq 1 $NUMBER_PLAYERS`;
 do
-    yarn start --host $HOST --lobby $LOBBY --token "Player $i" -f "node dist/sample/player.js" > multitest.log  &
+    yarn start --verbose --host $HOST --lobby $LOBBY --token "Player $i" -f "node ../tic-tac-toe-starter/run_player.js" >> $LOG_FILE 2>&1  &
 done
 
 echo "All clientes started"

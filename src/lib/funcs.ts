@@ -52,6 +52,12 @@ export const parseMove = (data: string): Coords => {
           board,
           move,
       };
+  } else {
+    const move: Coord = [
+      parseInt(boardStr[0], 10),
+      parseInt(boardStr[1], 10)
+    ];
+    return { board: null, move };
   }
   console.error('Unknown command', data);
   return null;
