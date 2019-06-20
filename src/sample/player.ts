@@ -86,7 +86,7 @@ function write(output?: string): void {
     return;
   }
   if (output) {
-    console.log(output);
+    console.log("send:", output);
   }
 }
 

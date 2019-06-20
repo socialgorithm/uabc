@@ -26,7 +26,7 @@ export default class ExecutablePlayer extends Player {
 
         this.playerProcess.stdout.on('data', (data: string) => {
             const lines = data.split(os.EOL);
-            const regex = /^\d,\d$/;
+            const regex = /^(send:).*/;
             const output: Array<string> = [];
             const gameData: Array<string> = [];
             lines.forEach((eachLine) => {
@@ -35,7 +35,7 @@ export default class ExecutablePlayer extends Player {
                     return;
                 }
                 if (regex.test(line.replace(/\s/g,''))) {
-                    gameData.push(line);
+                    gameData.push(line.replace('send:', ''));
                 } else {
                     output.push(line);
                 }

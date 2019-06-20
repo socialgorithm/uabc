@@ -27,7 +27,7 @@ var ExecutablePlayer = (function (_super) {
         });
         _this.playerProcess.stdout.on('data', function (data) {
             var lines = data.split(os.EOL);
-            var regex = /^\d,\d$/;
+            var regex = /^(send:).*/;
             var output = [];
             var gameData = [];
             lines.forEach(function (eachLine) {
@@ -36,7 +36,7 @@ var ExecutablePlayer = (function (_super) {
                     return;
                 }
                 if (regex.test(line.replace(/\s/g, ''))) {
-                    gameData.push(line);
+                    gameData.push(line.replace('send:', ''));
                 }
                 else {
                     output.push(line);

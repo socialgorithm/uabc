@@ -64,7 +64,7 @@ function write(output) {
         return;
     }
     if (output) {
-        console.log(output);
+        console.log("send:", output);
     }
 }
 player();
