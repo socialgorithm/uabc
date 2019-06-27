@@ -31,8 +31,8 @@ Run `uabc -h` to see the full list of options:
 You will need to clone the specific sample player that you want to run, for example, for tic-tac-toe:
 
 ```bash
-$ git clone git@github.com:socialgorithm/tic-tac-toe-starter
-$ cd tic-tac-toe-starter
+$ git clone git@github.com:socialgorithm/tic-tac-toe-player
+$ cd tic-tac-toe-player
 ```
 
 Then run the sample using the globally installed UABC, for example:
