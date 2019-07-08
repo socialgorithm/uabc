@@ -9,7 +9,7 @@ This means that your player can be written in any language, and it will work as 
 
 ## Getting started
 
-> Note: If you are participating in a competition, it is best to start in the [Participant section of the documentation](https://socialgorithm.org/docs/sections/workshop/participate/participate.html).
+> Note: If you are participating in a competition, it is best to start in the [Participant section of the documentation](https://socialgorithm.org/docs/sections/participate/).
 
 Install the executable:
 
