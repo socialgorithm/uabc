@@ -1,6 +1,6 @@
 {
   "name": "@socialgorithm/uabc",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Ultimate Algorithm Battle Client",
   "main": "dist/index.js",
   "bin": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aurbano/uabc.git"
+    "url": "git+https://github.com/socialgorithm/uabc.git"
   },
   "keywords": [
     "ultimate",
@@ -22,14 +22,13 @@
     "battle",
     "client"
   ],
-  "author": "Alejandro U. Alvarez",
+  "author": "Socialgorithm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aurbano/uabc/issues"
+    "url": "https://github.com/socialgorithm/uabc/issues"
   },
-  "homepage": "https://github.com/aurbano/uabc#readme",
+  "homepage": "https://github.com/socialgorithm/uabc#readme",
   "dependencies": {
-    "@socialgorithm/ultimate-ttt": "^4.19.0",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
     "socket.io-client": "^2.1.1",
