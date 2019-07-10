@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/socialgorithm/uabc#readme",
   "dependencies": {
+    "@socialgorithm/ultimate-ttt": "^4.19.0",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
     "socket.io-client": "^2.1.1",
