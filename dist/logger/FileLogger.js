@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var fs = require("fs");
 var os = require("os");
-var Logger_1 = require("./model/Logger");
+var Logger_1 = require("./Logger");
 var FileLogger = (function (_super) {
     __extends(FileLogger, _super);
     function FileLogger(file) {
@@ -29,14 +29,15 @@ var FileLogger = (function (_super) {
                 + currentdate.getMinutes() + "-"
                 + currentdate.getSeconds() + ".log";
         }
-        fs.writeFileSync(_this.file, '');
+        fs.writeFileSync(_this.file, "");
         console.log("Logging to file: " + _this.file);
         return _this;
     }
     FileLogger.prototype.log = function (writer, text) {
         var time = (new Date()).toTimeString().substr(0, 8);
-        fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL);
+        fs.appendFileSync(this.file, "[" + time + " " + writer + "] " + text + os.EOL);
     };
     return FileLogger;
 }(Logger_1["default"]));
 exports["default"] = FileLogger;
+//# sourceMappingURL=FileLogger.js.map

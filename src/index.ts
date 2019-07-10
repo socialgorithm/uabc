@@ -7,8 +7,8 @@
  * Server available at https://github.com/socialgorithm/tournament-server
  */
 
-import parseOptions from './lib/input';
-import OnlineClient from './client/OnlineClient';
+import parseOptions from "./cli/options";
+import OnlineClient from "./client/OnlineClient";
 
 const options = parseOptions();
 

@@ -42,3 +42,4 @@ var _loop_1 = function (lobbyNumber) {
 for (var lobbyNumber = 1; lobbyNumber <= numberOfLobbies; lobbyNumber++) {
     _loop_1(lobbyNumber);
 }
+//# sourceMappingURL=load-tester.js.map

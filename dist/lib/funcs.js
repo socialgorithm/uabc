@@ -40,3 +40,4 @@ exports.parseMove = function (data) {
     console.error('Unknown command', data);
     return null;
 };
+//# sourceMappingURL=funcs.js.map

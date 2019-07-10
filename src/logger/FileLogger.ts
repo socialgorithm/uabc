@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import * as os from 'os';
-import Logger from "./model/Logger";
+import * as fs from "fs";
+import * as os from "os";
+import Logger from "./Logger";
 
 /**
  * File logger module - it replaces the file if it already exists
@@ -17,20 +17,19 @@ export default class FileLogger extends Logger {
     } else {
       const currentdate = new Date();
       this.file = "UTTT_" + currentdate.getDate() + "-"
-          + (currentdate.getMonth()+1)  + "-"
+          + (currentdate.getMonth() + 1)  + "-"
           + currentdate.getFullYear() + "_"
           + currentdate.getHours() + "-"
           + currentdate.getMinutes() + "-"
           + currentdate.getSeconds() + ".log";
     }
 
-
-    fs.writeFileSync(this.file, '');
+    fs.writeFileSync(this.file, "");
     console.log(`Logging to file: ${this.file}`);
   }
 
   public log(writer: string, text: string): void {
     const time = (new Date()).toTimeString().substr(0,8);
-    fs.appendFileSync(this.file, '[' + time + ' ' + writer + '] ' + text + os.EOL);
+    fs.appendFileSync(this.file, `[${time} ${writer}] ${text}${os.EOL}`);
   }
 }

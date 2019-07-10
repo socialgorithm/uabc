@@ -11,21 +11,21 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var os = require("os");
-var Player_1 = require("./model/Player");
 var exec_1 = require("../lib/exec");
+var Player_1 = require("./Player");
 var ExecutablePlayer = (function (_super) {
     __extends(ExecutablePlayer, _super);
     function ExecutablePlayer(file, sendData) {
         var _this = _super.call(this, sendData) || this;
         if (!file || file.length < 1) {
-            console.error('uabc error: executable not specified');
+            console.error("uabc error: executable not specified");
             process.exit(-1);
         }
         _this.playerProcess = exec_1["default"](file);
-        _this.playerProcess.on('close', function (code) {
+        _this.playerProcess.on("close", function (code) {
             console.log("client> child process exited with code " + code);
         });
-        _this.playerProcess.stdout.on('data', function (data) {
+        _this.playerProcess.stdout.on("data", function (data) {
             var lines = data.split(os.EOL);
             var regex = /^(send:).*/;
             var output = [];
@@ -35,8 +35,8 @@ var ExecutablePlayer = (function (_super) {
                 if (line.length < 1) {
                     return;
                 }
-                if (regex.test(line.replace(/\s/g, ''))) {
-                    gameData.push(line.replace('send:', ''));
+                if (regex.test(line.replace(/\s/g, ""))) {
+                    gameData.push(line.replace("send:", ""));
                 }
                 else {
                     output.push(line);
@@ -46,13 +46,13 @@ var ExecutablePlayer = (function (_super) {
                 _this.onPlayerData(line);
             });
             if (output.length > 0) {
-                console.log(output.join('\n'));
+                console.log(output.join("\n"));
             }
         });
-        _this.playerProcess.stderr.on('data', function (message) {
-            console.log('----------- PLAYER ERROR ---------');
+        _this.playerProcess.stderr.on("data", function (message) {
+            console.log("----------- PLAYER ERROR ---------");
             console.log(message);
-            console.log('----------------------------------');
+            console.log("----------------------------------");
         });
         return _this;
     }
@@ -62,3 +62,4 @@ var ExecutablePlayer = (function (_super) {
     return ExecutablePlayer;
 }(Player_1["default"]));
 exports["default"] = ExecutablePlayer;
+//# sourceMappingURL=Executable.js.map
