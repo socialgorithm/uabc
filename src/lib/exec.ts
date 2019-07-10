@@ -1,4 +1,4 @@
-import * as cp from 'child_process';
+import * as cp from "child_process";
 import {ChildProcess} from "child_process";
 
 /**
@@ -7,16 +7,16 @@ import {ChildProcess} from "child_process";
  * @returns {*}
  */
 export default (cmd: string): ChildProcess => {
-  const options = cmd.split(' ');
+  const options = cmd.split(" ");
   const exec = options[0];
   options.shift();
 
   const childProcess = cp.spawn(exec, options);
-  childProcess.stdout.setEncoding('utf8');
+  childProcess.stdout.setEncoding("utf8");
 
-  childProcess.stderr.on('data', (data: string) => {
+  childProcess.stderr.on("data", (data: string) => {
     console.log(`Error: ${data}`);
   });
 
   return childProcess;
-}
+};

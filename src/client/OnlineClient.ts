@@ -1,7 +1,7 @@
 import * as io from "socket.io-client";
 import * as ioProxy from "socket.io-proxy";
 
-import { Options } from "../cli/options";
+import { IOptions } from "../cli/options";
 import OnlinePlayer from "../player/Online";
 import Client from "./Client";
 
@@ -12,7 +12,7 @@ import Client from "./Client";
 export default class OnlineClient extends Client {
     private socket: SocketIOClient.Socket;
 
-    constructor(options: Options) {
+    constructor(options: IOptions) {
         super(options);
 
         console.log(`Starting Online Mode`);

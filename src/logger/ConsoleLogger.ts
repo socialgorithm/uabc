@@ -12,7 +12,7 @@ export default class ConsoleLogger extends Logger {
   }
 
   public log(writer: string, data: string): void {
-    const time = (new Date()).toTimeString().substr(0,8);
+    const time = (new Date()).toTimeString().substr(0, 8);
     console.log(`[${time} ${writer} ${data}]`);
   }
 }

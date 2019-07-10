@@ -5,7 +5,7 @@ const getUsage = require("command-line-usage");
 const info = require("../../package.json");
 
 // type safe options
-export interface Options {
+export interface IOptions {
   file?: string;
   token?: string;
   lobby?: string;
@@ -90,7 +90,7 @@ const sections = [
     header: `uabc v${info.version}`,
     content: [
       "Ultimate Algorithm Battle Client - #socialgorithm",
-      "Documentation & more information at {underline https://play.socialgorithm.org}"
+      "Documentation & more information at {underline https://play.socialgorithm.org}",
     ],
   },
   {
@@ -118,7 +118,7 @@ const sections = [
   },
 ];
 
-export default function parseInput(): Options {
+export default function parseInput(): IOptions {
   const options = commandLineArgs(optionDefinitions)._all;
 
   Object.keys(options).map((key: string) => {
@@ -129,7 +129,9 @@ export default function parseInput(): Options {
 
   function isEmpty(map: any) {
     for (const key in map) {
-      return !map.hasOwnProperty(key);
+      if (!map.hasOwnProperty(key)) {
+        return false;
+      }
     }
     return true;
   }

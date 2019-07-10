@@ -3,7 +3,6 @@ exports.__esModule = true;
 var ConsoleLogger_1 = require("../logger/ConsoleLogger");
 var FileLogger_1 = require("../logger/FileLogger");
 var Executable_1 = require("../player/Executable");
-var State_1 = require("./State");
 var Client = (function () {
     function Client(options) {
         this.options = options;
@@ -19,7 +18,6 @@ var Client = (function () {
             this.loggers.file = new FileLogger_1["default"](logName);
         }
         this.playerA = new Executable_1["default"](options.file, this.onPlayerAData.bind(this));
-        this.state = new State_1["default"]();
     }
     Client.prototype.log = function (writer, message) {
         if (this.loggers.console) {

@@ -1,16 +1,14 @@
-import { Options } from "../cli/options";
+import { IOptions } from "../cli/options";
 import ConsoleLogger from "../logger/ConsoleLogger";
 import FileLogger from "../logger/FileLogger";
 import ExecutablePlayer from "../player/Executable";
 import Player from "../player/Player";
-import State from "./State";
 
 export default abstract class Client {
     protected playerA: Player;
     protected playerB: Player;
-    protected state: State;
     protected firstPlayer: number;
-    protected options: Options;
+    protected options: IOptions;
     protected size: number;
     protected gameStart: [number, number];
     protected loggers: {
@@ -18,7 +16,7 @@ export default abstract class Client {
         file?: FileLogger,
     };
 
-    constructor(options: Options) {
+    constructor(options: IOptions) {
         this.options = options;
 
         this.loggers = {};
@@ -36,9 +34,6 @@ export default abstract class Client {
         }
 
         this.playerA = new ExecutablePlayer(options.file, this.onPlayerAData.bind(this));
-
-        // Hold the state for the local games
-        this.state = new State();
     }
 
     protected log(writer: string, message: string) {

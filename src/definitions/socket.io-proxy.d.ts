@@ -1,1 +1,1 @@
-declare module 'socket.io-proxy'
+declare module "socket.io-proxy";

@@ -1,4 +1,4 @@
-export interface Options {
+export interface IOptions {
     file?: string;
     token?: string;
     lobby?: string;
@@ -9,4 +9,4 @@ export interface Options {
     verbose?: boolean;
     version?: boolean;
 }
-export default function parseInput(): Options;
+export default function parseInput(): IOptions;

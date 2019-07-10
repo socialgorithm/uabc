@@ -29,7 +29,7 @@ export default class FileLogger extends Logger {
   }
 
   public log(writer: string, text: string): void {
-    const time = (new Date()).toTimeString().substr(0,8);
+    const time = (new Date()).toTimeString().substr(0, 8);
     fs.appendFileSync(this.file, `[${time} ${writer}] ${text}${os.EOL}`);
   }
 }

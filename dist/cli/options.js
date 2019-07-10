@@ -75,7 +75,7 @@ var sections = [
         header: "uabc v" + info.version,
         content: [
             "Ultimate Algorithm Battle Client - #socialgorithm",
-            "Documentation & more information at {underline https://play.socialgorithm.org}"
+            "Documentation & more information at {underline https://play.socialgorithm.org}",
         ]
     },
     {
@@ -111,7 +111,9 @@ function parseInput() {
     });
     function isEmpty(map) {
         for (var key in map) {
-            return !map.hasOwnProperty(key);
+            if (!map.hasOwnProperty(key)) {
+                return false;
+            }
         }
         return true;
     }
