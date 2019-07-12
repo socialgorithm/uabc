@@ -128,12 +128,7 @@ export default function parseInput(): IOptions {
   });
 
   function isEmpty(map: any) {
-    for (const key in map) {
-      if (!map.hasOwnProperty(key)) {
-        return false;
-      }
-    }
-    return true;
+    return Object.entries(map).length === 0 && map.constructor === Object
   }
 
   if (options.version) {

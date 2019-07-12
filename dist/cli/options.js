@@ -110,12 +110,7 @@ function parseInput() {
         }
     });
     function isEmpty(map) {
-        for (var key in map) {
-            if (!map.hasOwnProperty(key)) {
-                return false;
-            }
-        }
-        return true;
+        return Object.entries(map).length === 0 && map.constructor === Object;
     }
     if (options.version) {
         console.log(info.version);

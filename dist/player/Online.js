@@ -36,6 +36,10 @@ var OnlinePlayer = (function (_super) {
         _this.socket.on("game", _this.onServerData);
         return _this;
     }
+    OnlinePlayer.prototype.setSocket = function (socket) {
+        this.socket = socket;
+        this.socket.on("game", this.onServerData);
+    };
     OnlinePlayer.prototype.onReceiveData = function (data) {
         this.socket.emit("game", data);
     };
