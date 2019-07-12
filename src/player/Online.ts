@@ -11,6 +11,11 @@ export default class OnlinePlayer extends Player {
         this.socket.on("game", this.onServerData);
     }
 
+    public setSocket(socket: SocketIOClient.Socket) {
+        this.socket = socket;
+        this.socket.on("game", this.onServerData);
+    }
+
     protected onReceiveData(data: string) {
         this.socket.emit("game", data);
     }

@@ -1,6 +1,8 @@
 import * as io from "socket.io-client";
 import * as ioProxy from "socket.io-proxy";
 
+import { GAME_SOCKET_MESSAGE, GameMessage } from '@socialgorithm/model';
+
 import { IOptions } from "../cli/options";
 import OnlinePlayer from "../player/Online";
 import Client from "./Client";
@@ -10,7 +12,17 @@ import Client from "./Client";
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlineClient extends Client {
+    protected playerB: OnlinePlayer;
+
+    /**
+     * Main socket for communication with the tournament server
+     */
     private socket: SocketIOClient.Socket;
+
+    /**
+     * Support handing off to a game server
+     */
+    private gameServerSocket: SocketIOClient.Socket;
 
     constructor(options: IOptions) {
         super(options);
@@ -32,14 +44,7 @@ export default class OnlineClient extends Client {
                 query: "token=" + options.token,
             };
 
-            if (options.proxy || process.env.http_proxy) {
-                if (options.proxy) {
-                    ioProxy.init(options.proxy);
-                }
-                this.socket = ioProxy.connect(host, socketOptions);
-            } else {
-                this.socket = io.connect(host, socketOptions);
-            }
+            this.socket = this.connect(host, socketOptions);
 
             this.playerB = new OnlinePlayer(this.socket, this.onPlayerBData.bind(this));
 
@@ -68,8 +73,26 @@ export default class OnlineClient extends Client {
                 process.exit(-1);
             });
 
+            this.socket.on(GAME_SOCKET_MESSAGE.GAME_SERVER_HANDOFF, (data: GameMessage.GameServerHandoffMessage) => {
+                // Initiate a handoff to the game server
+                const socketOptions = {
+                    query: "token=" + data.token,
+                };
+                this.gameServerSocket = this.connect(data.gameServerAddress, socketOptions);
+
+                this.gameServerSocket.on("error", (data: any) => {
+                    console.error("Error in game server socket", data);
+                });
+    
+                this.gameServerSocket.on("connect", () => {
+                    console.log(`Connected to Game Server, waiting for game to begin`);
+                });
+
+                this.playerB.setSocket(this.gameServerSocket);
+            });
+
             this.socket.on("disconnect", () => {
-                console.log("Connection lost!");
+                console.log("Connection to Tournament Server lost!");
             });
         } catch (e) {
             console.error("uabc error:", e);
@@ -85,5 +108,16 @@ export default class OnlineClient extends Client {
     public onPlayerBData(data: string) {
         this.log("B", data);
         this.playerA.sendData(data);
+    }
+
+    private connect(host: string, socketOptions?: any): SocketIOClient.Socket {
+        if (this.options.proxy || process.env.http_proxy) {
+            if (this.options.proxy) {
+                ioProxy.init(this.options.proxy);
+            }
+            return ioProxy.connect(host, socketOptions);
+        } else {
+            return io.connect(host, socketOptions);
+        }
     }
 }
