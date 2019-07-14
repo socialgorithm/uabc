@@ -5,6 +5,7 @@ export default class OnlineClient extends Client {
     protected playerB: OnlinePlayer;
     private socket;
     private gameServerSocket;
+    private gameServerHost;
     constructor(options: IOptions);
     onPlayerAData(data: string): void;
     onPlayerBData(data: string): void;
