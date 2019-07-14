@@ -16,6 +16,7 @@ exports.__esModule = true;
 var io = require("socket.io-client");
 var ioProxy = require("socket.io-proxy");
 var model_1 = require("@socialgorithm/model");
+var Online_1 = require("../player/Online");
 var Client_1 = require("./Client");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
@@ -46,7 +47,7 @@ var OnlineClient = (function (_super) {
                 });
             });
             _this.socket.on("lobby joined", function () {
-                console.log("Lobby Joined!");
+                console.log("Lobby Joined! Waiting for match...");
             });
             _this.socket.on("exception", function (data) {
                 console.error(data.error);
@@ -57,6 +58,7 @@ var OnlineClient = (function (_super) {
                 process.exit(-1);
             });
             _this.socket.on(model_1.EVENTS.GAME_SERVER_HANDOFF, function (data) {
+                console.log("Initiating handoff to Game Server " + data.gameServerAddress + ", token = " + data.token);
                 var socketOptions = {
                     query: "token=" + data.token
                 };
@@ -67,9 +69,14 @@ var OnlineClient = (function (_super) {
                         console.error("Error in game server socket", data);
                     });
                     _this.gameServerSocket.on("connect", function () {
-                        console.log("Connected to Game Server, waiting for games to begin");
+                        console.log("Connected to Game Server, waiting for next game to begin");
                     });
-                    _this.playerB.setSocket(_this.gameServerSocket);
+                    if (!_this.playerB) {
+                        _this.playerB = new Online_1["default"](_this.socket, _this.onPlayerBData.bind(_this));
+                    }
+                    else {
+                        _this.playerB.setSocket(_this.gameServerSocket);
+                    }
                 }
             });
             _this.socket.on("disconnect", function () {
