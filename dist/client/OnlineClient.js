@@ -21,6 +21,7 @@ var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {
         var _this = _super.call(this, options) || this;
+        _this.gameServerHost = null;
         console.log("Starting Online Mode");
         console.log("Player A: " + _this.options.file);
         console.log();
@@ -59,14 +60,17 @@ var OnlineClient = (function (_super) {
                 var socketOptions = {
                     query: "token=" + data.token
                 };
-                _this.gameServerSocket = _this.connect(data.gameServerAddress, socketOptions);
-                _this.gameServerSocket.on("error", function (data) {
-                    console.error("Error in game server socket", data);
-                });
-                _this.gameServerSocket.on("connect", function () {
-                    console.log("Connected to Game Server, waiting for games to begin");
-                });
-                _this.playerB.setSocket(_this.gameServerSocket);
+                if (_this.gameServerHost !== data.gameServerAddress) {
+                    _this.gameServerSocket = _this.connect(data.gameServerAddress, socketOptions);
+                    _this.gameServerHost = data.gameServerAddress;
+                    _this.gameServerSocket.on("error", function (data) {
+                        console.error("Error in game server socket", data);
+                    });
+                    _this.gameServerSocket.on("connect", function () {
+                        console.log("Connected to Game Server, waiting for games to begin");
+                    });
+                    _this.playerB.setSocket(_this.gameServerSocket);
+                }
             });
             _this.socket.on("disconnect", function () {
                 console.log("Connection to Tournament Server lost!");
