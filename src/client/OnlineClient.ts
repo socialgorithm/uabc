@@ -1,8 +1,8 @@
 import * as io from "socket.io-client";
 import * as ioProxy from "socket.io-proxy";
 
-import { EVENTS, GameMessage } from '@socialgorithm/model';
-
+import { LegacyEvents, Messages } from "@socialgorithm/model";
+import { EventName } from "@socialgorithm/model/dist/Events";
 import { IOptions } from "../cli/options";
 import OnlinePlayer from "../player/Online";
 import Client from "./Client";
@@ -55,7 +55,7 @@ export default class OnlineClient extends Client {
 
             this.socket.on("connect", () => {
                 console.log(`Connected! Joining Lobby "${options.lobby}"...`);
-                this.socket.emit(EVENTS.LOBBY_JOIN, {
+                this.socket.emit(LegacyEvents.EVENTS.LOBBY_JOIN, {
                     token: options.lobby,
                 });
             });
@@ -69,12 +69,12 @@ export default class OnlineClient extends Client {
                 process.exit(-1);
             });
 
-            this.socket.on(EVENTS.LOBBY_EXCEPTION, (data: any) => {
+            this.socket.on(LegacyEvents.EVENTS.LOBBY_EXCEPTION, (data: any) => {
                 console.error(data.error);
                 process.exit(-1);
             });
 
-            this.socket.on(EVENTS.GAME_SERVER_HANDOFF, (data: GameMessage.GameServerHandoffMessage) => {
+            this.socket.on(EventName.GameServerHandoff, (data: Messages.GameServerHandoffMessage) => {
                 console.log(`Initiating handoff to Game Server ${data.gameServerAddress}, token = ${data.token}`);
 
                 // Initiate a handoff to the game server

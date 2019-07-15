@@ -18,6 +18,7 @@ var ioProxy = require("socket.io-proxy");
 var model_1 = require("@socialgorithm/model");
 var Online_1 = require("../player/Online");
 var Client_1 = require("./Client");
+var Events_1 = require("@socialgorithm/model/dist/Events");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {
@@ -42,7 +43,7 @@ var OnlineClient = (function (_super) {
             });
             _this.socket.on("connect", function () {
                 console.log("Connected! Joining Lobby \"" + options.lobby + "\"...");
-                _this.socket.emit(model_1.EVENTS.LOBBY_JOIN, {
+                _this.socket.emit(model_1.LegacyEvents.EVENTS.LOBBY_JOIN, {
                     token: options.lobby
                 });
             });
@@ -53,11 +54,11 @@ var OnlineClient = (function (_super) {
                 console.error(data.error);
                 process.exit(-1);
             });
-            _this.socket.on(model_1.EVENTS.LOBBY_EXCEPTION, function (data) {
+            _this.socket.on(model_1.LegacyEvents.EVENTS.LOBBY_EXCEPTION, function (data) {
                 console.error(data.error);
                 process.exit(-1);
             });
-            _this.socket.on(model_1.EVENTS.GAME_SERVER_HANDOFF, function (data) {
+            _this.socket.on(Events_1.EventName.GameServerHandoff, function (data) {
                 console.log("Initiating handoff to Game Server " + data.gameServerAddress + ", token = " + data.token);
                 var socketOptions = {
                     query: "token=" + data.token
