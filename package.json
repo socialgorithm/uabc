@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "node dist/index.js",
+    "start": "ts-node -r tsconfig-paths/register --files src/index.ts",
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail"
   },
   "repository": {
@@ -44,6 +44,7 @@
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
     "ts-node": "^8.3.0",
+    "tsconfig-paths": "^3.8.0",
     "typescript": "^3.5.3"
   },
   "nyc": {

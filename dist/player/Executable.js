@@ -18,8 +18,8 @@ var exec_1 = require("../lib/exec");
 var Player_1 = require("./Player");
 var ExecutablePlayer = (function (_super) {
     __extends(ExecutablePlayer, _super);
-    function ExecutablePlayer(file, sendData) {
-        var _this = _super.call(this, sendData) || this;
+    function ExecutablePlayer(file, onDataFromThisPlayer) {
+        var _this = _super.call(this, onDataFromThisPlayer) || this;
         if (!file || file.length < 1) {
             console.error("uabc error: executable not specified");
             process.exit(-1);
@@ -46,7 +46,7 @@ var ExecutablePlayer = (function (_super) {
                 }
             });
             gameData.forEach(function (line) {
-                _this.onPlayerData(line);
+                _this.onDataFromThisPlayer(line);
             });
             if (output.length > 0) {
                 console.log(output.join("\n"));
@@ -59,7 +59,7 @@ var ExecutablePlayer = (function (_super) {
         });
         return _this;
     }
-    ExecutablePlayer.prototype.onReceiveData = function (data) {
+    ExecutablePlayer.prototype.onDataFromOtherPlayers = function (data) {
         this.playerProcess.stdin.write(data + os.EOL);
     };
     return ExecutablePlayer;

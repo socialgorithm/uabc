@@ -3,11 +3,10 @@ import OnlinePlayer from "../player/Online";
 import Client from "./Client";
 export default class OnlineClient extends Client {
     protected playerB: OnlinePlayer;
-    private socket;
+    private tournamentServerSocket;
     private gameServerSocket;
-    private gameServerHost;
     constructor(options: IOptions);
-    onPlayerAData(data: string): void;
+    onPlayerAData(payload: string): void;
     onPlayerBData(data: string): void;
     private connect;
 }

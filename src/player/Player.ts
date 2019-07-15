@@ -5,11 +5,11 @@
  */
 export default abstract class Player {
 
-    constructor(public onPlayerData: (data: string) => void) {}
+    constructor(public onDataFromThisPlayer: (data: string) => void) {}
 
-    public sendData(data: string) {
-        this.onReceiveData(data);
-    }
-
-    protected abstract onReceiveData(data: string): void;
+    /**
+     * Used when uabc is interacting with a player as a proxy with game server.
+     * @param data payload for the server
+     */
+    public abstract onDataFromOtherPlayers(data: string): void;
 }

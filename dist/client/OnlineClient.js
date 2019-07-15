@@ -23,7 +23,6 @@ var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {
         var _this = _super.call(this, options) || this;
-        _this.gameServerHost = null;
         console.log("Starting Online Mode");
         console.log("Player A: " + _this.options.file);
         console.log();
@@ -37,50 +36,55 @@ var OnlineClient = (function (_super) {
             var socketOptions = {
                 query: "token=" + options.token
             };
-            _this.socket = _this.connect(host, socketOptions);
-            _this.socket.on("error", function (data) {
+            _this.tournamentServerSocket = _this.connect(host, socketOptions);
+            _this.tournamentServerSocket.on("error", function (data) {
                 console.error("Error in socket", data);
             });
-            _this.socket.on("connect", function () {
+            _this.tournamentServerSocket.on("connect", function () {
                 console.log("Connected! Joining Lobby \"" + options.lobby + "\"...");
-                _this.socket.emit(model_1.LegacyEvents.EVENTS.LOBBY_JOIN, {
+                _this.tournamentServerSocket.emit(model_1.LegacyEvents.EVENTS.LOBBY_JOIN, {
                     token: options.lobby
                 });
             });
-            _this.socket.on("lobby joined", function () {
+            _this.tournamentServerSocket.on("lobby joined", function () {
                 console.log("Lobby Joined! Waiting for match...");
             });
-            _this.socket.on("exception", function (data) {
+            _this.tournamentServerSocket.on("exception", function (data) {
                 console.error(data.error);
                 process.exit(-1);
             });
-            _this.socket.on(model_1.LegacyEvents.EVENTS.LOBBY_EXCEPTION, function (data) {
+            _this.tournamentServerSocket.on(model_1.LegacyEvents.EVENTS.LOBBY_EXCEPTION, function (data) {
                 console.error(data.error);
                 process.exit(-1);
             });
-            _this.socket.on(Events_1.EventName.GameServerHandoff, function (data) {
-                console.log("Initiating handoff to Game Server " + data.gameServerAddress + ", token = " + data.token);
-                var socketOptions = {
-                    query: "token=" + data.token
+            _this.tournamentServerSocket.on(Events_1.EventName.GameServerHandoff, function (handoffMessage) {
+                var gameServerSocketOptions = {
+                    query: {
+                        token: handoffMessage.token
+                    }
                 };
-                if (_this.gameServerHost !== data.gameServerAddress) {
-                    _this.gameServerSocket = _this.connect(data.gameServerAddress, socketOptions);
-                    _this.gameServerHost = data.gameServerAddress;
-                    _this.gameServerSocket.on("error", function (data) {
-                        console.error("Error in game server socket", data);
-                    });
-                    _this.gameServerSocket.on("connect", function () {
-                        console.log("Connected to Game Server, waiting for next game to begin");
-                    });
-                    if (!_this.playerB) {
-                        _this.playerB = new Online_1["default"](_this.socket, _this.onPlayerBData.bind(_this));
-                    }
-                    else {
-                        _this.playerB.setSocket(_this.gameServerSocket);
-                    }
+                console.log("Initiating handoff to Game Server " + handoffMessage.gameServerAddress + ", token = " + handoffMessage.token);
+                if (_this.gameServerSocket && _this.gameServerSocket.connected) {
+                    _this.gameServerSocket.disconnect();
+                }
+                _this.gameServerSocket = _this.connect(handoffMessage.gameServerAddress, gameServerSocketOptions);
+                _this.gameServerSocket.on("error", function (data) {
+                    console.error("Error in game server socket", data);
+                });
+                _this.gameServerSocket.on("connect", function () {
+                    console.log("Connected to Game Server (token: " + handoffMessage.token + "), waiting for match to begin");
+                });
+                _this.gameServerSocket.on("disconnect", function () {
+                    console.log("Disconnected from game server (token: " + handoffMessage.token + ")");
+                });
+                if (!_this.playerB) {
+                    _this.playerB = new Online_1["default"](_this.gameServerSocket, _this.onPlayerBData.bind(_this));
+                }
+                else {
+                    _this.playerB.setSocket(_this.gameServerSocket);
                 }
             });
-            _this.socket.on("disconnect", function () {
+            _this.tournamentServerSocket.on("disconnect", function () {
                 console.log("Connection to Tournament Server lost!");
             });
         }
@@ -90,15 +94,18 @@ var OnlineClient = (function (_super) {
         }
         return _this;
     }
-    OnlineClient.prototype.onPlayerAData = function (data) {
-        this.log("A", data);
+    OnlineClient.prototype.onPlayerAData = function (payload) {
+        this.log("A", payload);
+        var message = {
+            payload: payload
+        };
         if (this.gameServerSocket) {
-            this.gameServerSocket.emit(Events_1.EventName.Game__Player, data);
+            this.gameServerSocket.emit(Events_1.EventName.Game__Player, message);
         }
     };
     OnlineClient.prototype.onPlayerBData = function (data) {
         this.log("B", data);
-        this.playerA.sendData(data);
+        this.playerA.onDataFromOtherPlayers(data);
     };
     OnlineClient.prototype.connect = function (host, socketOptions) {
         if (this.options.proxy || process.env.http_proxy) {

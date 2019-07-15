@@ -17,13 +17,12 @@ export default class OnlineClient extends Client {
     /**
      * Main socket for communication with the tournament server
      */
-    private socket: SocketIOClient.Socket;
+    private tournamentServerSocket: SocketIOClient.Socket;
 
     /**
      * Support handing off to a game server
      */
     private gameServerSocket: SocketIOClient.Socket;
-    private gameServerHost: string = null;
 
     constructor(options: IOptions) {
         super(options);
@@ -45,64 +44,69 @@ export default class OnlineClient extends Client {
                 query: "token=" + options.token,
             };
 
-            this.socket = this.connect(host, socketOptions);
+            this.tournamentServerSocket = this.connect(host, socketOptions);
 
-            // this.playerB = new OnlinePlayer(this.socket, this.onPlayerBData.bind(this));
-
-            this.socket.on("error", (data: any) => {
+            this.tournamentServerSocket.on("error", (data: any) => {
                 console.error("Error in socket", data);
             });
 
-            this.socket.on("connect", () => {
+            this.tournamentServerSocket.on("connect", () => {
                 console.log(`Connected! Joining Lobby "${options.lobby}"...`);
-                this.socket.emit(LegacyEvents.EVENTS.LOBBY_JOIN, {
+                this.tournamentServerSocket.emit(LegacyEvents.EVENTS.LOBBY_JOIN, {
                     token: options.lobby,
                 });
             });
 
-            this.socket.on("lobby joined", () => {
+            this.tournamentServerSocket.on("lobby joined", () => {
                 console.log("Lobby Joined! Waiting for match...");
             });
 
-            this.socket.on("exception", (data: any) => {
+            this.tournamentServerSocket.on("exception", (data: any) => {
                 console.error(data.error);
                 process.exit(-1);
             });
 
-            this.socket.on(LegacyEvents.EVENTS.LOBBY_EXCEPTION, (data: any) => {
+            this.tournamentServerSocket.on(LegacyEvents.EVENTS.LOBBY_EXCEPTION, (data: any) => {
                 console.error(data.error);
                 process.exit(-1);
             });
 
-            this.socket.on(EventName.GameServerHandoff, (data: Messages.GameServerHandoffMessage) => {
-                console.log(`Initiating handoff to Game Server ${data.gameServerAddress}, token = ${data.token}`);
-
+            this.tournamentServerSocket.on(EventName.GameServerHandoff, (handoffMessage: Messages.GameServerHandoffMessage) => {
                 // Initiate a handoff to the game server
-                const socketOptions = {
-                    query: "token=" + data.token,
+                const gameServerSocketOptions = {
+                    query: {
+                        token: handoffMessage.token,
+                    },
                 };
 
-                if (this.gameServerHost !== data.gameServerAddress) {
-                    this.gameServerSocket = this.connect(data.gameServerAddress, socketOptions);
-                    this.gameServerHost = data.gameServerAddress;
+                console.log(`Initiating handoff to Game Server ${handoffMessage.gameServerAddress}, token = ${handoffMessage.token}`);
 
-                    this.gameServerSocket.on("error", (data: any) => {
-                        console.error("Error in game server socket", data);
-                    });
-        
-                    this.gameServerSocket.on("connect", () => {
-                        console.log(`Connected to Game Server, waiting for next game to begin`);
-                    });
+                if (this.gameServerSocket && this.gameServerSocket.connected) {
+                    this.gameServerSocket.disconnect();
+                }
 
-                    if (!this.playerB) {
-                        this.playerB = new OnlinePlayer(this.socket, this.onPlayerBData.bind(this));
-                    } else {
-                        this.playerB.setSocket(this.gameServerSocket);
-                    }
+                this.gameServerSocket = this.connect(handoffMessage.gameServerAddress, gameServerSocketOptions);
+
+                this.gameServerSocket.on("error", (data: any) => {
+                    console.error("Error in game server socket", data);
+                });
+
+                this.gameServerSocket.on("connect", () => {
+                    console.log(`Connected to Game Server (token: ${handoffMessage.token}), waiting for match to begin`);
+                });
+
+                this.gameServerSocket.on("disconnect", () => {
+                    console.log(`Disconnected from game server (token: ${handoffMessage.token})`);
+                });
+
+                if (!this.playerB) {
+                    this.playerB = new OnlinePlayer(this.gameServerSocket, this.onPlayerBData.bind(this));
+                } else {
+                    this.playerB.setSocket(this.gameServerSocket);
                 }
             });
 
-            this.socket.on("disconnect", () => {
+            this.tournamentServerSocket.on("disconnect", () => {
                 console.log("Connection to Tournament Server lost!");
             });
         } catch (e) {
@@ -111,16 +115,19 @@ export default class OnlineClient extends Client {
         }
     }
 
-    public onPlayerAData(data: string) {
-        this.log("A", data);
+    public onPlayerAData(payload: string) {
+        this.log("A", payload);
+        const message: Messages.PlayerToGameMessage = {
+            payload,
+        };
         if (this.gameServerSocket) {
-            this.gameServerSocket.emit(EventName.Game__Player, data);
+            this.gameServerSocket.emit(EventName.Game__Player, message);
         }
     }
 
     public onPlayerBData(data: string) {
         this.log("B", data);
-        this.playerA.sendData(data);
+        this.playerA.onDataFromOtherPlayers(data);
     }
 
     private connect(host: string, socketOptions?: any): SocketIOClient.Socket {

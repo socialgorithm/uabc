@@ -10,8 +10,8 @@ import Player from "./Player";
 export default class ExecutablePlayer extends Player {
     private playerProcess: ChildProcess;
 
-    constructor(file: string, sendData: (data: string) => void) {
-        super(sendData);
+    constructor(file: string, onDataFromThisPlayer: (data: string) => void) {
+        super(onDataFromThisPlayer);
 
         if (!file || file.length < 1) {
             console.error("uabc error: executable not specified");
@@ -42,7 +42,7 @@ export default class ExecutablePlayer extends Player {
             });
             // Send game commands
             gameData.forEach(line => {
-                this.onPlayerData(line);
+                this.onDataFromThisPlayer(line);
             });
             // Forward output to console
             if (output.length > 0) {
@@ -57,7 +57,7 @@ export default class ExecutablePlayer extends Player {
         });
     }
 
-    protected onReceiveData(data: string) {
+    public onDataFromOtherPlayers(data: string) {
         this.playerProcess.stdin.write(data + os.EOL);
     }
 }

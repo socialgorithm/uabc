@@ -1,3 +1,4 @@
+import { Messages } from "@socialgorithm/model";
 import { EventName } from "@socialgorithm/model/dist/Events";
 import Player from "./Player";
 
@@ -6,8 +7,8 @@ import Player from "./Player";
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlinePlayer extends Player {
-    constructor(private socket: SocketIOClient.Socket, onPlayerData: (data: string) => void) {
-        super(onPlayerData);
+    constructor(private socket: SocketIOClient.Socket, onDataFromThisPlayer: (data: string) => void) {
+        super(onDataFromThisPlayer);
 
         this.socket.on(EventName.Game__Player, this.onServerData);
     }
@@ -17,20 +18,24 @@ export default class OnlinePlayer extends Player {
         this.socket.on(EventName.Game__Player, this.onServerData);
     }
 
-    protected onReceiveData(data: string) {
-        this.socket.emit(EventName.Game__Player, data);
+    public onDataFromOtherPlayers(payload: string) {
+        console.error("OnlinePlayers should not call this.");
     }
 
-    private onServerData = (data: string) => {
-        if (data && data.length > 0) {
-            const parts = data.split(" ");
+    /**
+     * When receiving output from the online player, process the message
+     * and call onDataFromThisPlayer
+     */
+    private onServerData = ({payload}: Messages.GameToPlayerMessage) => {
+        if (payload && payload.length > 0) {
+            const parts = payload.split(" ");
             if (parts[0] === "end") {
                 console.log("Game ended! You " + parts[1]);
             } else {
-                this.onPlayerData(data);
+                this.onDataFromThisPlayer(payload);
             }
         } else {
-            console.log("uabc: invalid data format received, it should be a string", data);
+            console.log("uabc: invalid data format received, it should be a string", payload);
         }
     }
 }
