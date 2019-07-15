@@ -16,9 +16,9 @@ exports.__esModule = true;
 var io = require("socket.io-client");
 var ioProxy = require("socket.io-proxy");
 var model_1 = require("@socialgorithm/model");
+var Events_1 = require("@socialgorithm/model/dist/Events");
 var Online_1 = require("../player/Online");
 var Client_1 = require("./Client");
-var Events_1 = require("@socialgorithm/model/dist/Events");
 var OnlineClient = (function (_super) {
     __extends(OnlineClient, _super);
     function OnlineClient(options) {
@@ -93,7 +93,7 @@ var OnlineClient = (function (_super) {
     OnlineClient.prototype.onPlayerAData = function (data) {
         this.log("A", data);
         if (this.gameServerSocket) {
-            this.gameServerSocket.emit("game", data);
+            this.gameServerSocket.emit(Events_1.EventName.Game__Player, data);
         }
     };
     OnlineClient.prototype.onPlayerBData = function (data) {

@@ -114,7 +114,7 @@ export default class OnlineClient extends Client {
     public onPlayerAData(data: string) {
         this.log("A", data);
         if (this.gameServerSocket) {
-            this.gameServerSocket.emit("game", data);
+            this.gameServerSocket.emit(EventName.Game__Player, data);
         }
     }
 

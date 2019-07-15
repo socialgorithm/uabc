@@ -1,3 +1,4 @@
+import { EventName } from "@socialgorithm/model/dist/Events";
 import Player from "./Player";
 
 /**
@@ -8,16 +9,16 @@ export default class OnlinePlayer extends Player {
     constructor(private socket: SocketIOClient.Socket, onPlayerData: (data: string) => void) {
         super(onPlayerData);
 
-        this.socket.on("game", this.onServerData);
+        this.socket.on(EventName.Game__Player, this.onServerData);
     }
 
     public setSocket(socket: SocketIOClient.Socket) {
         this.socket = socket;
-        this.socket.on("game", this.onServerData);
+        this.socket.on(EventName.Game__Player, this.onServerData);
     }
 
     protected onReceiveData(data: string) {
-        this.socket.emit("game", data);
+        this.socket.emit(EventName.Game__Player, data);
     }
 
     private onServerData = (data: string) => {
