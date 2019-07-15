@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Events_1 = require("@socialgorithm/model/dist/Events");
+var model_1 = require("@socialgorithm/model");
 var Player_1 = require("./Player");
 var OnlinePlayer = (function (_super) {
     __extends(OnlinePlayer, _super);
@@ -35,12 +35,12 @@ var OnlinePlayer = (function (_super) {
                 console.log("uabc: invalid data format received, it should be a string", payload);
             }
         };
-        _this.socket.on(Events_1.EventName.Game__Player, _this.onServerData);
+        _this.socket.on(model_1.EventName.Game__Player, _this.onServerData);
         return _this;
     }
     OnlinePlayer.prototype.setSocket = function (socket) {
         this.socket = socket;
-        this.socket.on(Events_1.EventName.Game__Player, this.onServerData);
+        this.socket.on(model_1.EventName.Game__Player, this.onServerData);
     };
     OnlinePlayer.prototype.onDataFromOtherPlayers = function (payload) {
         console.error("OnlinePlayers should not call this.");

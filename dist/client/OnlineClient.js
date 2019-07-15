@@ -16,7 +16,6 @@ exports.__esModule = true;
 var io = require("socket.io-client");
 var ioProxy = require("socket.io-proxy");
 var model_1 = require("@socialgorithm/model");
-var Events_1 = require("@socialgorithm/model/dist/Events");
 var Online_1 = require("../player/Online");
 var Client_1 = require("./Client");
 var OnlineClient = (function (_super) {
@@ -57,7 +56,7 @@ var OnlineClient = (function (_super) {
                 console.error(data.error);
                 process.exit(-1);
             });
-            _this.tournamentServerSocket.on(Events_1.EventName.GameServerHandoff, function (handoffMessage) {
+            _this.tournamentServerSocket.on(model_1.EventName.GameServerHandoff, function (handoffMessage) {
                 var gameServerSocketOptions = {
                     query: {
                         token: handoffMessage.token
@@ -100,7 +99,7 @@ var OnlineClient = (function (_super) {
             payload: payload
         };
         if (this.gameServerSocket) {
-            this.gameServerSocket.emit(Events_1.EventName.Game__Player, message);
+            this.gameServerSocket.emit(model_1.EventName.Game__Player, message);
         }
     };
     OnlineClient.prototype.onPlayerBData = function (data) {

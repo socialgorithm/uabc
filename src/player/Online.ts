@@ -1,5 +1,4 @@
-import { Messages } from "@socialgorithm/model";
-import { EventName } from "@socialgorithm/model/dist/Events";
+import { EventName, Messages } from "@socialgorithm/model";
 import Player from "./Player";
 
 /**

@@ -1,8 +1,7 @@
 import * as io from "socket.io-client";
 import * as ioProxy from "socket.io-proxy";
 
-import { LegacyEvents, Messages } from "@socialgorithm/model";
-import { EventName } from "@socialgorithm/model/dist/Events";
+import { EventName, LegacyEvents, Messages } from "@socialgorithm/model";
 import { IOptions } from "../cli/options";
 import OnlinePlayer from "../player/Online";
 import Client from "./Client";
