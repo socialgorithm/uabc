@@ -25,7 +25,7 @@ export default class ExecutablePlayer extends Player {
         });
 
         this.playerProcess.stdout.on('data', (data: string) => {
-            const lines = data.split(os.EOL);
+            const lines = data.split('\n');
             const regex = /^(send:).*/;
             const output: Array<string> = [];
             const gameData: Array<string> = [];
@@ -58,6 +58,6 @@ export default class ExecutablePlayer extends Player {
     }
 
     protected onReceiveData(data: string) {
-        this.playerProcess.stdin.write(data + os.EOL);
+        this.playerProcess.stdin.write(data + '\n');
     }
 }
