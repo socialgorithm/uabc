@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var os = require("os");
 var exec_1 = require("../lib/exec");
 var Player_1 = require("./Player");
 var ExecutablePlayer = (function (_super) {
@@ -29,7 +28,7 @@ var ExecutablePlayer = (function (_super) {
             console.log("client> child process exited with code " + code);
         });
         _this.playerProcess.stdout.on("data", function (data) {
-            var lines = data.split(os.EOL);
+            var lines = data.split('\n');
             var regex = /^(send:).*/;
             var output = [];
             var gameData = [];
@@ -60,7 +59,7 @@ var ExecutablePlayer = (function (_super) {
         return _this;
     }
     ExecutablePlayer.prototype.onDataFromOtherPlayers = function (data) {
-        this.playerProcess.stdin.write(data + os.EOL);
+        this.playerProcess.stdin.write(data + '\n');
     };
     return ExecutablePlayer;
 }(Player_1["default"]));
