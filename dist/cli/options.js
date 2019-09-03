@@ -120,8 +120,8 @@ function parseInput() {
         console.log(getUsage(sections));
         process.exit(0);
     }
-    if (!options.file || options.file.length < 1) {
-        console.error("uabc error: You must specify an executable.", options);
+    if (!options.files || options.files.length < 1 || options.files[0].length < 1) {
+        console.error("uabc error: You must specify at least one executable. See the --files option.", options);
         process.exit(-1);
     }
     return options;

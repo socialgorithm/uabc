@@ -1,3 +1,4 @@
+import * as io from "socket.io-client";
 import * as ioProxy from "socket.io-proxy";
 
 import { IOptions } from "../cli/options";

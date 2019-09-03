@@ -26,19 +26,21 @@ export default class PracticeClient extends Client {
 
         this.initGameServer();
 
-        options.files.forEach(file => {
-            this.otherPlayers.push(
-                new ExecutablePlayer(file, this.onOtherPlayersData.bind(this)),
-            );
-        });
+        setTimeout(() => {
+            options.files.forEach(file => {
+                this.otherPlayers.push(
+                    new ExecutablePlayer(file, this.onOtherPlayersData.bind(this)),
+                );
+            });
 
-        console.log();
-        console.log("Connecting to local game server...");
-        console.log();
+            console.log();
+            console.log("Connecting to local game server...");
+            console.log();
 
-        this.initGameServerConnection();
+            this.initGameServerConnection();
 
-        // Start a match and games, using all the local players
+            // Start a match and games, using all the local players
+        }, 3000);
     }
 
     protected onLocalPlayerData(data: string): void {
@@ -57,21 +59,33 @@ export default class PracticeClient extends Client {
                 throw new Error(`Unknown game "${this.options.practice}"`);
             }
 
+            console.log("Running game server: ", gameServerBin);
+
             this.gameServerProcess = exec(gameServerBin);
+
+            console.log("Started game server");
 
             this.gameServerProcess.on("close", (code: string) => {
                 console.log(`uabc> game server exited with code ${code}`);
             });
 
-            if (this.options.log) {
-                this.gameServerProcess.stdout.on("data", (data: string) => {
-                    this.gameServerLogger.log(data);
-                });
+            this.gameServerProcess.stdout.on("data", (data: string) => {
+                console.log("gameServer>", data);
+            });
 
-                this.gameServerProcess.stderr.on("data", (data: string) => {
-                    this.gameServerLogger.log("error", data);
-                });
-            }
+            this.gameServerProcess.stderr.on("data", (data: string) => {
+                console.log("gameServer error>", data);
+            });
+
+            // if (this.options.log) {
+            //     this.gameServerProcess.stdout.on("data", (data: string) => {
+            //         this.gameServerLogger.log(data);
+            //     });
+
+            //     this.gameServerProcess.stderr.on("data", (data: string) => {
+            //         this.gameServerLogger.log("error", data);
+            //     });
+            // }
         } catch (e) {
             console.error("uabc error:", e);
             process.exit(-1);

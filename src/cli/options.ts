@@ -148,8 +148,6 @@ export default function parseInput(): IOptions {
     }
   });
 
-  console.log("files", options.file);
-
   function isEmpty(map: any) {
     return Object.entries(map).length === 0 && map.constructor === Object;
   }
@@ -171,10 +169,10 @@ export default function parseInput(): IOptions {
     process.exit(-1);
   }
 
-  if (!options.file || options.file.length < 1) {
-    error("You must specify an executable.");
+  if (!options.files || options.files.length < 1 || options.files[0].length < 1) {
+    error("You must specify at least one executable. See the --files option.");
     process.exit(-1);
-  }
+}
 
   return options;
 }
