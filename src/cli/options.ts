@@ -4,9 +4,8 @@ const commandLineArgs = require("command-line-args");
 const getUsage = require("command-line-usage");
 const info = require("../../package.json");
 
-// type safe options
 export interface IOptions {
-  file?: string;
+  files?: string[];
   token?: string;
   lobby?: string;
   host?: string;
@@ -15,16 +14,19 @@ export interface IOptions {
   help?: boolean;
   verbose?: boolean;
   version?: boolean;
+  practice?: string;
+  games?: number;
 }
 
 const optionDefinitions = [
   {
-    name: "file",
+    name: "files",
     alias: "f",
     type: String,
-    typeLabel: "{underline file [file]}",
+    typeLabel: "{underline file}",
     defaultOption: true,
-    description: "Path to the client executable/s. If placed at the end, you don't have to put -f",
+    multiple: true,
+    description: "Path to the client executable/s. If placed at the end, you don't have to put -f. You can pass multiple executables when in practice mode.",
     group: "main",
   },
   {
@@ -40,14 +42,14 @@ const optionDefinitions = [
     alias: "l",
     type: String,
     typeLabel: "{underline lobby}",
-    description: "Identification token for the lobby you want to play in",
+    description: "The name of the lobby you want to play in",
     group: "online",
   },
   {
     name: "host",
     type: String,
     typeLabel: "{underline host:port}",
-    description: "host:port where the client should connect to. You can specify https:// as well if SSL is required",
+    description: "host:port where the client should connect to. You can specify https:// as well if SSL is required. Also used by practice mode to override the local game server port.",
     group: "online",
   },
   {
@@ -60,8 +62,21 @@ const optionDefinitions = [
     name: "log",
     type: String,
     typeLabel: "{underline [file]}",
-    description: "File where game logs should be stored, defaults to `uabc-[date].log` in the current directory if no file name is specified",
-    group: "main",
+    description: "Turn on file logging. It accepts an optional log filename if you want to override the default (`uabc-[date].log` in the current directory)",
+    group: "helper",
+  },
+  {
+    name: "verbose",
+    type: Boolean,
+    description: "Turn on console logging.",
+    group: "helper",
+  },
+  {
+    name: "version",
+    alias: "v",
+    type: Boolean,
+    description: "Displays the uabc client version",
+    group: "helper",
   },
   {
     name: "help",
@@ -71,17 +86,18 @@ const optionDefinitions = [
     group: "helper",
   },
   {
-    name: "version",
-    alias: "v",
-    type: Boolean,
-    description: "Display the client version",
-    group: "helper",
+    name: "practice",
+    alias: "p",
+    type: String,
+    typeLabel: "{underline game}",
+    description: "Use uabc in practice mode (playing locally), you must specify here what game to use",
+    group: "practice",
   },
   {
-    name: "verbose",
-    type: Boolean,
-    description: "Log everything to the console",
-    group: "helper",
+    name: "games",
+    type: Number,
+    description: "Number of games to play in practice mode (Defaults to 10)",
+    group: "practice",
   },
 ];
 
@@ -104,6 +120,11 @@ const sections = [
     group: ["online"],
   },
   {
+    header: "Practice (Offline Games)",
+    optionList: optionDefinitions,
+    group: ["practice"],
+  },
+  {
     header: "Helpers",
     optionList: optionDefinitions,
     group: ["helper", "_none"],
@@ -112,7 +133,7 @@ const sections = [
     header: "Synopsis",
     content: [
       "$ uabc {bold --host} {underline host:1234} {bold -l} {underline lobby} {bold -t} {underline token} {bold -f} {underline path/to/client/executable}",
-      "$ uabc {bold --log} {bold -p} {bold -f} {underline path/to/client/executable}",
+      "$ uabc {bold --log} {bold --practice} {underline tic-tac-toe} {bold -f} {underline \"python player1.py\"} {underline \"node player2.js\"}",
       "$ uabc {bold --help}",
     ],
   },
@@ -127,8 +148,10 @@ export default function parseInput(): IOptions {
     }
   });
 
+  console.log("files", options.file);
+
   function isEmpty(map: any) {
-    return Object.entries(map).length === 0 && map.constructor === Object
+    return Object.entries(map).length === 0 && map.constructor === Object;
   }
 
   if (options.version) {
@@ -136,15 +159,26 @@ export default function parseInput(): IOptions {
     process.exit(0);
   }
 
-  if (options.help || isEmpty(options) || !options.token) {
+  const practiceMode = !!options.practice;
+
+  if (options.help || isEmpty(options) || (!options.token && !practiceMode)) {
     console.log(getUsage(sections));
     process.exit(0);
   }
 
+  if (practiceMode && options.practice.length < 1) {
+    error("You must specify a game when in practice mode.");
+    process.exit(-1);
+  }
+
   if (!options.file || options.file.length < 1) {
-    console.error("uabc error: You must specify an executable.", options);
+    error("You must specify an executable.");
     process.exit(-1);
   }
 
   return options;
+}
+
+function error(message: string) {
+  console.error("uabc error:", message);
 }

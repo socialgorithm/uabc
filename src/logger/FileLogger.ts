@@ -16,7 +16,7 @@ export default class FileLogger extends Logger {
       this.file = file;
     } else {
       const currentdate = new Date();
-      this.file = "UTTT_" + currentdate.getDate() + "-"
+      this.file = "uabc_" + currentdate.getDate() + "-"
           + (currentdate.getMonth() + 1)  + "-"
           + currentdate.getFullYear() + "_"
           + currentdate.getHours() + "-"
@@ -28,8 +28,14 @@ export default class FileLogger extends Logger {
     console.log(`Logging to file: ${this.file}`);
   }
 
-  public log(writer: string, text: string): void {
+  public log(writer: string, text?: string): void {
     const time = (new Date()).toTimeString().substr(0, 8);
-    fs.appendFileSync(this.file, `[${time} ${writer}] ${text}${os.EOL}`);
+    let prefix = `[${time} ${writer}]`;
+    let data = text;
+    if (!text) {
+      prefix = `[${time}]`;
+      data = writer;
+    }
+    fs.appendFileSync(this.file, `${prefix} ${data}${os.EOL}`);
   }
 }

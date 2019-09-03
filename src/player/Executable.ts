@@ -1,5 +1,4 @@
 import { ChildProcess } from "child_process";
-import * as os from "os";
 
 import exec from "../lib/exec";
 import Player from "./Player";
@@ -25,7 +24,7 @@ export default class ExecutablePlayer extends Player {
         });
 
         this.playerProcess.stdout.on("data", (data: string) => {
-            const lines = data.split('\n');
+            const lines = data.split("\n");
             const regex = /^(send:).*/;
             const output: string[] = [];
             const gameData: string[] = [];
@@ -58,6 +57,6 @@ export default class ExecutablePlayer extends Player {
     }
 
     public onDataFromOtherPlayers(data: string) {
-        this.playerProcess.stdin.write(data + '\n');
+        this.playerProcess.stdin.write(data + "\n");
     }
 }

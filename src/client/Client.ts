@@ -5,8 +5,8 @@ import ExecutablePlayer from "../player/Executable";
 import Player from "../player/Player";
 
 export default abstract class Client {
-    protected playerA: Player;
-    protected playerB: Player;
+    protected localPlayer: Player;
+    protected otherPlayers: Player[] = [];
     protected firstPlayer: number;
     protected options: IOptions;
     protected size: number;
@@ -33,7 +33,8 @@ export default abstract class Client {
             this.loggers.file = new FileLogger(logName);
         }
 
-        this.playerA = new ExecutablePlayer(options.file, this.onPlayerAData.bind(this));
+        // Initialise the "main" player, always the first one
+        this.localPlayer = new ExecutablePlayer(options.files[0], this.onLocalPlayerData.bind(this));
     }
 
     protected log(writer: string, message: string) {
@@ -45,6 +46,6 @@ export default abstract class Client {
         }
     }
 
-    protected abstract onPlayerAData(data: string): void;
-    protected abstract onPlayerBData(data: string): void;
+    protected abstract onLocalPlayerData(data: string): void;
+    protected abstract onOtherPlayersData(data: string): void;
 }
