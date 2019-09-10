@@ -4,6 +4,8 @@ const commandLineArgs = require("command-line-args");
 const getUsage = require("command-line-usage");
 const info = require("../../package.json");
 
+import { GAME_SERVER_BIN } from "../lib/practice";
+
 export interface IOptions {
   files?: string[];
   token?: string;
@@ -164,15 +166,21 @@ export default function parseInput(): IOptions {
     process.exit(0);
   }
 
-  if (practiceMode && options.practice.length < 1) {
-    error("You must specify a game when in practice mode.");
-    process.exit(-1);
+  if (practiceMode && (options.practice.length < 1 || options.practice === true)) {
+    console.log("You must specify a game when in practice mode.");
+    console.log();
+    console.log("Available games:");
+    Object.keys(GAME_SERVER_BIN).forEach(game => {
+      console.log("  - " + game);
+    });
+    console.log();
+    process.exit(0);
   }
 
   if (!options.files || options.files.length < 1 || options.files[0].length < 1) {
     error("You must specify at least one executable. See the --files option.");
     process.exit(-1);
-}
+  }
 
   return options;
 }

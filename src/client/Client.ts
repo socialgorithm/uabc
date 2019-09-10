@@ -7,10 +7,7 @@ import Player from "../player/Player";
 export default abstract class Client {
     protected localPlayer: Player;
     protected otherPlayers: Player[] = [];
-    protected firstPlayer: number;
     protected options: IOptions;
-    protected size: number;
-    protected gameStart: [number, number];
     protected loggers: {
         console?: ConsoleLogger,
         file?: FileLogger,
