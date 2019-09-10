@@ -1,5 +1,5 @@
 export interface IOptions {
-    file?: string;
+    files?: string[];
     token?: string;
     lobby?: string;
     host?: string;
@@ -8,5 +8,7 @@ export interface IOptions {
     help?: boolean;
     verbose?: boolean;
     version?: boolean;
+    practice?: string;
+    games?: number;
 }
 export default function parseInput(): IOptions;

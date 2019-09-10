@@ -11,13 +11,21 @@ import Client from "./Client";
 
 export default class PracticeClient extends Client {
     protected otherPlayers: ExecutablePlayer[];
+    private playerSockets: SocketIOClient.Socket[];
 
+    private gameServerHost: string;
     private gameServerProcess: ChildProcess;
     private gameServerSocket: SocketIOClient.Socket;
     private gameServerLogger: FileLogger;
 
     constructor(options: IOptions) {
         super(options);
+
+        let host = this.options.host || "localhost:5433";
+        if (host.substr(0, 4) !== "http") {
+            host = "http://" + host;
+        }
+        this.gameServerHost = host;
 
         console.log(`Starting Practice Mode: ${options.practice}`);
 
@@ -103,16 +111,12 @@ export default class PracticeClient extends Client {
             console.log("Connecting to local game server...");
             console.log();
 
-            let host = this.options.host || "localhost:5433";
-            if (host.substr(0, 4) !== "http") {
-                host = "http://" + host;
-            }
             const socketOptions =  {
-                econnection: true,
-                timeout: 2000
+                reconnection: true,
+                timeout: 2000,
             };
 
-            this.gameServerSocket = connect(host, this.options, socketOptions);
+            this.gameServerSocket = connect(this.gameServerHost, this.options, socketOptions);
 
             this.gameServerSocket.on("error", (data: any) => {
                 console.error("Error in socket", data);
@@ -158,6 +162,33 @@ export default class PracticeClient extends Client {
         // debug("Received match created message %O", message);
         // These tokens are recognised on/sent by the game server (e.g. stats updates), save them for later mapping
         console.log("player tokens", message.playerTokens);
+        console.log("Connecting players to game server...");
+
+        // In order to comply with the game server API each player now needs to connect separately
+        this.playerSockets = [];
+        Object.keys(message.playerTokens).forEach(playerName => {
+            const token = message.playerTokens[playerName];
+            const socket = this.connectPlayer(token);
+            this.playerSockets.push(socket);
+
+            socket.on("connect", () => {
+                console.log(`  - ${playerName} connected`);
+            });
+        });
+
+        // And now...?
+    }
+
+    private connectPlayer = (token: string): SocketIOClient.Socket => {
+        const socketOptions =  {
+            econnection: true,
+            timeout: 2000,
+            query: {
+                token,
+            },
+        };
+
+        return connect(this.gameServerHost, this.options, socketOptions);
     }
 
     private onGameEnded = (game: Game) => {

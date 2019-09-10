@@ -5,6 +5,7 @@ var FileLogger_1 = require("../logger/FileLogger");
 var Executable_1 = require("../player/Executable");
 var Client = (function () {
     function Client(options) {
+        this.otherPlayers = [];
         this.options = options;
         this.loggers = {};
         if (options.verbose) {
@@ -17,7 +18,7 @@ var Client = (function () {
             }
             this.loggers.file = new FileLogger_1["default"](logName);
         }
-        this.playerA = new Executable_1["default"](options.file, this.onPlayerAData.bind(this));
+        this.localPlayer = new Executable_1["default"](options.files[0], this.onLocalPlayerData.bind(this));
     }
     Client.prototype.log = function (writer, message) {
         if (this.loggers.console) {

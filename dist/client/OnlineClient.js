@@ -13,9 +13,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var io = require("socket.io-client");
-var ioProxy = require("socket.io-proxy");
 var model_1 = require("@socialgorithm/model");
+var connect_1 = require("../lib/connect");
 var Online_1 = require("../player/Online");
 var Client_1 = require("./Client");
 var OnlineClient = (function (_super) {
@@ -23,7 +22,7 @@ var OnlineClient = (function (_super) {
     function OnlineClient(options) {
         var _this = _super.call(this, options) || this;
         console.log("Starting Online Mode");
-        console.log("Player A: " + _this.options.file);
+        console.log("Local Player: " + _this.options.files[0]);
         console.log();
         console.log("Waiting for server...");
         console.log();
@@ -35,7 +34,7 @@ var OnlineClient = (function (_super) {
             var socketOptions = {
                 query: "token=" + options.token
             };
-            _this.tournamentServerSocket = _this.connect(host, socketOptions);
+            _this.tournamentServerSocket = connect_1["default"](host, options, socketOptions);
             _this.tournamentServerSocket.on("error", function (data) {
                 console.error("Error in socket", data);
             });
@@ -66,7 +65,7 @@ var OnlineClient = (function (_super) {
                 if (_this.gameServerSocket && _this.gameServerSocket.connected) {
                     _this.gameServerSocket.disconnect();
                 }
-                _this.gameServerSocket = _this.connect(handoffMessage.gameServerAddress, gameServerSocketOptions);
+                _this.gameServerSocket = connect_1["default"](handoffMessage.gameServerAddress, options, gameServerSocketOptions);
                 _this.gameServerSocket.on("error", function (data) {
                     console.error("Error in game server socket", data);
                 });
@@ -76,11 +75,11 @@ var OnlineClient = (function (_super) {
                 _this.gameServerSocket.on("disconnect", function () {
                     console.log("Disconnected from game server (token: " + handoffMessage.token + ")");
                 });
-                if (!_this.playerB) {
-                    _this.playerB = new Online_1["default"](_this.gameServerSocket, _this.onPlayerBData.bind(_this));
+                if (!_this.otherPlayers[0]) {
+                    _this.otherPlayers[0] = new Online_1["default"](_this.gameServerSocket, _this.onOtherPlayersData.bind(_this));
                 }
                 else {
-                    _this.playerB.setSocket(_this.gameServerSocket);
+                    _this.otherPlayers[0].setSocket(_this.gameServerSocket);
                 }
             });
             _this.tournamentServerSocket.on("disconnect", function () {
@@ -93,7 +92,7 @@ var OnlineClient = (function (_super) {
         }
         return _this;
     }
-    OnlineClient.prototype.onPlayerAData = function (payload) {
+    OnlineClient.prototype.onLocalPlayerData = function (payload) {
         this.log("A", payload);
         var message = {
             payload: payload
@@ -102,20 +101,9 @@ var OnlineClient = (function (_super) {
             this.gameServerSocket.emit(model_1.EventName.Game__Player, message);
         }
     };
-    OnlineClient.prototype.onPlayerBData = function (data) {
+    OnlineClient.prototype.onOtherPlayersData = function (data) {
         this.log("B", data);
-        this.playerA.onDataFromOtherPlayers(data);
-    };
-    OnlineClient.prototype.connect = function (host, socketOptions) {
-        if (this.options.proxy || process.env.http_proxy) {
-            if (this.options.proxy) {
-                ioProxy.init(this.options.proxy);
-            }
-            return ioProxy.connect(host, socketOptions);
-        }
-        else {
-            return io.connect(host, socketOptions);
-        }
+        this.otherPlayers[0].onDataFromOtherPlayers(data);
     };
     return OnlineClient;
 }(Client_1["default"]));
