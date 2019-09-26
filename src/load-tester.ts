@@ -25,7 +25,7 @@ for (let lobbyNumber = 1; lobbyNumber <= numberOfLobbies; lobbyNumber++) {
                 host: "localhost:3141",
                 lobby: lobbyName,
                 token: playerName,
-                file: "node ../tic-tac-toe-player/run_player.js random",
+                files: ["node ../tic-tac-toe-player/run_player.js random"],
             });
         }
 
@@ -38,7 +38,7 @@ for (let lobbyNumber = 1; lobbyNumber <= numberOfLobbies; lobbyNumber++) {
                     autoPlay: true,
                     numberOfGames: 50,
                     timeout: 100,
-                    type: "DoubleElimination"
+                    type: "DoubleElimination",
                 },
                 players,
             });

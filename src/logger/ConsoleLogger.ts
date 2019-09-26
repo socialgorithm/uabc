@@ -11,7 +11,7 @@ export default class ConsoleLogger extends Logger {
     console.log("Verbose mode");
   }
 
-  public log(writer: string, data: string): void {
+  public log(writer: string, data?: string): void {
     const time = (new Date()).toTimeString().substr(0, 8);
     console.log(`[${time} ${writer} ${data}]`);
   }

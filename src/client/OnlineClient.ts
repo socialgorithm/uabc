@@ -1,8 +1,7 @@
-import * as io from "socket.io-client";
-import * as ioProxy from "socket.io-proxy";
-
 import { EventName, LegacyEvents, Messages } from "@socialgorithm/model";
+
 import { IOptions } from "../cli/options";
+import connect from "../lib/connect";
 import OnlinePlayer from "../player/Online";
 import Client from "./Client";
 
@@ -11,7 +10,7 @@ import Client from "./Client";
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlineClient extends Client {
-    protected playerB: OnlinePlayer;
+    protected otherPlayers: OnlinePlayer[];
 
     /**
      * Main socket for communication with the tournament server
@@ -27,7 +26,7 @@ export default class OnlineClient extends Client {
         super(options);
 
         console.log(`Starting Online Mode`);
-        console.log(`Player A: ${this.options.file}`);
+        console.log(`Local Player: ${this.options.files[0]}`);
 
         console.log();
         console.log("Waiting for server...");
@@ -43,7 +42,7 @@ export default class OnlineClient extends Client {
                 query: "token=" + options.token,
             };
 
-            this.tournamentServerSocket = this.connect(host, socketOptions);
+            this.tournamentServerSocket = connect(host, options, socketOptions);
 
             this.tournamentServerSocket.on("error", (data: any) => {
                 console.error("Error in socket", data);
@@ -84,7 +83,7 @@ export default class OnlineClient extends Client {
                     this.gameServerSocket.disconnect();
                 }
 
-                this.gameServerSocket = this.connect(handoffMessage.gameServerAddress, gameServerSocketOptions);
+                this.gameServerSocket = connect(handoffMessage.gameServerAddress, options, gameServerSocketOptions);
 
                 this.gameServerSocket.on("error", (data: any) => {
                     console.error("Error in game server socket", data);
@@ -98,10 +97,10 @@ export default class OnlineClient extends Client {
                     console.log(`Disconnected from game server (token: ${handoffMessage.token})`);
                 });
 
-                if (!this.playerB) {
-                    this.playerB = new OnlinePlayer(this.gameServerSocket, this.onPlayerBData.bind(this));
+                if (!this.otherPlayers[0]) {
+                    this.otherPlayers[0] = new OnlinePlayer(this.gameServerSocket, this.onOtherPlayersData.bind(this));
                 } else {
-                    this.playerB.setSocket(this.gameServerSocket);
+                    this.otherPlayers[0].setSocket(this.gameServerSocket);
                 }
             });
 
@@ -114,7 +113,7 @@ export default class OnlineClient extends Client {
         }
     }
 
-    public onPlayerAData(payload: string) {
+    public onLocalPlayerData(payload: string) {
         this.log("A", payload);
         const message: Messages.PlayerToGameMessage = {
             payload,
@@ -124,19 +123,8 @@ export default class OnlineClient extends Client {
         }
     }
 
-    public onPlayerBData(data: string) {
+    public onOtherPlayersData(data: string) {
         this.log("B", data);
-        this.playerA.onDataFromOtherPlayers(data);
-    }
-
-    private connect(host: string, socketOptions?: any): SocketIOClient.Socket {
-        if (this.options.proxy || process.env.http_proxy) {
-            if (this.options.proxy) {
-                ioProxy.init(this.options.proxy);
-            }
-            return ioProxy.connect(host, socketOptions);
-        } else {
-            return io.connect(host, socketOptions);
-        }
+        this.otherPlayers[0].onDataFromOtherPlayers(data);
     }
 }

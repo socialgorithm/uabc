@@ -19,7 +19,7 @@ var _loop_1 = function (lobbyNumber) {
                 host: "localhost:3141",
                 lobby: lobbyName,
                 token: playerName,
-                file: "node ../tic-tac-toe-player/run_player.js random"
+                files: ["node ../tic-tac-toe-player/run_player.js random"]
             });
         }
         setTimeout(function () {

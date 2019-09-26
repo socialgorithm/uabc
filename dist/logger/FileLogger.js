@@ -25,7 +25,7 @@ var FileLogger = (function (_super) {
         }
         else {
             var currentdate = new Date();
-            _this.file = "UTTT_" + currentdate.getDate() + "-"
+            _this.file = "uabc_" + currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
                 + currentdate.getFullYear() + "_"
                 + currentdate.getHours() + "-"
@@ -38,7 +38,13 @@ var FileLogger = (function (_super) {
     }
     FileLogger.prototype.log = function (writer, text) {
         var time = (new Date()).toTimeString().substr(0, 8);
-        fs.appendFileSync(this.file, "[" + time + " " + writer + "] " + text + os.EOL);
+        var prefix = "[" + time + " " + writer + "]";
+        var data = text;
+        if (!text) {
+            prefix = "[" + time + "]";
+            data = writer;
+        }
+        fs.appendFileSync(this.file, prefix + " " + data + os.EOL);
     };
     return FileLogger;
 }(Logger_1["default"]));
