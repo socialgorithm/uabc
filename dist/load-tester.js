@@ -1,13 +1,13 @@
 "use strict";
 exports.__esModule = true;
-var io = require("socket.io-client");
+var socket_io_client_1 = require("socket.io-client");
 var OnlineClient_1 = require("./client/OnlineClient");
 var numberOfLobbies = 10;
 var playersPerLobby = 10;
 var _loop_1 = function (lobbyNumber) {
     console.log("Creating lobby " + lobbyNumber);
     var lobbyAdminToken = "token=" + lobbyNumber + "-admin";
-    var lobbyAdminSocket = io.connect("http://localhost:3141", { query: { client: true, token: lobbyAdminToken } });
+    var lobbyAdminSocket = (0, socket_io_client_1.io)("http://localhost:3141", { query: { client: 'true', token: lobbyAdminToken } });
     lobbyAdminSocket.on("lobby created", function (data) {
         var lobbyName = data.lobby.token;
         console.log("Created lobby " + lobbyName);

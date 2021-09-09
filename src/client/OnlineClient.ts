@@ -1,4 +1,4 @@
-import * as io from "socket.io-client";
+import { io, Socket} from "socket.io-client";
 import * as ioProxy from "socket.io-proxy";
 
 import { EventName, LegacyEvents, Messages } from "@socialgorithm/model";
@@ -16,12 +16,12 @@ export default class OnlineClient extends Client {
     /**
      * Main socket for communication with the tournament server
      */
-    private tournamentServerSocket: SocketIOClient.Socket;
+    private tournamentServerSocket: Socket;
 
     /**
      * Support handing off to a game server
      */
-    private gameServerSocket: SocketIOClient.Socket;
+    private gameServerSocket: Socket;
 
     constructor(options: IOptions) {
         super(options);
@@ -129,14 +129,14 @@ export default class OnlineClient extends Client {
         this.playerA.onDataFromOtherPlayers(data);
     }
 
-    private connect(host: string, socketOptions?: any): SocketIOClient.Socket {
+    private connect(host: string, socketOptions?: any): Socket {
         if (this.options.proxy || process.env.http_proxy) {
             if (this.options.proxy) {
                 ioProxy.init(this.options.proxy);
             }
             return ioProxy.connect(host, socketOptions);
         } else {
-            return io.connect(host, socketOptions);
+            return io(host, socketOptions);
         }
     }
 }

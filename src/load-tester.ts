@@ -1,4 +1,4 @@
-import * as io from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import OnlineClient from "./client/OnlineClient";
 
 const numberOfLobbies = 10;
@@ -7,9 +7,9 @@ const playersPerLobby = 10;
 for (let lobbyNumber = 1; lobbyNumber <= numberOfLobbies; lobbyNumber++) {
     console.log(`Creating lobby ${lobbyNumber}`);
     const lobbyAdminToken = `token=${lobbyNumber}-admin`;
-    const lobbyAdminSocket = io.connect(
+    const lobbyAdminSocket = io(
         "http://localhost:3141",
-        { query: { client: true, token: lobbyAdminToken } },
+        { query: { client: 'true', token: lobbyAdminToken } },
     );
     lobbyAdminSocket.on("lobby created", (data: any) => {
         const lobbyName = data.lobby.token;

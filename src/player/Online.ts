@@ -1,4 +1,5 @@
 import { EventName, Messages } from "@socialgorithm/model";
+import { Socket } from "socket.io-client";
 import Player from "./Player";
 
 /**
@@ -6,13 +7,13 @@ import Player from "./Player";
  * It will connect to the server and send all player commands over the socket
  */
 export default class OnlinePlayer extends Player {
-    constructor(private socket: SocketIOClient.Socket, onDataFromThisPlayer: (data: string) => void) {
+    constructor(private socket: Socket, onDataFromThisPlayer: (data: string) => void) {
         super(onDataFromThisPlayer);
 
         this.socket.on(EventName.Game__Player, this.onServerData);
     }
 
-    public setSocket(socket: SocketIOClient.Socket) {
+    public setSocket(socket: Socket) {
         this.socket = socket;
         this.socket.on(EventName.Game__Player, this.onServerData);
     }
