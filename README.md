@@ -11,7 +11,15 @@ This means that your player can be written in any language, and it will work as 
 
 > Note: If you are participating in a competition, it is best to start in the [Participant section of the documentation](https://socialgorithm.org/docs/sections/participate/).
 
-Install the executable:
+Directly run the executable using `npx`:
+
+```bash
+$ npx @socialgorithm/uabc@latest
+```
+
+You can specify a version, e.g. `10.2.1` instead of `latest` if you are running against a specific version of the server.
+
+Or install globally:
 
 ```bash
 $ npm install -g @socialgorithm/uabc
@@ -19,7 +27,8 @@ $ npm install -g @socialgorithm/uabc
 Verify the installation by running:
 
 ```bash
-$ uabc --version
+$ npx @socialgorithm/uabc@latest --version
+$ uabc --version # Use this command if you installed globally
 ```
 
 ## Options
@@ -35,10 +44,17 @@ $ git clone git@github.com:socialgorithm/tic-tac-toe-player
 $ cd tic-tac-toe-player
 ```
 
-Then run the sample using the globally installed UABC, for example:
+Then run the sample:
 
 ```bash
-$ uabc --host "https://sg-tournament.herokuapp.com" 
+$ npx @socialgorithm/uabc@latest --host "https://server.socialgorithm.org" 
+  --lobby "{YOUR_LOBBY_NAME}" 
+  --token "Player1" 
+  -f "node run_player.js random"
+```
+
+```bash
+$ uabc --host "https://server.socialgorithm.org" 
   --lobby "{YOUR_LOBBY_NAME}" 
   --token "Player1" 
   -f "node run_player.js random"
